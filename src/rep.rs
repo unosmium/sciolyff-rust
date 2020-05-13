@@ -1,6 +1,6 @@
 use serde::Deserialize;
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Clone, Deserialize)]
 pub struct Rep {
     #[serde(rename = "Tournament")]
     pub tournament: Tournament,
@@ -16,7 +16,7 @@ pub struct Rep {
     pub penalties: Option<Vec<Penalty>>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Clone, Deserialize)]
 pub struct Tournament {
     pub name: Option<String>,
     #[serde(rename = "short name")]
@@ -35,16 +35,16 @@ pub struct Tournament {
     pub maximum_place: Option<u8>,
     #[serde(rename = "per-event n")]
     pub per_event_n: Option<String>,
-    #[serde(rename ="n offset")]
+    #[serde(rename = "n offset")]
     pub n_offset: Option<String>,
     pub trophies: Option<u8>,
     pub medals: Option<u8>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Clone, Deserialize)]
 pub struct Subdivision;
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Clone, Deserialize)]
 pub struct Event {
     pub name: String,
     pub trial: Option<bool>,
@@ -52,7 +52,7 @@ pub struct Event {
     pub scoring: Option<String>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Clone, Deserialize)]
 pub struct Team {
     pub school: String,
     #[serde(rename = "school abbreviation")]
@@ -66,7 +66,7 @@ pub struct Team {
     pub state: Option<String>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Clone, Deserialize)]
 pub struct Placing {
     pub event: String,
     pub team: u16,
@@ -79,7 +79,7 @@ pub struct Placing {
     pub raw: Option<Raw>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Clone, Deserialize)]
 pub struct Raw {
     pub score: f64,
     pub tier: u8,
@@ -87,7 +87,7 @@ pub struct Raw {
     pub tiebreaker_rank: u8,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Clone, Deserialize)]
 pub struct Penalty {
     pub team: u16,
     pub points: u8,
