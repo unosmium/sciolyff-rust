@@ -34,6 +34,7 @@ impl Interpreter {
                 .map(|rep| {
                     Rc::new(RefCell::new(Event {
                         tournament: None,
+                        placings: Vec::new(),
                         rep,
                     }))
                 })
@@ -44,6 +45,8 @@ impl Interpreter {
                 .map(|rep| {
                     Rc::new(RefCell::new(Team {
                         tournament: None,
+                        placings: Vec::new(),
+                        penalties: Vec::new(),
                         rep,
                     }))
                 })
@@ -103,6 +106,32 @@ impl Interpreter {
                     .unwrap(),
             )))
         });
+
+        self.teams.iter().for_each(|t| {
+            t.borrow_mut().tournament = Some(Rc::downgrade(&Rc::clone(&self.tournament)));
+            t.borrow_mut().placings = self
+                .placings
+                .iter()
+                .filter(|p| Rc::ptr_eq(&p.borrow().team.as_ref().unwrap().upgrade().unwrap(), t))
+                .map(|p| Rc::downgrade(&Rc::clone(&p)))
+                .collect();
+            t.borrow_mut().penalties = self
+                .penalties
+                .iter()
+                .filter(|p| Rc::ptr_eq(&p.borrow().team.as_ref().unwrap().upgrade().unwrap(), t))
+                .map(|p| Rc::downgrade(&Rc::clone(&p)))
+                .collect();
+        });
+
+        self.events.iter().for_each(|e| {
+            e.borrow_mut().tournament = Some(Rc::downgrade(&Rc::clone(&self.tournament)));
+            e.borrow_mut().placings = self
+                .placings
+                .iter()
+                .filter(|p| Rc::ptr_eq(&p.borrow().event.as_ref().unwrap().upgrade().unwrap(), e))
+                .map(|p| Rc::downgrade(&Rc::clone(&p)))
+                .collect();
+        });
     }
 }
 
@@ -120,12 +149,15 @@ struct Subdivision {
 #[derive(Debug)]
 struct Event {
     tournament: Option<Weak<RefCell<Tournament>>>,
+    placings: Vec<Weak<RefCell<Placing>>>,
     rep: rep::Event,
 }
 
 #[derive(Debug)]
 struct Team {
     tournament: Option<Weak<RefCell<Tournament>>>,
+    placings: Vec<Weak<RefCell<Placing>>>,
+    penalties: Vec<Weak<RefCell<Penalty>>>,
     rep: rep::Team,
 }
 
