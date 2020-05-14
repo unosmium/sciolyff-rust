@@ -16,6 +16,10 @@ impl Event {
         }
     }
 
+    pub fn tournament(&self) -> &Tournament {
+        unsafe { &*self.tournament }
+    }
+
     pub fn placings(&self) -> impl Iterator<Item = &Placing> {
         unsafe { self.placings.clone().into_iter().map(|p| &*p) }
     }
@@ -40,6 +44,46 @@ impl Event {
         match self.rep.scoring.as_ref() {
             Some(scoring) => scoring == &String::from("low"),
             None => false,
+        }
+    }
+
+    pub fn placing_for(&self, team: &Team) -> &Placing {
+        self.placings().find(|p| p.team == team).unwrap()
+    }
+
+    pub fn maximum_place(&self) -> u8 {
+        if self.trial() {
+            self.placings().count() as u8
+        } else if self.tournament().per_event_n().is_some() {
+            cmp::min(
+                self.per_event_maximum_place(),
+                self.tournament().maximum_place(),
+            )
+        } else {
+            self.tournament().maximum_place()
+        }
+    }
+
+    pub fn maximum_points(&self) -> u8 {
+        self.maximum_place() + 2
+    }
+
+    fn per_event_maximum_place(&self) -> u8 {
+        let per_event_n = self.tournament().per_event_n().unwrap_or("");
+        if per_event_n == "participation" {
+            self.competing_teams_count()
+        } else {
+            (self.placings().filter(|p| p.place().is_some()).count() + 1) as u8
+        }
+    }
+
+    fn competing_teams_count(&self) -> u8 {
+        if self.trial() {
+            self.placings().filter(|p| p.participated()).count() as u8
+        } else {
+            self.placings()
+                .filter(|p| p.participated() && !(p.team().exhibition() || p.exempt()))
+                .count() as u8
         }
     }
 }
