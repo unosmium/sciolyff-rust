@@ -1,16 +1,27 @@
 use crate::rep;
 use crate::rep::Rep;
-use std::cell::RefCell;
-use std::rc::Rc;
-use std::rc::Weak;
+use std::collections::HashMap;
+use std::ptr;
+
+mod event;
+mod penalty;
+mod placing;
+mod team;
+mod tournament;
+
+use crate::interpreter::event::Event;
+use crate::interpreter::penalty::Penalty;
+use crate::interpreter::placing::Placing;
+use crate::interpreter::team::Team;
+use crate::interpreter::tournament::Tournament;
 
 #[derive(Debug)]
 pub struct Interpreter {
-    tournament: Rc<RefCell<Tournament>>,
-    events: Vec<Rc<RefCell<Event>>>,
-    teams: Vec<Rc<RefCell<Team>>>,
-    placings: Vec<Rc<RefCell<Placing>>>,
-    penalties: Vec<Rc<RefCell<Penalty>>>,
+    tournament: Tournament,
+    events: Vec<Event>,
+    teams: Vec<Team>,
+    placings: Vec<Placing>,
+    penalties: Vec<Penalty>,
     rep: Rep,
 }
 
@@ -24,154 +35,78 @@ impl Interpreter {
     }
 
     fn create_models(rep: Rep) -> Interpreter {
-        let r = rep.clone();
+        let rep_clone = rep.clone();
         Interpreter {
-            tournament: Rc::new(RefCell::new(Tournament { rep: r.tournament })),
-            // todo: remove duplication using generics?
-            events: r
-                .events
-                .into_iter()
-                .map(|rep| {
-                    Rc::new(RefCell::new(Event {
-                        tournament: None,
-                        placings: Vec::new(),
-                        rep,
-                    }))
-                })
-                .collect(),
-            teams: r
-                .teams
-                .into_iter()
-                .map(|rep| {
-                    Rc::new(RefCell::new(Team {
-                        tournament: None,
-                        placings: Vec::new(),
-                        penalties: Vec::new(),
-                        rep,
-                    }))
-                })
-                .collect(),
-            placings: r
+            tournament: Tournament::new(rep.tournament),
+            events: rep.events.into_iter().map(|rep| Event::new(rep)).collect(),
+            teams: rep.teams.into_iter().map(|rep| Team::new(rep)).collect(),
+            placings: rep
                 .placings
                 .into_iter()
-                .map(|rep| {
-                    Rc::new(RefCell::new(Placing {
-                        tournament: None,
-                        team: None,
-                        event: None,
-                        rep,
-                    }))
-                })
+                .map(|rep| Placing::new(rep))
                 .collect(),
-            penalties: match r.penalties {
+            penalties: match rep.penalties {
                 None => Vec::new(),
-                Some(penalties) => penalties
-                    .into_iter()
-                    .map(|rep| {
-                        Rc::new(RefCell::new(Penalty {
-                            tournament: None,
-                            team: None,
-                            rep,
-                        }))
-                    })
-                    .collect(),
+                Some(p) => p.into_iter().map(|rep| Penalty::new(rep)).collect(),
             },
-            rep,
+            rep: rep_clone,
         }
     }
 
     fn link_models(&mut self) {
-        self.penalties.iter().for_each(|p| {
-            p.borrow_mut().tournament = Some(Rc::downgrade(&Rc::clone(&self.tournament)));
-            p.borrow_mut().team = Some(Rc::downgrade(&Rc::clone(
-                self.teams
-                    .iter()
-                    .find(|t| t.borrow().rep.number == p.borrow().rep.team)
-                    .unwrap(),
-            )))
+        let tournament = &self.tournament as *const Tournament;
+
+        let mut teams_by_number = HashMap::new();
+        for team in &self.teams {
+            teams_by_number.insert(team.rep.number, team as *const Team);
+        }
+
+        let mut events_by_name = HashMap::new();
+        for event in &self.events {
+            events_by_name.insert(&event.rep.name, event as *const Event);
+        }
+
+        self.penalties.iter_mut().for_each(|p| {
+            p.tournament = tournament;
+            p.team = teams_by_number[&p.rep.team];
         });
 
-        self.placings.iter().for_each(|p| {
-            p.borrow_mut().tournament = Some(Rc::downgrade(&Rc::clone(&self.tournament)));
-            p.borrow_mut().event = Some(Rc::downgrade(&Rc::clone(
-                self.events
-                    .iter()
-                    .find(|e| e.borrow().rep.name == p.borrow().rep.event)
-                    .unwrap(),
-            )));
-            p.borrow_mut().team = Some(Rc::downgrade(&Rc::clone(
-                self.teams
-                    .iter()
-                    .find(|t| t.borrow().rep.number == p.borrow().rep.team)
-                    .unwrap(),
-            )))
+        self.placings.iter_mut().for_each(|p| {
+            p.tournament = tournament;
+            p.team = teams_by_number[&p.rep.team];
+            p.event = events_by_name[&p.rep.event];
         });
 
-        self.teams.iter().for_each(|t| {
-            t.borrow_mut().tournament = Some(Rc::downgrade(&Rc::clone(&self.tournament)));
-            t.borrow_mut().placings = self
-                .placings
-                .iter()
-                .filter(|p| Rc::ptr_eq(&p.borrow().team.as_ref().unwrap().upgrade().unwrap(), t))
-                .map(|p| Rc::downgrade(&Rc::clone(&p)))
-                .collect();
-            t.borrow_mut().penalties = self
-                .penalties
-                .iter()
-                .filter(|p| Rc::ptr_eq(&p.borrow().team.as_ref().unwrap().upgrade().unwrap(), t))
-                .map(|p| Rc::downgrade(&Rc::clone(&p)))
-                .collect();
+        let mut placings_by_team = HashMap::new();
+        for team in &self.teams {
+            let mut placings_of_team = Vec::new();
+            for placing in &self.placings {
+                if placing.rep.team == team.rep.number {
+                    placings_of_team.push(placing as *const Placing);
+                }
+            }
+            placings_by_team.insert(team.rep.number, placings_of_team);
+        }
+
+        let mut placings_by_event = HashMap::new();
+        for event in &self.events {
+            let mut placings_of_event = Vec::new();
+            for placing in &self.placings {
+                if placing.rep.event == event.rep.name {
+                    placings_of_event.push(placing as *const Placing);
+                }
+            }
+            placings_by_event.insert(event.rep.name.clone(), placings_of_event);
+        }
+
+        self.teams.iter_mut().for_each(|t| {
+            t.tournament = tournament;
+            t.placings = placings_by_team.remove(&t.rep.number).unwrap();
         });
 
-        self.events.iter().for_each(|e| {
-            e.borrow_mut().tournament = Some(Rc::downgrade(&Rc::clone(&self.tournament)));
-            e.borrow_mut().placings = self
-                .placings
-                .iter()
-                .filter(|p| Rc::ptr_eq(&p.borrow().event.as_ref().unwrap().upgrade().unwrap(), e))
-                .map(|p| Rc::downgrade(&Rc::clone(&p)))
-                .collect();
+        self.events.iter_mut().for_each(|e| {
+            e.tournament = tournament;
+            e.placings = placings_by_event.remove(&e.rep.name).unwrap();
         });
     }
-}
-
-#[derive(Debug)]
-struct Tournament {
-    rep: rep::Tournament,
-}
-
-#[derive(Debug)]
-struct Subdivision {
-    tournament: Option<Weak<RefCell<Tournament>>>,
-    rep: rep::Subdivision,
-}
-
-#[derive(Debug)]
-struct Event {
-    tournament: Option<Weak<RefCell<Tournament>>>,
-    placings: Vec<Weak<RefCell<Placing>>>,
-    rep: rep::Event,
-}
-
-#[derive(Debug)]
-struct Team {
-    tournament: Option<Weak<RefCell<Tournament>>>,
-    placings: Vec<Weak<RefCell<Placing>>>,
-    penalties: Vec<Weak<RefCell<Penalty>>>,
-    rep: rep::Team,
-}
-
-#[derive(Debug)]
-struct Placing {
-    tournament: Option<Weak<RefCell<Tournament>>>,
-    team: Option<Weak<RefCell<Team>>>,
-    event: Option<Weak<RefCell<Event>>>,
-    rep: rep::Placing,
-}
-
-#[derive(Debug)]
-struct Penalty {
-    tournament: Option<Weak<RefCell<Tournament>>>,
-    team: Option<Weak<RefCell<Team>>>,
-    rep: rep::Penalty,
 }

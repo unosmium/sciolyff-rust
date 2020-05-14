@@ -6,5 +6,5 @@ fn main() {
 
     let contents = fs::read_to_string(file).unwrap();
     let _i = Interpreter::new(&contents);
-    //println!("{:#?}", i.penalties[0].borrow().team.as_ref().unwrap().upgrade());
+    //println!("{:#?}", _i);
 }
