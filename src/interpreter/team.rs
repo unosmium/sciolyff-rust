@@ -17,4 +17,40 @@ impl Team {
             rep,
         }
     }
+
+    pub fn school(&self) -> &str {
+        &self.rep.school
+    }
+
+    pub fn school_abbreviation(&self) -> Option<&str> {
+        self.rep.school_abbreviation.as_deref()
+    }
+
+    pub fn suffix(&self) -> Option<&str> {
+        self.rep.suffix.as_deref()
+    }
+
+    pub fn subdivision(&self) -> Option<&str> {
+        self.rep.subdivision.as_deref()
+    }
+
+    pub fn exhibition(&self) -> bool {
+        self.rep.exhibition.unwrap_or(false)
+    }
+
+    pub fn disqualified(&self) -> bool {
+        self.rep.disqualified.unwrap_or(false)
+    }
+
+    pub fn number(&self) -> u16 {
+        self.rep.number
+    }
+
+    pub fn city(&self) -> Option<&str> {
+        self.rep.city.as_deref()
+    }
+
+    pub fn state(&self) -> &str {
+        &self.rep.state
+    }
 }

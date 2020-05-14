@@ -63,7 +63,7 @@ pub struct Team {
     pub disqualified: Option<bool>,
     pub number: u16,
     pub city: Option<String>,
-    pub state: Option<String>,
+    pub state: String,
 }
 
 #[derive(Debug, Clone, Deserialize)]

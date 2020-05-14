@@ -15,4 +15,12 @@ impl Penalty {
             rep,
         }
     }
+
+    pub fn team(&self) -> &Team {
+        unsafe { &*self.team }
+    }
+
+    pub fn points(&self) -> u8 {
+        self.rep.points
+    }
 }

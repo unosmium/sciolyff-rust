@@ -3,11 +3,11 @@ use crate::rep::Rep;
 use std::collections::HashMap;
 use std::ptr;
 
-mod event;
-mod penalty;
-mod placing;
-mod team;
-mod tournament;
+pub mod event;
+pub mod penalty;
+pub mod placing;
+pub mod team;
+pub mod tournament;
 
 use crate::interpreter::event::Event;
 use crate::interpreter::penalty::Penalty;
@@ -17,11 +17,11 @@ use crate::interpreter::tournament::Tournament;
 
 #[derive(Debug)]
 pub struct Interpreter {
-    tournament: Tournament,
-    events: Vec<Event>,
-    teams: Vec<Team>,
-    placings: Vec<Placing>,
-    penalties: Vec<Penalty>,
+    pub tournament: Tournament,
+    pub events: Vec<Event>,
+    pub teams: Vec<Team>,
+    pub placings: Vec<Placing>,
+    pub penalties: Vec<Penalty>,
     rep: Rep,
 }
 

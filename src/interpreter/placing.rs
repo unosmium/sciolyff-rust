@@ -17,4 +17,28 @@ impl Placing {
             rep,
         }
     }
+
+    pub fn event(&self) -> &Event {
+        unsafe { &*self.event }
+    }
+
+    pub fn team(&self) -> &Team {
+        unsafe { &*self.team }
+    }
+
+    pub fn participated(&self) -> bool {
+        self.rep.participated.unwrap_or(true)
+    }
+
+    pub fn disqualified(&self) -> bool {
+        self.rep.disqualified.unwrap_or(false)
+    }
+
+    pub fn exempt(&self) -> bool {
+        self.rep.exempt.unwrap_or(false)
+    }
+
+    pub fn unknown(&self) -> bool {
+        self.rep.unknown.unwrap_or(false)
+    }
 }
