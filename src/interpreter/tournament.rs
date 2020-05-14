@@ -20,20 +20,20 @@ impl Tournament {
         }
     }
 
-    pub fn events(&self) -> Vec<&Event> {
-        unsafe { self.events.clone().into_iter().map(|e| &*e).collect() }
+    pub fn events(&self) -> impl Iterator<Item = &Event> {
+        unsafe { self.events.clone().into_iter().map(|e| &*e) }
     }
 
-    pub fn teams(&self) -> Vec<&Team> {
-        unsafe { self.teams.clone().into_iter().map(|t| &*t).collect() }
+    pub fn teams(&self) -> impl Iterator<Item = &Team> {
+        unsafe { self.teams.clone().into_iter().map(|t| &*t) }
     }
 
-    pub fn placings(&self) -> Vec<&Placing> {
-        unsafe { self.placings.clone().into_iter().map(|p| &*p).collect() }
+    pub fn placings(&self) -> impl Iterator<Item = &Placing> {
+        unsafe { self.placings.clone().into_iter().map(|p| &*p) }
     }
 
-    pub fn penalties(&self) -> Vec<&Penalty> {
-        unsafe { self.penalties.clone().into_iter().map(|p| &*p).collect() }
+    pub fn penalties(&self) -> impl Iterator<Item = &Penalty> {
+        unsafe { self.penalties.clone().into_iter().map(|p| &*p) }
     }
 
     pub fn name(&self) -> Option<&str> {
@@ -116,12 +116,11 @@ impl Tournament {
     }
 
     pub fn ties(&self) -> bool {
-        self.placings().iter().any(|p| p.tie())
+        self.placings().any(|p| p.tie())
     }
 
     pub fn ties_outside_of_maximum_places(&self) -> bool {
         self.placings()
-            .iter()
             .any(|p| p.tie() && p.points_limited_by_maximum_place())
     }
 
@@ -130,7 +129,7 @@ impl Tournament {
     }
 
     pub fn nonexhibition_team_count(&self) -> u8 {
-        self.teams().iter().filter(|t| t.exhibition()).count() as u8
+        self.teams().filter(|t| t.exhibition()).count() as u8
     }
 
     fn calc_medals(&self) -> u8 {

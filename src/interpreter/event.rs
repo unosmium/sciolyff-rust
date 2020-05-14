@@ -16,8 +16,8 @@ impl Event {
         }
     }
 
-    pub fn placings(&self) -> Vec<&Placing> {
-        unsafe { self.placings.clone().into_iter().map(|p| &*p).collect() }
+    pub fn placings(&self) -> impl Iterator<Item = &Placing> {
+        unsafe { self.placings.clone().into_iter().map(|p| &*p) }
     }
 
     pub fn name(&self) -> &str {
