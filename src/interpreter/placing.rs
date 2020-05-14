@@ -41,4 +41,12 @@ impl Placing {
     pub fn unknown(&self) -> bool {
         self.rep.unknown.unwrap_or(false)
     }
+
+    pub fn tie(&self) -> bool {
+        false
+    }
+
+    pub fn points_limited_by_maximum_place(&self) -> bool {
+        false
+    }
 }

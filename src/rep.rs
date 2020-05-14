@@ -36,9 +36,12 @@ pub struct Tournament {
     #[serde(rename = "per-event n")]
     pub per_event_n: Option<String>,
     #[serde(rename = "n offset")]
-    pub n_offset: Option<String>,
+    pub n_offset: Option<i8>,
     pub trophies: Option<u8>,
     pub medals: Option<u8>,
+    pub bids: Option<u8>,
+    #[serde(rename = "bids per school")]
+    pub bids_per_school: Option<u8>,
 }
 
 #[derive(Debug, Clone, Deserialize)]

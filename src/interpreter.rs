@@ -1,5 +1,6 @@
 use crate::rep;
 use crate::rep::Rep;
+use std::cmp;
 use std::collections::HashMap;
 use std::ptr;
 
@@ -108,5 +109,10 @@ impl Interpreter {
             e.tournament = tournament;
             e.placings = placings_by_event.remove(&e.rep.name).unwrap();
         });
+
+        self.tournament.events = self.events.iter().map(|e| e as *const Event).collect();
+        self.tournament.teams = self.teams.iter().map(|e| e as *const Team).collect();
+        self.tournament.placings = self.placings.iter().map(|e| e as *const Placing).collect();
+        self.tournament.penalties = self.penalties.iter().map(|e| e as *const Penalty).collect();
     }
 }
