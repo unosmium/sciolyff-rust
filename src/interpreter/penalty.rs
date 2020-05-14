@@ -2,13 +2,13 @@ use crate::interpreter::*;
 
 #[derive(Debug)]
 pub struct Penalty {
-    pub(in crate::interpreter) tournament: *const Tournament,
-    pub(in crate::interpreter) team: *const Team,
-    pub(in crate::interpreter) rep: rep::Penalty,
+    pub(super) tournament: *const Tournament,
+    pub(super) team: *const Team,
+    pub(super) rep: rep::Penalty,
 }
 
 impl Penalty {
-    pub(in crate::interpreter) fn new(rep: rep::Penalty) -> Penalty {
+    pub(super) fn new(rep: rep::Penalty) -> Penalty {
         Penalty {
             tournament: ptr::null(),
             team: ptr::null(),
