@@ -18,6 +18,14 @@ impl Team {
         }
     }
 
+    pub fn placings(&self) -> impl Iterator<Item = &Placing> {
+        unsafe { self.placings.clone().into_iter().map(|p| &*p) }
+    }
+
+    pub fn penalties(&self) -> impl Iterator<Item = &Penalty> {
+        unsafe { self.penalties.clone().into_iter().map(|p| &*p) }
+    }
+
     pub fn school(&self) -> &str {
         &self.rep.school
     }
@@ -52,5 +60,9 @@ impl Team {
 
     pub fn state(&self) -> &str {
         &self.rep.state
+    }
+
+    pub fn placing_for(&self, event: &Event) -> &Placing {
+        self.placings().find(|p| ptr::eq(p.event, event)).unwrap()
     }
 }

@@ -41,14 +41,14 @@ impl Event {
     }
 
     pub fn low_score_wins(&self) -> bool {
-        match self.rep.scoring.as_ref() {
-            Some(scoring) => scoring == &String::from("low"),
+        match &self.rep.scoring {
+            Some(scoring) => scoring == "low",
             None => false,
         }
     }
 
     pub fn placing_for(&self, team: &Team) -> &Placing {
-        self.placings().find(|p| p.team == team).unwrap()
+        self.placings().find(|p| ptr::eq(p.team, team)).unwrap()
     }
 
     pub fn maximum_place(&self) -> usize {
