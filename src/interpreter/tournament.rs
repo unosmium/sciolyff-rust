@@ -132,6 +132,14 @@ impl Tournament {
         self.teams().filter(|t| t.exhibition()).count()
     }
 
+    pub fn top_teams_per_school(&self) -> impl Iterator<Item = &Team> {
+        iter::empty()
+    }
+
+    pub fn teams_eligible_for_bids(&self) -> impl Iterator<Item = &Team> {
+        iter::empty()
+    }
+
     fn calc_medals(&self) -> u8 {
         cmp::max(
             (self.nonexhibition_team_count() as f32 / 10.).ceil() as u8,

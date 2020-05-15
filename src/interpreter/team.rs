@@ -83,17 +83,40 @@ impl Team {
     }
 
     pub fn earned_bid(&self) -> bool {
-        false
+        let school_rank = self
+            .tournament()
+            .teams_eligible_for_bids()
+            .position(|t| ptr::eq(t, self));
+        school_rank.is_some()
+            && school_rank.unwrap() < self.tournament().bids() as usize
     }
 
     pub fn worst_placings_to_be_dropped(
         &self,
     ) -> impl Iterator<Item = &Placing> {
-        iter::empty()
+        if self.tournament().worst_placings_dropped() == 0 {
+            Vec::<&Placing>::new().into_iter().take(0)
+        } else {
+            let mut considered_placings = self
+                .placings()
+                .filter(|p| p.initially_considered_for_team_points())
+                .collect::<Vec<&Placing>>();
+            considered_placings.sort_by(|p1, p2| {
+                p2.isolated_points()
+                    .partial_cmp(&p1.isolated_points())
+                    .unwrap()
+            });
+            considered_placings
+                .into_iter()
+                .take(self.tournament().worst_placings_dropped() as usize)
+        }
     }
 
     pub fn trial_event_points(&self) -> usize {
-        0
+        self.placings()
+            .filter(|p| p.event().trial())
+            .map(|p| p.isolated_points())
+            .sum()
     }
 
     pub fn medal_counts(&self) -> usize {
