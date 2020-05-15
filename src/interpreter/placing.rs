@@ -1,3 +1,4 @@
+use crate::interpreter::raw::Raw;
 use crate::interpreter::*;
 
 #[derive(Debug)]
@@ -51,11 +52,21 @@ impl Placing {
     }
 
     pub fn place(&self) -> Option<usize> {
-        self.rep.place
+        if self.raw().is_some() {
+            Some(0)
+        } else {
+            self.rep.place
+        }
     }
 
-    pub fn raw(&self) -> Option<bool> {
-        Some(false)
+    pub fn raw(&self) -> Option<Raw> {
+        match self.rep.raw.clone() {
+            Some(raw) => Some(Raw {
+                low_score_wins: self.event().low_score_wins(),
+                rep: raw,
+            }),
+            None => None,
+        }
     }
 
     pub fn did_not_participate(&self) -> bool {

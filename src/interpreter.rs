@@ -8,6 +8,7 @@ use std::ptr;
 pub mod event;
 pub mod penalty;
 pub mod placing;
+pub mod raw;
 pub mod team;
 pub mod tournament;
 

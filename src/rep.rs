@@ -85,9 +85,9 @@ pub struct Placing {
 #[derive(Debug, Clone, Deserialize)]
 pub struct Raw {
     pub score: f64,
-    pub tier: u8,
+    pub tier: Option<u8>,
     #[serde(rename = "tiebreaker rank")]
-    pub tiebreaker_rank: u8,
+    pub tiebreaker_rank: Option<u8>,
 }
 
 #[derive(Debug, Clone, Deserialize)]
