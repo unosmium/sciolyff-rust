@@ -25,14 +25,14 @@ pub struct Tournament {
     pub level: String,
     pub state: Option<String>,
     pub division: String,
-    pub year: u16,
+    pub year: usize,
     pub date: String,
     #[serde(rename = "worst placings dropped")]
     pub worst_placings_dropped: Option<u8>,
     #[serde(rename = "exempt placings")]
     pub exempt_placings: Option<u8>,
     #[serde(rename = "maximum place")]
-    pub maximum_place: Option<u8>,
+    pub maximum_place: Option<usize>,
     #[serde(rename = "per-event n")]
     pub per_event_n: Option<String>,
     #[serde(rename = "n offset")]
@@ -64,7 +64,7 @@ pub struct Team {
     pub subdivision: Option<String>,
     pub exhibition: Option<bool>,
     pub disqualified: Option<bool>,
-    pub number: u16,
+    pub number: usize,
     pub city: Option<String>,
     pub state: String,
 }
@@ -72,13 +72,13 @@ pub struct Team {
 #[derive(Debug, Clone, Deserialize)]
 pub struct Placing {
     pub event: String,
-    pub team: u16,
+    pub team: usize,
     pub participated: Option<bool>,
     pub disqualified: Option<bool>,
     pub exempt: Option<bool>,
     pub unknown: Option<bool>,
     pub tie: Option<bool>,
-    pub place: Option<u8>,
+    pub place: Option<usize>,
     pub raw: Option<Raw>,
 }
 
@@ -92,6 +92,6 @@ pub struct Raw {
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct Penalty {
-    pub team: u16,
+    pub team: usize,
     pub points: u8,
 }

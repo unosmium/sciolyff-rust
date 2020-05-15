@@ -51,9 +51,9 @@ impl Event {
         self.placings().find(|p| p.team == team).unwrap()
     }
 
-    pub fn maximum_place(&self) -> u8 {
+    pub fn maximum_place(&self) -> usize {
         if self.trial() {
-            self.placings().count() as u8
+            self.placings().count()
         } else if self.tournament().per_event_n().is_some() {
             cmp::min(
                 self.per_event_maximum_place(),
@@ -64,26 +64,26 @@ impl Event {
         }
     }
 
-    pub fn maximum_points(&self) -> u8 {
+    pub fn maximum_points(&self) -> usize {
         self.maximum_place() + 2
     }
 
-    fn per_event_maximum_place(&self) -> u8 {
+    fn per_event_maximum_place(&self) -> usize {
         let per_event_n = self.tournament().per_event_n().unwrap_or("");
         if per_event_n == "participation" {
             self.competing_teams_count()
         } else {
-            (self.placings().filter(|p| p.place().is_some()).count() + 1) as u8
+            self.placings().filter(|p| p.place().is_some()).count() + 1
         }
     }
 
-    fn competing_teams_count(&self) -> u8 {
+    fn competing_teams_count(&self) -> usize {
         if self.trial() {
-            self.placings().filter(|p| p.participated()).count() as u8
+            self.placings().filter(|p| p.participated()).count()
         } else {
             self.placings()
                 .filter(|p| p.participated() && !(p.team().exhibition() || p.exempt()))
-                .count() as u8
+                .count()
         }
     }
 }

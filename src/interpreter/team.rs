@@ -42,7 +42,7 @@ impl Team {
         self.rep.disqualified.unwrap_or(false)
     }
 
-    pub fn number(&self) -> u16 {
+    pub fn number(&self) -> usize {
         self.rep.number
     }
 

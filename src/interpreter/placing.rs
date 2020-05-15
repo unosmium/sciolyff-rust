@@ -46,7 +46,7 @@ impl Placing {
         false
     }
 
-    pub fn place(&self) -> Option<u8> {
+    pub fn place(&self) -> Option<usize> {
         self.rep.place
     }
 

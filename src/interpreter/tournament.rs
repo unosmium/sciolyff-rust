@@ -56,7 +56,7 @@ impl Tournament {
         &self.rep.division
     }
 
-    pub fn year(&self) -> u16 {
+    pub fn year(&self) -> usize {
         self.rep.year
     }
 
@@ -71,13 +71,13 @@ impl Tournament {
     pub fn medals(&self) -> u8 {
         self.rep
             .medals
-            .unwrap_or(cmp::min(self.calc_medals(), self.maximum_place()))
+            .unwrap_or(cmp::min(self.calc_medals(), self.maximum_place() as u8))
     }
 
     pub fn trophies(&self) -> u8 {
         self.rep.trophies.unwrap_or(cmp::min(
             self.calc_trophies(),
-            self.nonexhibition_team_count(),
+            self.nonexhibition_team_count() as u8,
         ))
     }
 
@@ -101,7 +101,7 @@ impl Tournament {
         self.maximum_place() != self.nonexhibition_team_count()
     }
 
-    pub fn maximum_place(&self) -> u8 {
+    pub fn maximum_place(&self) -> usize {
         self.rep
             .maximum_place
             .unwrap_or(self.nonexhibition_team_count())
@@ -128,8 +128,8 @@ impl Tournament {
         false
     }
 
-    pub fn nonexhibition_team_count(&self) -> u8 {
-        self.teams().filter(|t| t.exhibition()).count() as u8
+    pub fn nonexhibition_team_count(&self) -> usize {
+        self.teams().filter(|t| t.exhibition()).count()
     }
 
     fn calc_medals(&self) -> u8 {
