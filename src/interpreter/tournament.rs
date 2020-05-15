@@ -129,7 +129,7 @@ impl Tournament {
     }
 
     pub fn nonexhibition_team_count(&self) -> usize {
-        self.teams().filter(|t| t.exhibition()).count()
+        self.teams().filter(|t| !t.exhibition()).count()
     }
 
     pub fn top_teams_per_school(&self) -> impl Iterator<Item = &Team> {
