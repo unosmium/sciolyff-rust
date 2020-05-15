@@ -111,9 +111,13 @@ impl Interpreter {
             e.placings = placings_by_event.remove(&e.rep.name).unwrap();
         });
 
-        self.tournament.events = self.events.iter().map(|e| e as *const Event).collect();
-        self.tournament.teams = self.teams.iter().map(|e| e as *const Team).collect();
-        self.tournament.placings = self.placings.iter().map(|e| e as *const Placing).collect();
-        self.tournament.penalties = self.penalties.iter().map(|e| e as *const Penalty).collect();
+        self.tournament.events =
+            self.events.iter().map(|e| e as *const Event).collect();
+        self.tournament.teams =
+            self.teams.iter().map(|e| e as *const Team).collect();
+        self.tournament.placings =
+            self.placings.iter().map(|e| e as *const Placing).collect();
+        self.tournament.penalties =
+            self.penalties.iter().map(|e| e as *const Penalty).collect();
     }
 }

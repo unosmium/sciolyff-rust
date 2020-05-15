@@ -82,7 +82,9 @@ impl Event {
             self.placings().filter(|p| p.participated()).count()
         } else {
             self.placings()
-                .filter(|p| p.participated() && !(p.team().exhibition() || p.exempt()))
+                .filter(|p| {
+                    p.participated() && !(p.team().exhibition() || p.exempt())
+                })
                 .count()
         }
     }

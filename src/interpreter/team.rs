@@ -71,19 +71,24 @@ impl Team {
     }
 
     pub fn rank(&self) -> usize {
-        self.tournament().teams().position(|t| ptr::eq(self, t)).unwrap()
+        self.tournament()
+            .teams()
+            .position(|t| ptr::eq(self, t))
+            .unwrap()
     }
 
     pub fn points(&self) -> usize {
-        self.placings().map(|p| p.points()).sum::<usize>() +
-            (self.penalties().map(|p| p.points()).sum::<u8>() as usize)
+        self.placings().map(|p| p.points()).sum::<usize>()
+            + (self.penalties().map(|p| p.points()).sum::<u8>() as usize)
     }
 
     pub fn earned_bid(&self) -> bool {
         false
     }
 
-    pub fn worst_placings_to_be_dropped(&self) -> impl Iterator<Item = &Placing> {
+    pub fn worst_placings_to_be_dropped(
+        &self,
+    ) -> impl Iterator<Item = &Placing> {
         iter::empty()
     }
 

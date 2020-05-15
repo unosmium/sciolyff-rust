@@ -50,6 +50,21 @@ impl Placing {
         self.rep.place
     }
 
+    pub fn raw(&self) -> Option<bool> {
+        Some(false)
+    }
+
+    pub fn did_not_participate(&self) -> bool {
+        !self.participated()
+    }
+
+    pub fn participation_only(&self) -> bool {
+        self.participated()
+            && self.place().is_none()
+            && !self.disqualified()
+            && !self.unknown()
+    }
+
     pub fn points(&self) -> usize {
         0
     }
