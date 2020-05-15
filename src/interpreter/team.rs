@@ -119,11 +119,21 @@ impl Team {
             .sum()
     }
 
-    pub fn medal_counts(&self) -> usize {
-        0
+    pub fn medal_counts(&self) -> impl Iterator<Item = usize> + '_ {
+        (1..(self.tournament().teams().count() + 2)).map(move |medal_points| {
+            self.placings()
+                .filter(|p| p.considered_for_team_points())
+                .map(|p| p.points() == medal_points)
+                .count()
+        })
     }
 
-    pub fn trial_event_medal_counts(&self) -> usize {
-        0
+    pub fn trial_event_medal_counts(&self) -> impl Iterator<Item = usize> + '_ {
+        (1..(self.tournament().teams().count() + 2)).map(move |medal_points| {
+            self.placings()
+                .filter(|p| p.event().trial())
+                .map(|p| p.isolated_points() == medal_points)
+                .count()
+        })
     }
 }

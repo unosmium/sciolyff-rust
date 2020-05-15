@@ -64,10 +64,6 @@ impl Event {
         }
     }
 
-    pub fn maximum_points(&self) -> usize {
-        self.maximum_place() + 2
-    }
-
     fn per_event_maximum_place(&self) -> usize {
         let per_event_n = self.tournament().per_event_n().unwrap_or("");
         if per_event_n == "participation" {
