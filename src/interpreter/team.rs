@@ -18,6 +18,10 @@ impl Team {
         }
     }
 
+    pub fn tournament(&self) -> &Tournament {
+        unsafe { &*self.tournament }
+    }
+
     pub fn placings(&self) -> impl Iterator<Item = &Placing> {
         unsafe { self.placings.clone().into_iter().map(|p| &*p) }
     }
@@ -64,5 +68,34 @@ impl Team {
 
     pub fn placing_for(&self, event: &Event) -> &Placing {
         self.placings().find(|p| ptr::eq(p.event, event)).unwrap()
+    }
+
+    pub fn rank(&self) -> usize {
+        self.tournament().teams().position(|t| ptr::eq(self, t)).unwrap()
+    }
+
+    pub fn points(&self) -> usize {
+        self.placings().map(|p| p.points()).sum::<usize>() +
+            (self.penalties().map(|p| p.points()).sum::<u8>() as usize)
+    }
+
+    pub fn earned_bid(&self) -> bool {
+        false
+    }
+
+    pub fn worst_placings_to_be_dropped(&self) -> impl Iterator<Item = &Placing> {
+        iter::empty()
+    }
+
+    pub fn trial_event_points(&self) -> usize {
+        0
+    }
+
+    pub fn medal_counts(&self) -> usize {
+        0
+    }
+
+    pub fn trial_event_medal_counts(&self) -> usize {
+        0
     }
 }

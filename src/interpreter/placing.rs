@@ -50,7 +50,13 @@ impl Placing {
         self.rep.place
     }
 
+    pub fn points(&self) -> usize {
+        0
+    }
+
     pub fn points_limited_by_maximum_place(&self) -> bool {
         false
     }
+
+
 }
