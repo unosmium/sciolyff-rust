@@ -6,7 +6,7 @@ fn main() {
 
     let contents = fs::read_to_string(file).unwrap();
     let i = Interpreter::new(&contents);
-    for t in i.teams {
-        println!("{:#?}", t.school_abbreviation());
+    for t in &i.teams {
+        println!("{}", t.points());
     }
 }

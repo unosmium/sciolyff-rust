@@ -20,7 +20,7 @@ use crate::interpreter::tournament::Tournament;
 
 #[derive(Debug)]
 pub struct Interpreter {
-    pub tournament: Tournament,
+    pub tournament: Box<Tournament>,
     pub events: Vec<Event>,
     pub teams: Vec<Team>,
     pub placings: Vec<Placing>,
@@ -40,7 +40,7 @@ impl Interpreter {
     fn create_models(rep: Rep) -> Interpreter {
         let rep_clone = rep.clone();
         Interpreter {
-            tournament: Tournament::new(rep.tournament),
+            tournament: Box::new(Tournament::new(rep.tournament)),
             events: rep.events.into_iter().map(|rep| Event::new(rep)).collect(),
             teams: rep.teams.into_iter().map(|rep| Team::new(rep)).collect(),
             placings: rep
@@ -57,7 +57,7 @@ impl Interpreter {
     }
 
     fn link_models(&mut self) {
-        let tournament = &self.tournament as *const Tournament;
+        let tournament = self.tournament.as_ref() as *const Tournament;
 
         let mut teams_by_number = HashMap::new();
         for team in &self.teams {
