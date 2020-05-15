@@ -2,8 +2,8 @@ use crate::rep;
 use crate::rep::Rep;
 use std::cmp;
 use std::collections::HashMap;
-use std::ptr;
 use std::iter;
+use std::ptr;
 
 pub mod event;
 pub mod penalty;
