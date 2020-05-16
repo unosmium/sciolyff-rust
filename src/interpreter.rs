@@ -151,7 +151,7 @@ impl Interpreter {
     }
 
     fn sort_events_naturally(&mut self) {
-        self.events.sort_by(|e1, e2| {
+        self.events.sort_unstable_by(|e1, e2| {
             e1.trial().cmp(&e2.trial()).then(e1.name().cmp(&e2.name()))
         });
     }
