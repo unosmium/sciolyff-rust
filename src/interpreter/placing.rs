@@ -90,17 +90,12 @@ impl Placing {
     }
 
     pub fn points(&self) -> usize {
-        match self.points.get() {
-            Some(points) => points,
-            None => {
-                let points = match self.considered_for_team_points() {
-                    true => self.isolated_points(),
-                    false => 0,
-                };
-                self.points.set(Some(points));
-                points
+        cache!(self, points, {
+            match self.considered_for_team_points() {
+                true => self.isolated_points(),
+                false => 0,
             }
-        }
+        })
     }
 
     pub fn isolated_points(&self) -> usize {
