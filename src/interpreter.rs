@@ -1,10 +1,10 @@
 use crate::rep;
 use crate::rep::Rep;
+use itertools::Itertools;
 use std::cell::Cell;
 use std::cmp;
 use std::cmp::Ordering;
 use std::collections::HashMap;
-use std::iter;
 use std::ptr;
 
 #[macro_use]

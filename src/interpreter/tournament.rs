@@ -133,11 +133,34 @@ impl Tournament {
     }
 
     pub fn top_teams_per_school(&self) -> impl Iterator<Item = &Team> {
-        iter::empty()
+        let mut teams = self.teams().collect::<Vec<&Team>>();
+        teams.sort_unstable_by_key(|t| {
+            (t.school(), t.city(), t.state(), t.rank())
+        });
+        teams.dedup_by_key(|t| (t.school(), t.city(), t.state()));
+        teams.sort_unstable_by_key(|t| t.rank());
+        teams.into_iter()
     }
 
     pub fn teams_eligible_for_bids(&self) -> impl Iterator<Item = &Team> {
-        iter::empty()
+        let mut teams = self.teams().collect::<Vec<&Team>>();
+        teams.sort_unstable_by_key(|t| {
+            (t.school(), t.city(), t.state(), t.rank())
+        });
+        let mut teams_by_school = Vec::new();
+        for (_, teams) in &teams
+            .into_iter()
+            .group_by(|t| (t.school(), t.city(), t.state()))
+        {
+            teams_by_school.push(
+                teams
+                    .take(self.bids_per_school() as usize)
+                    .collect::<Vec<&Team>>(),
+            );
+        }
+        teams = teams_by_school.concat();
+        teams.sort_unstable_by_key(|t| t.rank());
+        teams.into_iter()
     }
 
     fn calc_medals(&self) -> u8 {
