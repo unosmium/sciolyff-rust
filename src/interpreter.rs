@@ -1,6 +1,7 @@
 use crate::rep;
 use crate::rep::Rep;
 use std::cmp;
+use std::cmp::Ordering;
 use std::collections::HashMap;
 use std::iter;
 use std::ptr;
@@ -34,6 +35,8 @@ impl Interpreter {
 
         let mut i = Self::create_models(rep);
         i.link_models();
+        i.sort_events_naturally();
+        i.sort_teams_by_rank();
         i
     }
 
@@ -120,5 +123,28 @@ impl Interpreter {
             self.placings.iter().map(|e| e as *const Placing).collect();
         self.tournament.penalties =
             self.penalties.iter().map(|e| e as *const Penalty).collect();
+    }
+
+    fn sort_events_naturally(&mut self) {
+        self.events.sort_by(|e1, e2| {
+            e1.trial().cmp(&e2.trial()).then(e1.name().cmp(&e2.name()))
+        });
+    }
+
+    fn sort_teams_by_rank(&mut self) {
+        self.teams.sort_by(|t1, t2| {
+            t1.disqualified()
+                .cmp(&t2.disqualified())
+                .then(t1.exhibition().cmp(&t2.exhibition()))
+                .then(t1.points().cmp(&t2.points()))
+                .then(t1.medal_counts().cmp(t2.medal_counts()).reverse())
+                .then(t1.trial_event_points().cmp(&t2.trial_event_points()))
+                .then(
+                    t1.trial_event_medal_counts()
+                        .cmp(t2.trial_event_medal_counts())
+                        .reverse(),
+                )
+                .then(t1.number().cmp(&t2.number()))
+        });
     }
 }

@@ -1,5 +1,4 @@
 use crate::interpreter::*;
-use std::cmp::Ordering;
 
 #[derive(Debug)]
 pub struct Raw {

@@ -9,4 +9,8 @@ fn main() {
     for t in &i.teams {
         println!("{}", t.points());
     }
+    for e in &i.events {
+        println!("{} {}", e.name(), e.trial());
+    }
+    println!("{:?}", true.cmp(&true))
 }
