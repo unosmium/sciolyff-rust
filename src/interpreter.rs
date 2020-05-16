@@ -24,11 +24,11 @@ use crate::interpreter::tournament::Tournament;
 
 #[derive(Debug)]
 pub struct Interpreter {
-    pub tournament: Box<Tournament>,
-    pub events: Vec<Event>,
-    pub teams: Vec<Team>,
-    pub placings: Vec<Placing>,
-    pub penalties: Vec<Penalty>,
+    tournament: Box<Tournament>,
+    events: Vec<Event>,
+    teams: Vec<Team>,
+    placings: Vec<Placing>,
+    penalties: Vec<Penalty>,
     rep: Rep,
 }
 
@@ -41,6 +41,26 @@ impl Interpreter {
         i.sort_events_naturally();
         i.sort_teams_by_rank();
         i
+    }
+
+    pub fn tournament(&self) -> &Tournament {
+        self.tournament.as_ref()
+    }
+
+    pub fn events(&self) -> &Vec<Event> {
+        &self.events
+    }
+
+    pub fn teams(&self) -> &Vec<Team> {
+        &self.teams
+    }
+
+    pub fn placings(&self) -> &Vec<Placing> {
+        &self.placings
+    }
+
+    pub fn penalties(&self) -> &Vec<Penalty> {
+        &self.penalties
     }
 
     fn create_models(rep: Rep) -> Interpreter {

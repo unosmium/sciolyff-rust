@@ -6,7 +6,7 @@ fn main() {
 
     let contents = fs::read_to_string(file).unwrap();
     let i = Interpreter::new(&contents);
-    for t in &i.teams {
+    for t in i.teams().iter() {
         println!("{} {} {}", t.number(), t.rank(), t.points());
     }
     //for e in &i.events {
