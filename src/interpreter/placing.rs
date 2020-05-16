@@ -8,6 +8,7 @@ pub struct Placing {
     pub(super) event: *const Event,
     pub(super) rep: rep::Placing,
     points: Cell<Option<usize>>,
+    isolated_points: Cell<Option<usize>>,
 }
 
 impl Placing {
@@ -18,6 +19,7 @@ impl Placing {
             event: ptr::null(),
             rep,
             points: Cell::new(None),
+            isolated_points: Cell::new(None),
         }
     }
 
@@ -99,17 +101,19 @@ impl Placing {
     }
 
     pub fn isolated_points(&self) -> usize {
-        let max_place = self.event().maximum_place();
-        let n = max_place + self.tournament().n_offset() as usize;
-        if self.disqualified() {
-            n + 2
-        } else if self.did_not_participate() {
-            n + 1
-        } else if self.participation_only() || self.unknown() {
-            n
-        } else {
-            cmp::min(self.calculate_points(), max_place)
-        }
+        cache!(self, isolated_points, {
+            let max_place = self.event().maximum_place();
+            let n = max_place + self.tournament().n_offset() as usize;
+            if self.disqualified() {
+                n + 2
+            } else if self.did_not_participate() {
+                n + 1
+            } else if self.participation_only() || self.unknown() {
+                n
+            } else {
+                cmp::min(self.calculate_points(), max_place)
+            }
+        })
     }
 
     pub fn considered_for_team_points(&self) -> bool {

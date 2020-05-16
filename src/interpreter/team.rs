@@ -6,6 +6,9 @@ pub struct Team {
     pub(super) placings: Vec<*const Placing>,
     pub(super) penalties: Vec<*const Penalty>,
     pub(super) rep: rep::Team,
+    rank: Cell<Option<usize>>,
+    points: Cell<Option<usize>>,
+    trial_event_points: Cell<Option<usize>>,
 }
 
 impl Team {
@@ -15,6 +18,9 @@ impl Team {
             placings: Vec::new(),
             penalties: Vec::new(),
             rep,
+            rank: Cell::new(None),
+            points: Cell::new(None),
+            trial_event_points: Cell::new(None),
         }
     }
 
@@ -71,15 +77,19 @@ impl Team {
     }
 
     pub fn rank(&self) -> usize {
-        self.tournament()
-            .teams()
-            .position(|t| ptr::eq(self, t))
-            .unwrap()
+        cache!(self, rank, {
+            self.tournament()
+                .teams()
+                .position(|t| ptr::eq(self, t))
+                .unwrap()
+        })
     }
 
     pub fn points(&self) -> usize {
-        self.placings().map(|p| p.points()).sum::<usize>()
-            + (self.penalties().map(|p| p.points()).sum::<u8>() as usize)
+        cache!(self, points, {
+            self.placings().map(|p| p.points()).sum::<usize>()
+                + (self.penalties().map(|p| p.points()).sum::<u8>() as usize)
+        })
     }
 
     pub fn earned_bid(&self) -> bool {
@@ -113,10 +123,12 @@ impl Team {
     }
 
     pub fn trial_event_points(&self) -> usize {
-        self.placings()
-            .filter(|p| p.event().trial())
-            .map(|p| p.isolated_points())
-            .sum()
+        cache!(self, trial_event_points, {
+            self.placings()
+                .filter(|p| p.event().trial())
+                .map(|p| p.isolated_points())
+                .sum()
+        })
     }
 
     pub fn medal_counts(&self) -> impl Iterator<Item = usize> + '_ {
