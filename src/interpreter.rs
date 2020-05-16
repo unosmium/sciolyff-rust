@@ -113,6 +113,8 @@ impl Interpreter {
             t.placings = placings_by_team.remove(&t.rep.number).unwrap();
         });
 
+        // TODO: Link teams to their penalties
+
         self.events.iter_mut().for_each(|e| {
             e.tournament = tournament;
             e.placings = placings_by_event.remove(&e.rep.name).unwrap();

@@ -7,10 +7,10 @@ fn main() {
     let contents = fs::read_to_string(file).unwrap();
     let i = Interpreter::new(&contents);
     for t in &i.teams {
-        println!("{} {}", t.rank(), t.points());
+        println!("{} {} {}", t.number(), t.rank(), t.points());
     }
-    for e in &i.events {
-        println!("{} {}", e.name(), e.trial());
-    }
-    println!("{:?}", true.cmp(&true))
+    //for e in &i.events {
+    //    println!("{} {}", e.name(), e.trial());
+    //}
+    //println!("{:?}", true.cmp(&true))
 }

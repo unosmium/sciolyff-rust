@@ -125,7 +125,7 @@ impl Tournament {
     }
 
     pub fn subdivisions(&self) -> bool {
-        false
+        todo!()
     }
 
     pub fn nonexhibition_team_count(&self) -> usize {
