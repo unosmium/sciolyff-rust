@@ -1,5 +1,6 @@
 use crate::rep;
 use crate::rep::Rep;
+use std::cell::Cell;
 use std::cmp;
 use std::cmp::Ordering;
 use std::collections::HashMap;
@@ -132,7 +133,7 @@ impl Interpreter {
     }
 
     fn sort_teams_by_rank(&mut self) {
-        self.teams.sort_by(|t1, t2| {
+        self.teams.sort_unstable_by(|t1, t2| {
             t1.disqualified()
                 .cmp(&t2.disqualified())
                 .then(t1.exhibition().cmp(&t2.exhibition()))

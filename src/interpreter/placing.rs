@@ -7,6 +7,7 @@ pub struct Placing {
     pub(super) team: *const Team,
     pub(super) event: *const Event,
     pub(super) rep: rep::Placing,
+    points: Cell<Option<usize>>,
 }
 
 impl Placing {
@@ -16,6 +17,7 @@ impl Placing {
             team: ptr::null(),
             event: ptr::null(),
             rep,
+            points: Cell::new(None),
         }
     }
 
@@ -88,10 +90,16 @@ impl Placing {
     }
 
     pub fn points(&self) -> usize {
-        if !self.considered_for_team_points() {
-            0
-        } else {
-            self.isolated_points()
+        match self.points.get() {
+            Some(points) => points,
+            None => {
+                let points = match self.considered_for_team_points() {
+                    true => self.isolated_points(),
+                    false => 0,
+                };
+                self.points.set(Some(points));
+                points
+            }
         }
     }
 
