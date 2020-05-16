@@ -82,6 +82,7 @@ impl Team {
                 .teams()
                 .position(|t| ptr::eq(self, t))
                 .unwrap()
+                + 1
         })
     }
 
