@@ -1,2 +1,2 @@
 pub mod interpreter;
-mod rep;
+pub mod rep;

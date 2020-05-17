@@ -33,14 +33,16 @@ pub struct Interpreter {
 }
 
 impl Interpreter {
-    pub fn new(source: &str) -> Interpreter {
-        let rep: Rep = serde_yaml::from_str(&source).unwrap();
-
+    pub fn new(rep: Rep) -> Interpreter {
         let mut i = Self::create_models(rep);
         i.link_models();
         i.sort_events_naturally();
         i.sort_teams_by_rank();
         i
+    }
+
+    pub fn from_yaml(source: &str) -> Interpreter {
+        Self::new(serde_yaml::from_str(&source).unwrap())
     }
 
     pub fn tournament(&self) -> &Tournament {
