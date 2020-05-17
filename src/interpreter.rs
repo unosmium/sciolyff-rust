@@ -67,16 +67,12 @@ impl Interpreter {
         let rep_clone = rep.clone();
         Interpreter {
             tournament: Box::new(Tournament::new(rep.tournament)),
-            events: rep.events.into_iter().map(|rep| Event::new(rep)).collect(),
-            teams: rep.teams.into_iter().map(|rep| Team::new(rep)).collect(),
-            placings: rep
-                .placings
-                .into_iter()
-                .map(|rep| Placing::new(rep))
-                .collect(),
+            events: rep.events.into_iter().map(Event::new).collect(),
+            teams: rep.teams.into_iter().map(Team::new).collect(),
+            placings: rep.placings.into_iter().map(Placing::new).collect(),
             penalties: match rep.penalties {
                 None => Vec::new(),
-                Some(p) => p.into_iter().map(|rep| Penalty::new(rep)).collect(),
+                Some(p) => p.into_iter().map(Penalty::new).collect(),
             },
             rep: rep_clone,
         }
@@ -136,9 +132,8 @@ impl Interpreter {
         for t in self.teams.iter_mut() {
             t.tournament = tournament;
             t.placings = placings_by_team.remove(&t.rep.number).unwrap();
-            t.penalties = penalties_by_team
-                .remove(&t.rep.number)
-                .unwrap_or(Vec::new());
+            t.penalties =
+                penalties_by_team.remove(&t.rep.number).unwrap_or_default();
         }
     }
 

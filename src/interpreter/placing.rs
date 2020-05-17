@@ -87,15 +87,15 @@ impl Placing {
     pub fn dropped_as_part_of_worst_placings(&self) -> bool {
         self.team()
             .worst_placings_to_be_dropped()
-            .find(|&p| ptr::eq(self, p))
-            .is_some()
+            .any(|p| ptr::eq(self, p))
     }
 
     pub fn points(&self) -> usize {
         cache!(self, points, {
-            match self.considered_for_team_points() {
-                true => self.isolated_points(),
-                false => 0,
+            if self.considered_for_team_points() {
+                self.isolated_points()
+            } else {
+                0
             }
         })
     }

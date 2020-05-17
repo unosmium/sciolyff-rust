@@ -69,16 +69,18 @@ impl Tournament {
     }
 
     pub fn medals(&self) -> u8 {
-        self.rep
-            .medals
-            .unwrap_or(cmp::min(self.calc_medals(), self.maximum_place() as u8))
+        self.rep.medals.unwrap_or_else(|| {
+            cmp::min(self.calc_medals(), self.maximum_place() as u8)
+        })
     }
 
     pub fn trophies(&self) -> u8 {
-        self.rep.trophies.unwrap_or(cmp::min(
-            self.calc_trophies(),
-            self.nonexhibition_team_count() as u8,
-        ))
+        self.rep.trophies.unwrap_or_else(|| {
+            cmp::min(
+                self.calc_trophies(),
+                self.nonexhibition_team_count() as u8,
+            )
+        })
     }
 
     pub fn bids(&self) -> u8 {
@@ -104,7 +106,7 @@ impl Tournament {
     pub fn maximum_place(&self) -> usize {
         self.rep
             .maximum_place
-            .unwrap_or(self.nonexhibition_team_count())
+            .unwrap_or_else(|| self.nonexhibition_team_count())
     }
 
     pub fn per_event_n(&self) -> Option<&str> {
