@@ -7,7 +7,9 @@ impl super::Interpreter {
         Self::remove_teams_not_in_subdivision(&mut rep, sub);
         Self::fix_and_replace_subdivision_tournament_fields(&mut rep, sub);
         Self::limit_maximum_place(&mut rep);
-        Self::fix_placings_for_existing_teams(&mut rep);
+        if !self.raws() {
+            Self::fix_placings_for_existing_teams(&mut rep);
+        }
         rep
     }
 
@@ -41,6 +43,10 @@ impl super::Interpreter {
 
     fn limit_maximum_place(rep: &mut Rep) {
         let max_place = rep.tournament.maximum_place;
+        if max_place.is_none() {
+            return;
+        }
+
         let team_count = rep
             .teams
             .iter()
@@ -50,7 +56,7 @@ impl super::Interpreter {
             })
             .count();
 
-        if max_place.is_some() && max_place.unwrap() > team_count {
+        if max_place.unwrap() > team_count {
             rep.tournament.maximum_place = None;
         }
     }
