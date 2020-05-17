@@ -6,6 +6,7 @@ pub struct Placing {
     pub(super) tournament: *const Tournament,
     pub(super) team: *const Team,
     pub(super) event: *const Event,
+    pub(super) raw: Option<Raw>,
     pub(super) rep: rep::Placing,
     points: Cell<Option<usize>>,
     isolated_points: Cell<Option<usize>>,
@@ -17,6 +18,7 @@ impl Placing {
             tournament: ptr::null(),
             team: ptr::null(),
             event: ptr::null(),
+            raw: None,
             rep,
             points: Cell::new(None),
             isolated_points: Cell::new(None),
@@ -52,25 +54,33 @@ impl Placing {
     }
 
     pub fn tie(&self) -> bool {
-        false
+        if self.raw().is_some() {
+            self.event()
+                .raws()
+                .filter(|&r| r == self.raw().as_ref().unwrap())
+                .count()
+                > 1
+        } else {
+            self.rep.tie.is_some() && self.rep.tie.unwrap()
+        }
     }
 
     pub fn place(&self) -> Option<usize> {
         if self.raw().is_some() {
-            Some(0)
+            let place = self
+                .event()
+                .raws()
+                .position(|r| r == self.raw().as_ref().unwrap())
+                .unwrap()
+                + 1;
+            Some(place)
         } else {
             self.rep.place
         }
     }
 
-    pub fn raw(&self) -> Option<Raw> {
-        match self.rep.raw.clone() {
-            Some(raw) => Some(Raw {
-                low_score_wins: self.event().low_score_wins(),
-                rep: raw,
-            }),
-            None => None,
-        }
+    pub fn raw(&self) -> &Option<Raw> {
+        &self.raw
     }
 
     pub fn did_not_participate(&self) -> bool {

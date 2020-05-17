@@ -4,6 +4,7 @@ use super::*;
 pub struct Event {
     pub(super) tournament: *const Tournament,
     pub(super) placings: Vec<*const Placing>,
+    pub(super) raws: Vec<*const Raw>,
     pub(super) rep: rep::Event,
 }
 
@@ -12,6 +13,7 @@ impl Event {
         Event {
             tournament: ptr::null(),
             placings: Vec::new(),
+            raws: Vec::new(),
             rep,
         }
     }
@@ -22,6 +24,10 @@ impl Event {
 
     pub fn placings(&self) -> impl Iterator<Item = &Placing> {
         unsafe { self.placings.clone().into_iter().map(|p| &*p) }
+    }
+
+    pub fn raws(&self) -> impl Iterator<Item = &Raw> {
+        unsafe { self.raws.clone().into_iter().map(|r| &*r) }
     }
 
     pub fn name(&self) -> &str {

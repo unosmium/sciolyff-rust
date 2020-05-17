@@ -47,6 +47,13 @@ impl super::Interpreter {
             p.tournament = tournament;
             p.team = teams_by_number[&p.rep.team];
             p.event = events_by_name[&p.rep.event];
+            p.raw = match p.rep.raw.clone() {
+                Some(raw) => Some(Raw {
+                    low_score_wins: p.event().low_score_wins(),
+                    rep: raw,
+                }),
+                None => None,
+            };
         }
     }
 
@@ -87,6 +94,12 @@ impl super::Interpreter {
         for e in self.events.iter_mut() {
             e.tournament = tournament;
             e.placings = placings_by_event.remove(&e.rep.name).unwrap();
+            e.raws = e
+                .placings()
+                .filter(|p| p.raw().is_some())
+                .map(|p| p.raw().as_ref().unwrap() as *const _)
+                .collect();
+            e.raws.sort()
         }
     }
 

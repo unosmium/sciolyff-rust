@@ -21,6 +21,7 @@ mod web_of_meh;
 use self::event::Event;
 use self::penalty::Penalty;
 use self::placing::Placing;
+use self::raw::Raw;
 use self::team::Team;
 use self::tournament::Tournament;
 
