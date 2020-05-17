@@ -135,7 +135,7 @@ impl Tournament {
     }
 
     pub fn top_teams_per_school(&self) -> impl Iterator<Item = &Team> {
-        let mut teams = self.teams().collect::<Vec<&Team>>();
+        let mut teams = self.teams().collect::<Vec<_>>();
         teams.sort_unstable_by_key(|t| {
             (t.school(), t.city(), t.state(), t.rank())
         });
@@ -145,7 +145,7 @@ impl Tournament {
     }
 
     pub fn teams_eligible_for_bids(&self) -> impl Iterator<Item = &Team> {
-        let mut teams = self.teams().collect::<Vec<&Team>>();
+        let mut teams = self.teams().collect::<Vec<_>>();
         teams.sort_unstable_by_key(|t| {
             (t.school(), t.city(), t.state(), t.rank())
         });
