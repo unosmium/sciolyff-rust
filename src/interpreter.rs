@@ -13,6 +13,7 @@ pub mod event;
 pub mod penalty;
 pub mod placing;
 pub mod raw;
+mod subdivisions;
 pub mod team;
 pub mod tournament;
 mod web_of_meh;
@@ -64,6 +65,16 @@ impl Interpreter {
 
     pub fn penalties(&self) -> &Vec<Penalty> {
         &self.penalties
+    }
+
+    pub fn subdivisions(&self) -> HashMap<&String, Interpreter> {
+        match &self.rep.subdivisions {
+            Some(subdivisions) => subdivisions
+                .iter()
+                .map(|s| (&s.name, Self::new(self.subdivision_rep(&s))))
+                .collect::<HashMap<_, _>>(),
+            None => HashMap::new(),
+        }
     }
 
     fn sort_events_naturally(&mut self) {

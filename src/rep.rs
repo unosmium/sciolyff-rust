@@ -45,7 +45,13 @@ pub struct Tournament {
 }
 
 #[derive(Debug, Clone, Deserialize)]
-pub struct Subdivision;
+pub struct Subdivision {
+    pub name: String,
+    #[serde(rename = "maximum place")]
+    pub maximum_place: Option<usize>,
+    pub trophies: Option<u8>,
+    pub medals: Option<u8>,
+}
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct Event {
