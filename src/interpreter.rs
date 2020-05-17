@@ -17,11 +17,11 @@ pub mod team;
 pub mod tournament;
 mod web_of_meh;
 
-use crate::interpreter::event::Event;
-use crate::interpreter::penalty::Penalty;
-use crate::interpreter::placing::Placing;
-use crate::interpreter::team::Team;
-use crate::interpreter::tournament::Tournament;
+use self::event::Event;
+use self::penalty::Penalty;
+use self::placing::Placing;
+use self::team::Team;
+use self::tournament::Tournament;
 
 #[derive(Debug)]
 pub struct Interpreter {

@@ -1,4 +1,4 @@
-use crate::interpreter::*;
+use super::*;
 
 #[derive(Debug)]
 pub struct Penalty {
