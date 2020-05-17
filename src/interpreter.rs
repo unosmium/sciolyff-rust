@@ -83,71 +83,86 @@ impl Interpreter {
     }
 
     fn link_models(&mut self) {
-        let tournament = self.tournament.as_ref() as *const Tournament;
+        let tournament = self.tournament.as_ref() as *const _;
 
-        let mut teams_by_number = HashMap::new();
-        for team in &self.teams {
-            teams_by_number.insert(team.rep.number, team as *const Team);
-        }
+        self.link_penalties_and_placings(tournament);
+        self.link_teams(tournament);
+        self.link_events(tournament);
+        self.link_tournament();
+    }
 
-        let mut events_by_name = HashMap::new();
-        for event in &self.events {
-            events_by_name.insert(&event.rep.name, event as *const Event);
-        }
+    fn link_penalties_and_placings(&mut self, tournament: *const Tournament) {
+        let teams_by_number = self
+            .teams
+            .iter()
+            .map(|t| (t.rep.number, t as *const _))
+            .collect::<HashMap<_, _>>();
 
-        self.penalties.iter_mut().for_each(|p| {
+        let events_by_name = self
+            .events
+            .iter()
+            .map(|e| (&e.rep.name, e as *const _))
+            .collect::<HashMap<_, _>>();
+
+        for p in self.penalties.iter_mut() {
             p.tournament = tournament;
             p.team = teams_by_number[&p.rep.team];
-        });
+        }
 
-        self.placings.iter_mut().for_each(|p| {
+        for p in self.placings.iter_mut() {
             p.tournament = tournament;
             p.team = teams_by_number[&p.rep.team];
             p.event = events_by_name[&p.rep.event];
-        });
+        }
+    }
+
+    fn link_teams(&mut self, tournament: *const Tournament) {
+        let mut penalties_by_team = HashMap::new();
+        for p in &self.penalties {
+            penalties_by_team
+                .entry(p.team().number())
+                .or_insert_with(Vec::new)
+                .push(p as *const _)
+        }
 
         let mut placings_by_team = HashMap::new();
-        for team in &self.teams {
-            let mut placings_of_team = Vec::new();
-            for placing in &self.placings {
-                if placing.rep.team == team.rep.number {
-                    placings_of_team.push(placing as *const Placing);
-                }
-            }
-            placings_by_team.insert(team.rep.number, placings_of_team);
+        for p in &self.placings {
+            placings_by_team
+                .entry(p.team().number())
+                .or_insert_with(Vec::new)
+                .push(p as *const _)
         }
 
-        let mut placings_by_event = HashMap::new();
-        for event in &self.events {
-            let mut placings_of_event = Vec::new();
-            for placing in &self.placings {
-                if placing.rep.event == event.rep.name {
-                    placings_of_event.push(placing as *const Placing);
-                }
-            }
-            placings_by_event.insert(event.rep.name.clone(), placings_of_event);
-        }
-
-        self.teams.iter_mut().for_each(|t| {
+        for t in self.teams.iter_mut() {
             t.tournament = tournament;
             t.placings = placings_by_team.remove(&t.rep.number).unwrap();
-        });
+            t.penalties = penalties_by_team
+                .remove(&t.rep.number)
+                .unwrap_or(Vec::new());
+        }
+    }
 
-        // TODO: Link teams to their penalties
+    fn link_events(&mut self, tournament: *const Tournament) {
+        let mut placings_by_event = HashMap::new();
+        for p in &self.placings {
+            placings_by_event
+                .entry(p.event().name().to_string())
+                .or_insert_with(Vec::new)
+                .push(p as *const _)
+        }
 
-        self.events.iter_mut().for_each(|e| {
+        for e in self.events.iter_mut() {
             e.tournament = tournament;
             e.placings = placings_by_event.remove(&e.rep.name).unwrap();
-        });
+        }
+    }
 
-        self.tournament.events =
-            self.events.iter().map(|e| e as *const Event).collect();
-        self.tournament.teams =
-            self.teams.iter().map(|e| e as *const Team).collect();
-        self.tournament.placings =
-            self.placings.iter().map(|e| e as *const Placing).collect();
-        self.tournament.penalties =
-            self.penalties.iter().map(|e| e as *const Penalty).collect();
+    fn link_tournament(&mut self) {
+        let t = &mut self.tournament;
+        t.events = self.events.iter().map(|e| e as *const _).collect();
+        t.teams = self.teams.iter().map(|e| e as *const _).collect();
+        t.placings = self.placings.iter().map(|e| e as *const _).collect();
+        t.penalties = self.penalties.iter().map(|e| e as *const _).collect();
     }
 
     fn sort_events_naturally(&mut self) {
