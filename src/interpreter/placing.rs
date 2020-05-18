@@ -8,8 +8,11 @@ pub struct Placing {
     pub(super) event: *const Event,
     pub(super) raw: Option<Raw>,
     pub(super) rep: rep::Placing,
+    tie: Cell<Option<bool>>,
+    place: Cell<Option<Option<usize>>>,
     points: Cell<Option<usize>>,
     isolated_points: Cell<Option<usize>>,
+    dropped_as_part_of_worst_placings: Cell<Option<bool>>,
 }
 
 impl Placing {
@@ -20,8 +23,11 @@ impl Placing {
             event: ptr::null(),
             raw: None,
             rep,
+            tie: Cell::new(None),
+            place: Cell::new(None),
             points: Cell::new(None),
             isolated_points: Cell::new(None),
+            dropped_as_part_of_worst_placings: Cell::new(None),
         }
     }
 
@@ -54,29 +60,33 @@ impl Placing {
     }
 
     pub fn tie(&self) -> bool {
-        if self.raw().is_some() {
-            self.event()
-                .raws()
-                .filter(|&r| r == self.raw().as_ref().unwrap())
-                .count()
-                > 1
-        } else {
-            self.rep.tie.is_some() && self.rep.tie.unwrap()
-        }
+        cache!(self, tie, {
+            if self.raw().is_some() {
+                self.event()
+                    .raws()
+                    .filter(|&r| r == self.raw().as_ref().unwrap())
+                    .count()
+                    > 1
+            } else {
+                self.rep.tie.is_some() && self.rep.tie.unwrap()
+            }
+        })
     }
 
     pub fn place(&self) -> Option<usize> {
-        if self.raw().is_some() {
-            let place = self
-                .event()
-                .raws()
-                .position(|r| r == self.raw().as_ref().unwrap())
-                .unwrap()
-                + 1;
-            Some(place)
-        } else {
-            self.rep.place
-        }
+        cache!(self, place, {
+            if self.raw().is_some() {
+                let place = self
+                    .event()
+                    .raws()
+                    .position(|r| r == self.raw().as_ref().unwrap())
+                    .unwrap()
+                    + 1;
+                Some(place)
+            } else {
+                self.rep.place
+            }
+        })
     }
 
     pub fn raw(&self) -> &Option<Raw> {
@@ -95,9 +105,11 @@ impl Placing {
     }
 
     pub fn dropped_as_part_of_worst_placings(&self) -> bool {
-        self.team()
-            .worst_placings_to_be_dropped()
-            .any(|p| ptr::eq(self, p))
+        cache!(self, dropped_as_part_of_worst_placings, {
+            self.team()
+                .worst_placings_to_be_dropped()
+                .any(|p| ptr::eq(self, p))
+        })
     }
 
     pub fn points(&self) -> usize {

@@ -1,5 +1,8 @@
 use super::*;
 
+#[allow(dead_code)]
+#[allow(unused_variables)]
+
 impl super::Interpreter {
     pub(super) fn subdivision_rep(&self, sub: &rep::Subdivision) -> Rep {
         let mut rep = self.rep.clone();
