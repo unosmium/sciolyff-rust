@@ -27,6 +27,18 @@ impl super::Interpreter {
         self.link_teams(tournament);
         self.link_events(tournament);
         self.link_tournament();
+
+        for e in self.events.iter_mut() {
+            e.placings.sort_by_key(|p| unsafe {
+                (
+                    (&**p).place().is_none(),
+                    (&**p).place(),
+                    !(&**p).unknown(),
+                    (&**p).isolated_points(),
+                    (&**p).team().number(),
+                )
+            })
+        }
     }
 
     fn link_penalties_and_placings(&mut self, tournament: *const Tournament) {

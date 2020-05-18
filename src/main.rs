@@ -9,6 +9,11 @@ fn main() {
     for t in i.teams().iter() {
         println!("{} {} {}", t.number(), t.rank(), t.points());
     }
+
+    for p in i.events()[10].placings() {
+        println!("{:#?}", p);
+    }
+
     //for e in &i.events {
     //    println!("{} {}", e.name(), e.trial());
     //}
