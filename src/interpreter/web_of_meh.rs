@@ -20,6 +20,10 @@ impl super::Interpreter {
         let tournament = self.tournament.as_ref() as *const _;
 
         self.link_penalties_and_placings(tournament);
+
+        self.events.sort();
+        self.placings.sort_by(|p1, p2| p1.event().cmp(&p2.event()));
+
         self.link_teams(tournament);
         self.link_events(tournament);
         self.link_tournament();
@@ -83,17 +87,18 @@ impl super::Interpreter {
     }
 
     fn link_events(&mut self, tournament: *const Tournament) {
-        let mut placings_by_event = HashMap::new();
-        for p in &self.placings {
-            placings_by_event
-                .entry(p.event().name().to_string())
-                .or_insert_with(Vec::new)
-                .push(p as *const _)
+        let mut placings_by_event = Vec::new();
+        for (_, placings) in &self
+            .placings
+            .iter()
+            .group_by(|p| (p.event().trial(), p.event().name()))
+        {
+            placings_by_event.push(placings.map(|p| p as *const _).collect());
         }
 
         for e in self.events.iter_mut() {
             e.tournament = tournament;
-            e.placings = placings_by_event.remove(&e.rep.name).unwrap();
+            e.placings = placings_by_event.remove(0);
             e.raws = e
                 .placings()
                 .filter(|p| p.raw().is_some())

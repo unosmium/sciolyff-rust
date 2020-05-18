@@ -39,7 +39,6 @@ impl Interpreter {
     pub fn new(rep: Rep) -> Interpreter {
         let mut i = Self::create_models(rep);
         i.link_models();
-        i.sort_events_naturally();
         i.sort_teams_by_rank();
         i
     }
@@ -80,12 +79,6 @@ impl Interpreter {
 
     pub fn raws(&self) -> bool {
         !self.placings.iter().any(|p| p.place().is_some())
-    }
-
-    fn sort_events_naturally(&mut self) {
-        self.events.sort_unstable_by(|e1, e2| {
-            e1.trial().cmp(&e2.trial()).then(e1.name().cmp(&e2.name()))
-        });
     }
 
     fn sort_teams_by_rank(&mut self) {

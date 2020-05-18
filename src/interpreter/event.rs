@@ -91,3 +91,25 @@ impl Event {
         }
     }
 }
+
+impl Ord for Event {
+    fn cmp(&self, other: &Self) -> Ordering {
+        self.trial()
+            .cmp(&other.trial())
+            .then(self.name().cmp(&other.name()))
+    }
+}
+
+impl PartialOrd for Event {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        Some(self.cmp(other))
+    }
+}
+
+impl Eq for Event {}
+
+impl PartialEq for Event {
+    fn eq(&self, other: &Self) -> bool {
+        self.name() == other.name()
+    }
+}
