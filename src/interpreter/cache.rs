@@ -9,7 +9,7 @@
 // Essentially equivalent to `@cache ||= expr` in Ruby
 
 macro_rules! cache {
-    ($self:ident, $cache:ident, $e:expr) => {
+    ($self:ident.$cache:ident, $e:expr) => {
         match $self.$cache.get() {
             Some(cached) => cached,
             None => {

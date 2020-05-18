@@ -60,7 +60,7 @@ impl Placing {
     }
 
     pub fn tie(&self) -> bool {
-        cache!(self, tie, {
+        cache!(self.tie, {
             if self.raw().is_some() {
                 self.event()
                     .raws()
@@ -74,7 +74,7 @@ impl Placing {
     }
 
     pub fn place(&self) -> Option<usize> {
-        cache!(self, place, {
+        cache!(self.place, {
             if self.raw().is_some() {
                 let place = self
                     .event()
@@ -105,7 +105,7 @@ impl Placing {
     }
 
     pub fn dropped_as_part_of_worst_placings(&self) -> bool {
-        cache!(self, dropped_as_part_of_worst_placings, {
+        cache!(self.dropped_as_part_of_worst_placings, {
             self.team()
                 .worst_placings_to_be_dropped()
                 .any(|p| ptr::eq(self, p))
@@ -113,7 +113,7 @@ impl Placing {
     }
 
     pub fn points(&self) -> usize {
-        cache!(self, points, {
+        cache!(self.points, {
             if self.considered_for_team_points() {
                 self.isolated_points()
             } else {
@@ -123,7 +123,7 @@ impl Placing {
     }
 
     pub fn isolated_points(&self) -> usize {
-        cache!(self, isolated_points, {
+        cache!(self.isolated_points, {
             let max_place = self.event().maximum_place();
             let n = max_place + self.tournament().n_offset() as usize;
             if self.disqualified() {

@@ -77,7 +77,7 @@ impl Team {
     }
 
     pub fn rank(&self) -> usize {
-        cache!(self, rank, {
+        cache!(self.rank, {
             self.tournament()
                 .teams()
                 .position(|t| ptr::eq(self, t))
@@ -87,7 +87,7 @@ impl Team {
     }
 
     pub fn points(&self) -> usize {
-        cache!(self, points, {
+        cache!(self.points, {
             self.placings().map(|p| p.points()).sum::<usize>()
                 + (self.penalties().map(|p| p.points()).sum::<u8>() as usize)
         })
@@ -120,7 +120,7 @@ impl Team {
     }
 
     pub fn trial_event_points(&self) -> usize {
-        cache!(self, trial_event_points, {
+        cache!(self.trial_event_points, {
             self.placings()
                 .filter(|p| p.event().trial())
                 .map(|p| p.isolated_points())
