@@ -125,7 +125,8 @@ impl Placing {
     pub fn isolated_points(&self) -> usize {
         cache!(self.isolated_points, {
             let max_place = self.event().maximum_place();
-            let n = max_place + self.tournament().n_offset() as usize;
+            let n = (max_place as isize + self.tournament().n_offset() as isize)
+                as usize;
             if self.disqualified() {
                 n + 2
             } else if self.did_not_participate() {
