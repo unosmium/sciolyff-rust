@@ -6,6 +6,7 @@ pub struct Placing {
     pub(super) tournament: *const Tournament,
     pub(super) team: *const Team,
     pub(super) event: *const Event,
+    pub(super) subdivision_placing: Option<*const Placing>,
     pub(super) raw: Option<Raw>,
     pub(super) rep: rep::Placing,
     tie: Cell<Option<bool>>,
@@ -21,6 +22,7 @@ impl Placing {
             tournament: ptr::null(),
             team: ptr::null(),
             event: ptr::null(),
+            subdivision_placing: None,
             raw: None,
             rep,
             tie: Cell::new(None),
@@ -41,6 +43,13 @@ impl Placing {
 
     pub fn team(&self) -> &Team {
         unsafe { &*self.team }
+    }
+
+    pub fn subdivision_placing(&self) -> Option<&Placing> {
+        match self.subdivision_placing {
+            Some(p) => unsafe { Some(&*p) },
+            None => None,
+        }
     }
 
     pub fn participated(&self) -> bool {

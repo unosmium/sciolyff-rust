@@ -27,7 +27,18 @@ impl super::Interpreter {
         self.link_events(tournament);
         self.link_tournament();
         self.sort_placings_in_events();
+    }
 
+    pub(super) fn link_models_to_subdivision_models(&mut self) {
+        for placing in self.placings.iter_mut() {
+            placing.subdivision_placing = None;
+        }
+
+        for team in self.teams.iter_mut() {
+            team.subdivision_team = None;
+        }
+
+        todo!()
     }
 
     fn link_penalties_and_placings(&mut self, tournament: *const Tournament) {

@@ -5,6 +5,7 @@ pub struct Team {
     pub(super) tournament: *const Tournament,
     pub(super) placings: Vec<*const Placing>,
     pub(super) penalties: Vec<*const Penalty>,
+    pub(super) subdivision_team: Option<*const Team>,
     pub(super) rep: rep::Team,
     rank: Cell<Option<usize>>,
     points: Cell<Option<usize>>,
@@ -17,6 +18,7 @@ impl Team {
             tournament: ptr::null(),
             placings: Vec::new(),
             penalties: Vec::new(),
+            subdivision_team: None,
             rep,
             rank: Cell::new(None),
             points: Cell::new(None),
@@ -34,6 +36,13 @@ impl Team {
 
     pub fn penalties(&self) -> impl Iterator<Item = &Penalty> {
         unsafe { self.penalties.clone().into_iter().map(|p| &*p) }
+    }
+
+    pub fn subdivision_team(&self) -> Option<&Team> {
+        match self.subdivision_team {
+            Some(t) => unsafe { Some(&*t) },
+            None => None,
+        }
     }
 
     pub fn school(&self) -> &str {

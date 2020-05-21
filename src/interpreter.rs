@@ -85,6 +85,9 @@ impl Interpreter {
                 .collect::<HashMap<_, _>>(),
             None => HashMap::new(),
         };
+        if !self.subdivisions.is_empty() {
+            self.link_models_to_subdivision_models();
+        }
     }
 
     fn sort_teams_by_rank(&mut self) {
