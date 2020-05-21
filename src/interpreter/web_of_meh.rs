@@ -20,26 +20,14 @@ impl super::Interpreter {
     pub(super) fn link_models(&mut self) {
         let tournament = self.tournament.as_ref() as *const _;
 
+        // must be done in this exact order because reasons
         self.link_penalties_and_placings(tournament);
-
-        self.events.sort();
-        self.placings.sort_by(|p1, p2| p1.event().cmp(&p2.event()));
-
+        self.sort_models();
         self.link_teams(tournament);
         self.link_events(tournament);
         self.link_tournament();
+        self.sort_placings_in_events();
 
-        for e in self.events.iter_mut() {
-            e.placings.sort_by_key(|p| unsafe {
-                (
-                    (&**p).place().is_none(),
-                    (&**p).place(),
-                    !(&**p).unknown(),
-                    (&**p).isolated_points(),
-                    (&**p).team().number(),
-                )
-            })
-        }
     }
 
     fn link_penalties_and_placings(&mut self, tournament: *const Tournament) {
@@ -72,6 +60,17 @@ impl super::Interpreter {
                 None => None,
             };
         }
+    }
+
+    fn sort_models(&mut self) {
+        self.events.sort();
+        self.teams.sort_by_key(|t| t.number()); // later will be sorted by rank
+        self.placings.sort_by(|p1, p2| {
+            p1.event()
+                .cmp(&p2.event())
+                .then(p1.team().number().cmp(&p2.team().number()))
+        });
+        self.penalties.sort_by_key(|p| p.team().number());
     }
 
     fn link_teams(&mut self, tournament: *const Tournament) {
@@ -127,5 +126,19 @@ impl super::Interpreter {
         t.teams = self.teams.iter().map(|e| e as *const _).collect();
         t.placings = self.placings.iter().map(|e| e as *const _).collect();
         t.penalties = self.penalties.iter().map(|e| e as *const _).collect();
+    }
+
+    fn sort_placings_in_events(&mut self) {
+        for e in self.events.iter_mut() {
+            e.placings.sort_by_key(|p| unsafe {
+                (
+                    (&**p).place().is_none(),
+                    (&**p).place(),
+                    !(&**p).unknown(),
+                    (&**p).isolated_points(),
+                    (&**p).team().number(),
+                )
+            })
+        }
     }
 }
