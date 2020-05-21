@@ -1,8 +1,5 @@
 use super::*;
 
-#[allow(dead_code)]
-#[allow(unused_variables)]
-
 impl super::Interpreter {
     pub(super) fn subdivision_rep(&self, sub: &rep::Subdivision) -> Rep {
         let mut rep = self.rep.clone();
@@ -64,7 +61,45 @@ impl super::Interpreter {
         }
     }
 
-    fn fix_placings_for_existing_teams(rep: &mut Rep) {}
-    fn fix_event_placings(rep: &mut Rep) {}
-    fn fix_placing_ties(rep: &mut Rep) {}
+    fn fix_placings_for_existing_teams(rep: &mut Rep) {
+        for event in rep.events.iter() {
+            let mut event_placings = rep
+                .placings
+                .iter_mut()
+                .filter(|p| p.event == event.name)
+                .filter(|p| p.place.is_some())
+                .collect::<Vec<_>>();
+
+            event_placings.sort_by_key(|p| p.place.unwrap());
+
+            let mut untied_place = 1;
+            let mut tied_place = 1;
+            let mut last_place_seen = 0;
+            let mut iter = event_placings.into_iter().peekable();
+
+            while iter.peek().is_some() {
+                let p = iter.next().unwrap();
+
+                if p.place.unwrap() == last_place_seen {
+                    p.place = Some(tied_place);
+                    p.tie = Some(true);
+                } else {
+                    last_place_seen = p.place.unwrap();
+                    p.place = Some(untied_place);
+                    tied_place = untied_place + 1;
+
+                    if iter.peek().is_some()
+                        && iter.peek().unwrap().place.unwrap()
+                            == last_place_seen
+                    {
+                        p.tie = Some(true);
+                    } else {
+                        p.tie = None;
+                    }
+                }
+
+                untied_place += 1;
+            }
+        }
+    }
 }
