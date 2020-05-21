@@ -32,6 +32,7 @@ pub struct Interpreter {
     teams: Vec<Team>,
     placings: Vec<Placing>,
     penalties: Vec<Penalty>,
+    subdivisions: HashMap<String, Interpreter>,
     rep: Rep,
 }
 
@@ -39,6 +40,7 @@ impl Interpreter {
     pub fn new(rep: Rep) -> Interpreter {
         let mut i = Self::create_models(rep);
         i.link_models();
+        i.create_subdivisions();
         i.sort_teams_by_rank();
         i
     }
@@ -67,18 +69,22 @@ impl Interpreter {
         &self.penalties
     }
 
-    pub fn subdivisions(&self) -> HashMap<&String, Interpreter> {
-        match &self.rep.subdivisions {
-            Some(subdivisions) => subdivisions
-                .iter()
-                .map(|s| (&s.name, Self::new(self.subdivision_rep(&s))))
-                .collect::<HashMap<_, _>>(),
-            None => HashMap::new(),
-        }
+    pub fn subdivisions(&self) -> &HashMap<String, Interpreter> {
+        &self.subdivisions
     }
 
     pub fn raws(&self) -> bool {
         !self.placings.iter().any(|p| p.place().is_some())
+    }
+
+    fn create_subdivisions(&mut self) {
+        self.subdivisions = match &self.rep.subdivisions {
+            Some(subdivisions) => subdivisions
+                .iter()
+                .map(|s| (s.name.clone(), Self::new(self.subdivision_rep(&s))))
+                .collect::<HashMap<_, _>>(),
+            None => HashMap::new(),
+        };
     }
 
     fn sort_teams_by_rank(&mut self) {

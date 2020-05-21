@@ -12,6 +12,7 @@ impl super::Interpreter {
                 None => Vec::new(),
                 Some(p) => p.into_iter().map(Penalty::new).collect(),
             },
+            subdivisions: HashMap::new(),
             rep: rep_clone,
         }
     }
