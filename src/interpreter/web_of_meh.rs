@@ -30,15 +30,25 @@ impl super::Interpreter {
     }
 
     pub(super) fn link_models_to_subdivision_models(&mut self) {
-        for placing in self.placings.iter_mut() {
-            placing.subdivision_placing = None;
+        let mut placings_by_team_and_event = HashMap::new();
+        let mut teams_by_number = HashMap::new();
+        for (_, sub_i) in self.subdivisions.iter() {
+            for p in sub_i.placings.iter() {
+                placings_by_team_and_event
+                    .insert((p.rep.team, &p.rep.event), p as *const Placing);
+            }
+            for t in sub_i.teams.iter() {
+                teams_by_number.insert(t.number(), t as *const Team);
+            }
         }
 
-        for team in self.teams.iter_mut() {
-            team.subdivision_team = None;
+        for p in self.placings.iter_mut() {
+            p.subdivision_placing =
+                placings_by_team_and_event.remove(&(p.rep.team, &p.rep.event));
         }
-
-        todo!()
+        for t in self.teams.iter_mut() {
+            t.subdivision_team = teams_by_number.remove(&t.number());
+        }
     }
 
     fn link_penalties_and_placings(&mut self, tournament: *const Tournament) {
@@ -75,7 +85,7 @@ impl super::Interpreter {
 
     fn sort_models(&mut self) {
         self.events.sort();
-        self.teams.sort_by_key(|t| t.number()); // later will be sorted by rank
+        // teams will be sorted by rank later
         self.placings.sort_by(|p1, p2| {
             p1.event()
                 .cmp(&p2.event())
