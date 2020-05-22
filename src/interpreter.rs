@@ -10,6 +10,7 @@ use std::ptr;
 #[macro_use]
 mod cache;
 pub mod event;
+pub mod html;
 pub mod penalty;
 pub mod placing;
 pub mod raw;
