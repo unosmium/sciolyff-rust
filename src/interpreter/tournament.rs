@@ -38,8 +38,16 @@ impl Tournament {
         unsafe { self.penalties.clone().into_iter().map(|p| &*p) }
     }
 
-    pub fn name(&self) -> Option<&str> {
-        self.rep.name.as_deref()
+    pub fn name(&self) -> String {
+        self.rep.name.clone().unwrap_or_else(|| match self.level() {
+            "Nationals" => "Science Olympiad National Tournament".to_string(),
+            "States" => format!(
+                "{} Science Olympiad State Tournament",
+                Self::state_name(self.state().unwrap())
+            ),
+            "Regionals" => format!("{} Regional Tournament", self.location()),
+            _ => format!("{} Invitational", self.location()),
+        })
     }
 
     pub fn location(&self) -> &str {
@@ -62,8 +70,17 @@ impl Tournament {
         self.rep.year
     }
 
-    pub fn short_name(&self) -> Option<&str> {
-        self.rep.short_name.as_deref()
+    pub fn short_name(&self) -> String {
+        self.rep
+            .short_name
+            .clone()
+            .unwrap_or_else(|| match self.level() {
+                "Nationals" => "National Tournament".to_string(),
+                "States" => {
+                    format!("{} State Tournament", self.state().unwrap())
+                }
+                _ => self.name(),
+            })
     }
 
     pub fn date(&self) -> &str {
@@ -179,5 +196,63 @@ impl Tournament {
             (self.nonexhibition_team_count() as f32 / 6.).ceil() as u8,
             3,
         )
+    }
+
+    fn state_name(code: &str) -> &str {
+        match code {
+            "AK" => "Alaska",
+            "AZ" => "Arizona",
+            "AR" => "Arkansas",
+            "CA" => "California",
+            "nCA" => "Northern California",
+            "sCA" => "Southern California",
+            "CO" => "Colorado",
+            "CT" => "Connecticut",
+            "DE" => "Delaware",
+            "DC" => "District of Columbia",
+            "FL" => "Florida",
+            "GA" => "Georgia",
+            "HI" => "Hawaii",
+            "ID" => "Idaho",
+            "IL" => "Illinois",
+            "IN" => "Indiana",
+            "IA" => "Iowa",
+            "KS" => "Kansas",
+            "KY" => "Kentucky",
+            "LA" => "Louisiana",
+            "ME" => "Maine",
+            "MD" => "Maryland",
+            "MA" => "Massachusetts",
+            "MI" => "Michigan",
+            "MN" => "Minnesota",
+            "MS" => "Mississippi",
+            "MO" => "Missouri",
+            "MT" => "Montana",
+            "NE" => "Nebraska",
+            "NV" => "Nevada",
+            "NH" => "New Hampshire",
+            "NJ" => "New Jersey",
+            "NM" => "New Mexico",
+            "NY" => "New York",
+            "NC" => "North Carolina",
+            "ND" => "North Dakota",
+            "OH" => "Ohio",
+            "OK" => "Oklahoma",
+            "OR" => "Oregon",
+            "PA" => "Pennsylvania",
+            "RI" => "Rhode Island",
+            "SC" => "South Carolina",
+            "SD" => "South Dakota",
+            "TN" => "Tennessee",
+            "TX" => "Texas",
+            "UT" => "Utah",
+            "VT" => "Vermont",
+            "VA" => "Virginia",
+            "WA" => "Washington",
+            "WV" => "West Virginia",
+            "WI" => "Wisconsin",
+            "WY" => "Wyoming",
+            _ => "Franklin",
+        }
     }
 }
