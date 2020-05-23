@@ -49,6 +49,7 @@ impl super::Interpreter {
         for t in self.teams.iter_mut() {
             t.subdivision_team = teams_by_number.remove(&t.number());
         }
+        self.tournament.subdivisions = !self.subdivisions.is_empty();
     }
 
     fn link_penalties_and_placings(&mut self, tournament: *const Tournament) {

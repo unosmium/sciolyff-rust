@@ -6,6 +6,7 @@ pub struct Tournament {
     pub(super) teams: Vec<*const Team>,
     pub(super) placings: Vec<*const Placing>,
     pub(super) penalties: Vec<*const Penalty>,
+    pub(super) subdivisions: bool,
     pub(super) rep: rep::Tournament,
 }
 
@@ -16,6 +17,7 @@ impl Tournament {
             teams: Vec::new(),
             placings: Vec::new(),
             penalties: Vec::new(),
+            subdivisions: false,
             rep,
         }
     }
@@ -127,7 +129,7 @@ impl Tournament {
     }
 
     pub fn subdivisions(&self) -> bool {
-        todo!()
+        self.subdivisions
     }
 
     pub fn nonexhibition_team_count(&self) -> usize {
