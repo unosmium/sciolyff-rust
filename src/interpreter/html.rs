@@ -30,6 +30,9 @@ impl super::Interpreter {
         Tournament {
             title: format!("{} {}", t.year(), t.name()),
             short_title: format!("{} {}", t.year(), t.short_name()),
+            date: t.date().format("%A, %B %-d, %Y"),
+            location: t.location().to_string(),
+            division: format!("(Div. {})", t.division()),
         }
     }
 }
@@ -43,4 +46,7 @@ struct Rep {
 struct Tournament {
     short_title: String,
     title: String,
+    date: String,
+    location: String,
+    division: String,
 }
