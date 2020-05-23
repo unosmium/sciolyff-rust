@@ -83,8 +83,8 @@ impl Tournament {
             })
     }
 
-    pub fn date(&self) -> &str {
-        &self.rep.date
+    pub fn date(&self) -> Date {
+        Date::parse(&self.rep.date, "%F").unwrap()
     }
 
     pub fn medals(&self) -> u8 {

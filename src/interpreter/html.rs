@@ -1,4 +1,5 @@
 use lazy_static::lazy_static;
+use serde::Serialize;
 use tera::{Context, Tera};
 
 lazy_static! {
@@ -17,6 +18,29 @@ lazy_static! {
 
 impl super::Interpreter {
     pub fn to_html(&self) -> String {
-        TEMPLATES.render("template.html", &Context::new()).unwrap()
+        let rep = Rep {
+            tournament: self.tournament_info(),
+        };
+        let context = Context::from_serialize(rep).unwrap();
+        TEMPLATES.render("template.html", &context).unwrap()
     }
+
+    fn tournament_info(&self) -> Tournament {
+        let t = &self.tournament;
+        Tournament {
+            title: format!("{} {}", t.year(), t.name()),
+            short_title: format!("{} {}", t.year(), t.short_name()),
+        }
+    }
+}
+
+#[derive(Serialize)]
+struct Rep {
+    tournament: Tournament,
+}
+
+#[derive(Serialize)]
+struct Tournament {
+    short_title: String,
+    title: String,
 }
