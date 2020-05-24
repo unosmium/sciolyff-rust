@@ -45,6 +45,34 @@ impl Team {
         }
     }
 
+    pub fn name(&self) -> String {
+        match self.suffix() {
+            Some(suffix) => format!("{} {}", self.school(), suffix),
+            None => self.school().to_string(),
+        }
+    }
+
+    pub fn short_name(&self) -> String {
+        self.name()
+            .replace("Elementary School", "Elementary")
+            .replace("Elementary/Middle School", "E.M.S.")
+            .replace("Middle School", "M.S.")
+            .replace("Junior High School", "J.H.S.")
+            .replace("Middle High School", "M.H.S.")
+            .replace("Middle/High School", "M.H.S.")
+            .replace("Middle-High School", "M.H.S.")
+            .replace("Junior/Senior High School", "Jr./Sr. H.S.")
+            .replace("High School", "H.S.")
+            .replace("Secondary School", "Secondary")
+    }
+
+    pub fn location(&self) -> String {
+        match self.city() {
+            Some(city) => format!("{}, {}", city, self.state()),
+            None => self.state().to_string(),
+        }
+    }
+
     pub fn school(&self) -> &str {
         &self.rep.school
     }
