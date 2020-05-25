@@ -17,10 +17,12 @@ body {
 }
 
 div.subway{
-  height: 100vh;
   overflow: auto;
 }
 
+html, body, div.subway {
+  height: 100%;
+}
 
 div.bruce {
   height: 14.75em;
