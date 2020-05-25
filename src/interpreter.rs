@@ -1,12 +1,12 @@
 use crate::rep;
 use crate::rep::Rep;
 use itertools::Itertools;
-use time::Date;
 use std::cell::Cell;
 use std::cmp;
 use std::cmp::Ordering;
 use std::collections::HashMap;
 use std::ptr;
+use time::Date;
 
 #[macro_use]
 mod cache;

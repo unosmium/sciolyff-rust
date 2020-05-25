@@ -20,6 +20,8 @@ impl super::Interpreter {
     pub fn to_html(&self) -> String {
         let rep = Rep {
             tournament: self.tournament_info(),
+            events: self.events_info(),
+            teams: self.teams_info(),
         };
         let context = Context::from_serialize(rep).unwrap();
         TEMPLATES.render("template.html", &context).unwrap()
@@ -35,11 +37,43 @@ impl super::Interpreter {
             division: format!("(Div. {})", t.division()),
         }
     }
+
+    fn events_info(&self) -> Vec<Event> {
+        self.events()
+            .iter()
+            .map(|e| Event {
+                name: e.name().to_string(),
+            })
+            .collect()
+    }
+
+    fn teams_info(&self) -> Vec<Team> {
+        self.teams()
+            .iter()
+            .map(|t| Team {
+                number: t.number(),
+                name: t.name(),
+                short_name: t.short_name(),
+                location: t.location(),
+                rank: t.rank(),
+                points: t.points(),
+                placings: t
+                    .placings()
+                    .map(|p| Placing {
+                        isolated_points: p.isolated_points(),
+                    })
+                    .collect(),
+                penalties: t.penalties().map(|p| p.points()).sum::<u8>(),
+            })
+            .collect()
+    }
 }
 
 #[derive(Serialize)]
 struct Rep {
     tournament: Tournament,
+    events: Vec<Event>,
+    teams: Vec<Team>,
 }
 
 #[derive(Serialize)]
@@ -49,4 +83,26 @@ struct Tournament {
     date: String,
     location: String,
     division: String,
+}
+
+#[derive(Serialize)]
+struct Event {
+    name: String,
+}
+
+#[derive(Serialize)]
+struct Team {
+    number: usize,
+    name: String,
+    short_name: String,
+    location: String,
+    rank: usize,
+    points: usize,
+    placings: Vec<Placing>,
+    penalties: u8,
+}
+
+#[derive(Serialize)]
+struct Placing {
+    isolated_points: usize,
 }
