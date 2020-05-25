@@ -2,10 +2,25 @@
   html {
     font-size: calc(100vw / 28);
   }
+
+  body {
+    position: fixed;
+    overflow: hidden;
+  }
+
+  div.subway {
+    background: var(--banner-bg-color) !important;
+  }
+
+  main {
+    background: var(--table-bg-color);
+  }
 }
 
 html {
   box-sizing: border-box;
+  --banner-bg-color: darkblue;
+  --table-bg-color: white;
 }
 
 *, *:before, *:after {
@@ -16,7 +31,8 @@ body {
   margin: 0;
 }
 
-div.subway{
+div.subway {
+  background: var(--table-bg-color);
   overflow: auto;
 }
 
@@ -27,15 +43,16 @@ html, body, div.subway {
 div.bruce {
   height: 14.75em;
   width: 100%;
-  background: grey;
+  background: var(--banner-bg-color);
   position: sticky;
   top: 0;
   left: 0;
-  box-shadow: 0 0 0.25em 0 rgba(0,0,0,0.5);
+  box-shadow: 0 0.125em 0.125em 0 rgba(0,0,0,0.3);
 }
 
 main {
   margin: -15em auto 0;
+  padding-bottom: 0.75em;
   width: max-content;
 }
 
@@ -71,7 +88,7 @@ p {
 table {
   table-layout: fixed;
   width: 1em;
-  margin: -2em 0 0.75em;
+  margin-top: -2em;
   border-collapse: collapse;
 }
 
