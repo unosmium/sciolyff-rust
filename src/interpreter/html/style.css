@@ -26,11 +26,13 @@ div.bruce {
   height: 15em;
   width: 100%;
   background: grey;
-  position: fixed;
+  position: sticky;
+  top: 0;
+  left: 0;
 }
 
 main {
-  margin: 0 auto;
+  margin: -15em auto 0;
   width: max-content;
 }
 
