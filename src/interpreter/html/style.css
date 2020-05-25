@@ -9,8 +9,6 @@ html {
 body {
   margin: 0;
   min-width: max-content;
-  height: calc(100vh + 26em + 6ex);
-  overflow: auto;
 }
 
 
