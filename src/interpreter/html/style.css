@@ -1,3 +1,9 @@
+@media (max-width: 28em) {
+  html {
+    font-size: 3.57vw;
+  }
+}
+
 html {
   box-sizing: border-box;
 }
@@ -61,6 +67,7 @@ table {
   table-layout: fixed;
   width: 1em;
   margin: -2em 0 0.75em;
+  border-collapse: collapse;
 }
 
 th {
