@@ -1,6 +1,6 @@
 @media (max-width: 28em) {
   html {
-    font-size: 3.57vw;
+    font-size: calc(100vw / 28);
   }
 }
 
@@ -23,12 +23,13 @@ div.subway{
 
 
 div.bruce {
-  height: 15em;
+  height: 14.75em;
   width: 100%;
   background: grey;
   position: sticky;
   top: 0;
   left: 0;
+  box-shadow: 0 0 0.25em 0 rgba(0,0,0,0.5);
 }
 
 main {
@@ -48,8 +49,8 @@ div.xi {
   width: 28em;
   height: 7.5em;
   text-align: center;
-  border-top: 2px solid #fff;
-  border-bottom: 1px solid #fff;
+  border-top: 0.125em solid #fff;
+  border-bottom: 0.0625em solid #fff;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -77,7 +78,7 @@ th {
   color: white;
   height: 2em;
   position: sticky;
-  top: calc(13em + 2px);
+  top: 13em;
 }
 
 td {
