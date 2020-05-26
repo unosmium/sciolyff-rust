@@ -24,6 +24,7 @@ html, body, div#subway {
 
 div#bruce {
   height: 14.75em;
+  margin-bottom: 0.25em;
   width: 100%;
   background: var(--banner-bg-color);
   position: sticky;
@@ -161,7 +162,7 @@ td:nth-child(2) {
   }
 
   th {
-    top: 3.75em;
+    top: 4em;
   }
 
   th:nth-child(n+5),
