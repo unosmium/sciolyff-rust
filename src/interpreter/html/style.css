@@ -149,7 +149,7 @@ td:nth-child(2) {
   }
 
   th {
-    top: 4em;
+    top: 3.75em;
   }
 
   th:nth-child(n+5),
