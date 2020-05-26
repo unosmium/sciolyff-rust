@@ -14,11 +14,11 @@
 #}
 </head>
 <body>
-<div class="subway">
-<div class="bruce"></div>
+<div id="subway">
+<div id="bruce"></div>
 <main>
 <header>
-<div class="xi">
+<div id="xi">
   <h1>{{ tournament.title }} {{ tournament.division }}</h1>
   <p>{{ tournament.date }} @ {{ tournament.location }}</p>
 </div>
@@ -44,7 +44,7 @@
   <td>{{ team.rank }}</td>
   <td>{{ team.points }}</td>
   {% for placing in team.placings -%}
-  <td id="t{{ team.number }}e{{ loop.index }}">{{ placing.isolated_points }}</td>
+  <td class="e{{ loop.index }}">{{ placing.isolated_points }}</td>
   {% endfor -%}
   <td>{{ team.penalties }}</td>
 </tr>

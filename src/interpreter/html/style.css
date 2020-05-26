@@ -13,16 +13,16 @@ body {
   margin: 0;
 }
 
-div.subway {
+div#subway {
   background: var(--table-bg-color);
   overflow: auto;
 }
 
-html, body, div.subway {
+html, body, div#subway {
   height: 100%;
 }
 
-div.bruce {
+div#bruce {
   height: 14.75em;
   width: 100%;
   background: var(--banner-bg-color);
@@ -46,7 +46,7 @@ header {
   top: 0;
 }
 
-div.xi {
+div#xi {
   width: 28em;
   height: 7.5em;
   text-align: center;
@@ -139,7 +139,7 @@ td:nth-child(2) {
     background: var(--table-bg-color);
   }
 
-  div.bruce {
+  div#bruce {
     top: -9em;
   }
 
