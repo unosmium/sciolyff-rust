@@ -131,11 +131,6 @@ td:nth-child(2) {
     font-size: calc(100vw / 28);
   }
 
-  body {
-    position: fixed;
-    overflow: hidden;
-  }
-
   div.subway {
     background: var(--banner-bg-color);
   }
@@ -155,5 +150,10 @@ td:nth-child(2) {
 
   th {
     top: 4em;
+  }
+
+  th:nth-child(n+5),
+  td:nth-child(n+5) {
+    display: none;
   }
 }
