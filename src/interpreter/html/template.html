@@ -28,6 +28,7 @@
   {% for event in events -%}
   <option value="{{ loop.index }}">{{ event.name }}</option>
   {% endfor -%}
+  <option value="{{ events | length + 1 }}">Team Penalties</option>
 </select>
 <select id="sort">
   <option>by Number</option>
