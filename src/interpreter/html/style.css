@@ -18,6 +18,7 @@
 }
 
 html {
+  font-family: Roboto, system-ui, -apple-system, sans-serif;
   box-sizing: border-box;
   --banner-bg-color: darkblue;
   --table-bg-color: white;
@@ -98,6 +99,17 @@ th {
   height: 2em;
   position: sticky;
   top: 13em;
+}
+
+tbody tr {
+  transition: background 0.1s;
+  transition: outline 0.1s;
+}
+
+tbody tr:hover {
+  outline: groove #eee;
+  background: #eee;
+  cursor: pointer;
 }
 
 td {
