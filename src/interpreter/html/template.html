@@ -22,6 +22,20 @@
   <h1>{{ tournament.title }} {{ tournament.division }}</h1>
   <p>{{ tournament.date }} @ {{ tournament.location }}</p>
 </div>
+<div id="butterfly">
+<select id="focus">
+  <option value="0">All Events</option>
+  {% for event in events -%}
+  <option value="{{ loop.index }}">{{ event.name }}</option>
+  {% endfor -%}
+</select>
+<select id="sort">
+  <option>by Number</option>
+  <option>by School</option>
+  <option>by State</option>
+  <option selected>by Rank</option>
+</select>
+</div>
 </header>
 <table>
 <thead>

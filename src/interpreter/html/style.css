@@ -32,6 +32,14 @@ div#bruce {
   box-shadow: 0 0.125em 0.125em 0 rgba(0,0,0,0.3);
 }
 
+div#butterfly {
+  padding: 1em;
+}
+
+div#butterfly > * {
+  display: inline;
+}
+
 main {
   margin: -15em auto 0;
   padding-bottom: 0.75em;
@@ -144,8 +152,12 @@ td:nth-child(2) {
   }
 
   header {
-    position: relative;
-    z-index: 1;
+    top: -9em;
+  }
+
+  div#butterfly {
+    position: sticky;
+    top: 0;
   }
 
   th {
