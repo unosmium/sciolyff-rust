@@ -1,7 +1,7 @@
 html {
   font-family: Roboto, system-ui, -apple-system, sans-serif;
   box-sizing: border-box;
-  --banner-bg-color: darkblue;
+  --banner-bg-color: darkred;
   --table-bg-color: white;
 }
 
@@ -33,14 +33,6 @@ div#bruce {
   box-shadow: 0 0.125em 0.125em 0 rgba(0,0,0,0.3);
 }
 
-div#butterfly {
-  padding: 1em;
-}
-
-div#butterfly > * {
-  display: inline;
-}
-
 main {
   margin: -15em auto 0;
   padding-bottom: 0.75em;
@@ -49,6 +41,7 @@ main {
 
 header {
   height: 15em;
+  width: 28em;
   color: white;
   padding-top: 1.5em;
   position: sticky;
@@ -56,7 +49,6 @@ header {
 }
 
 div#xi {
-  width: 28em;
   height: 7.5em;
   text-align: center;
   border-top: 0.125em solid #fff;
@@ -74,6 +66,32 @@ h1 {
 p {
   font-size: 0.75em;
   margin: 0.25em;
+}
+
+div#butterfly {
+  padding: 1em 0 1em 1em;
+  display: flex;
+}
+
+div#butterfly > * {
+  flex-grow: 1;
+  margin-right: 1em;
+}
+
+select {
+  background: rgba(0,0,0,0.05);
+  height: 2.5em;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  color: inherit;
+}
+
+select:hover {
+  background: rgba(0,0,0,0.1);
+}
+
+option {
+  background: var(--banner-bg-color);
 }
 
 table {
