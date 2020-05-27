@@ -115,7 +115,6 @@ th {
 
 tbody tr {
   transition: background 0.1s;
-  transition: outline 0.1s;
 }
 
 tbody tr:hover {
@@ -190,5 +189,22 @@ td:nth-child(2) {
   th:nth-child(n+5),
   td:nth-child(n+5) {
     display: none;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    --banner-bg-color: #272727;
+    --table-bg-color: #121212;
+  }
+  table { color: white; }
+
+  :link { color: #9494FF; }
+  :visited { color: #BC8BEA; }
+  :link:active, :visited:active { color: #FF7575; }
+
+  tbody tr:hover {
+    outline: groove #222222;
+    background: #222222;
   }
 }
