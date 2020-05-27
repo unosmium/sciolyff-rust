@@ -36,6 +36,14 @@
   <option>by State</option>
   <option selected>by Rank</option>
 </select>
+{% if tournament.subdivisions %}
+<select id="sub">
+  {% for subdivision in subdivisions -%}
+  <option>{{ subdivision.name }}</option>
+  {% endfor -%}
+  <option selected>Combined</option>
+</select>
+{% endif %}
 </div>
 </header>
 <table>

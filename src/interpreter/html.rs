@@ -20,6 +20,7 @@ impl super::Interpreter {
     pub fn to_html(&self) -> String {
         let rep = Rep {
             tournament: self.tournament_info(),
+            subdivisions: self.subdivisions_info(),
             events: self.events_info(),
             teams: self.teams_info(),
         };
@@ -35,7 +36,17 @@ impl super::Interpreter {
             date: t.date().format("%A, %B %-d, %Y"),
             location: t.location().to_string(),
             division: format!("(Div. {})", t.division()),
+            subdivisions: t.subdivisions(),
         }
+    }
+
+    fn subdivisions_info(&self) -> Vec<Subdivision> {
+        self.subdivisions()
+            .iter()
+            .map(|(name, _)| Subdivision {
+                name: name.to_string(),
+            })
+            .collect()
     }
 
     fn events_info(&self) -> Vec<Event> {
@@ -72,6 +83,7 @@ impl super::Interpreter {
 #[derive(Serialize)]
 struct Rep {
     tournament: Tournament,
+    subdivisions: Vec<Subdivision>,
     events: Vec<Event>,
     teams: Vec<Team>,
 }
@@ -83,6 +95,12 @@ struct Tournament {
     date: String,
     location: String,
     division: String,
+    subdivisions: bool,
+}
+
+#[derive(Serialize)]
+struct Subdivision {
+    name: String,
 }
 
 #[derive(Serialize)]
