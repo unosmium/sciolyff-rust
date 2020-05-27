@@ -85,6 +85,7 @@ select {
   text-overflow: ellipsis;
   overflow: hidden;
   color: inherit;
+  font-family: inherit;
 }
 
 select:hover {
@@ -92,8 +93,9 @@ select:hover {
 }
 
 option {
-  background: dimgray;
-  background: var(--banner-bg-color);
+  color: black;
+  color: initial;
+  background: var(--table-bg-color);
 }
 
 table {
