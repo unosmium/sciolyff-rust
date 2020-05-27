@@ -29,21 +29,20 @@
   <option value="{{ loop.index }}">{{ event.name }}</option>
   {% endfor -%}
   <option value="{{ events | length + 1 }}">Team Penalties</option>
-</select>
-<select id="sort">
+</select><select id="sort">
   <option>by Rank</option>
   <option>by Number</option>
   <option>by School</option>
   <option>by State</option>
 </select>
-{% if tournament.subdivisions %}
+{%- if tournament.subdivisions -%}
 <select id="sub">
   <option>Combined</option>
   {% for subdivision in subdivisions -%}
   <option>{{ subdivision.name }}</option>
   {% endfor -%}
 </select>
-{% endif %}
+{% endif -%}
 </div>
 </header>
 <table>
