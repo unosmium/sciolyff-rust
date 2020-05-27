@@ -41,12 +41,15 @@ impl super::Interpreter {
     }
 
     fn subdivisions_info(&self) -> Vec<Subdivision> {
-        self.subdivisions()
+        let mut subs = self
+            .subdivisions()
             .iter()
             .map(|(name, _)| Subdivision {
                 name: name.to_string(),
             })
-            .collect()
+            .collect::<Vec<_>>();
+        subs.sort_by(|s1, s2| s1.name.cmp(&s2.name));
+        subs
     }
 
     fn events_info(&self) -> Vec<Event> {
