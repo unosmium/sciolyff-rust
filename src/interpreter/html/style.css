@@ -138,10 +138,11 @@ td:nth-child(2) {
 
 th:nth-child(1) { width: 2em; }
 th:nth-child(2) { width: 18em; }
-th:nth-child(3) { width: 4em; }
+th:nth-child(3) { width: 0; padding: 0; }
 th:nth-child(4) { width: 4em; }
+th:nth-child(5) { width: 4em; }
 
-th:nth-child(n+5) {
+th:nth-child(n+6) {
   transform: rotate(-90deg);
   width: 2em;
   padding-left: 0.7em;

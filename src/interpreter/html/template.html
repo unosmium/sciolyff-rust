@@ -50,6 +50,7 @@
 <tr>
   <th>#</th>
   <th>Team</th>
+  <th></th>
   <th>Overall</th>
   <th>Total</th>
   {% for event in events -%}
@@ -63,6 +64,7 @@
 <tr id="t{{ team.number }}">
   <td><a href="#">{{ team.number }}</a></td>
   <td>{{ team.short_name }} <small>{{ team.location }}</small></td>
+  <td></td>
   <td>{{ team.rank }}</td>
   <td>{{ team.points }}</td>
   {% for placing in team.placings -%}
