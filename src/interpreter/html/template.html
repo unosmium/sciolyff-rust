@@ -76,6 +76,15 @@
 </main>
 </div>
 <script src="./src/interpreter/html/script.js"></script>
+<script>
+const placingInfo = {
+{% for team in teams -%}
+{% for placing in team.placings -%}
+"t{{ team.number}}e{{ loop.index }}":{{ placing | json_encode() | safe}},
+{% endfor -%}
+{% endfor -%}
+}
+</script>
 {#
 <script>
 {% include "script.js" -%}

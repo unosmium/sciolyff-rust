@@ -71,13 +71,31 @@ impl super::Interpreter {
                 location: t.location(),
                 rank: t.rank(),
                 points: t.points(),
-                placings: t
-                    .placings()
-                    .map(|p| Placing {
-                        isolated_points: p.isolated_points(),
-                    })
-                    .collect(),
+                placings: Self::placings_info(&t),
                 penalties: t.penalties().map(|p| p.points()).sum::<u8>(),
+            })
+            .collect()
+    }
+
+    fn placings_info(t: &super::team::Team) -> Vec<Placing> {
+        t.placings()
+            .map(|p| Placing {
+                disqualified: p.disqualified(),
+                exempt: p.exempt(),
+                unknown: p.unknown(),
+                tie: p.tie(),
+                place: p.place(),
+                did_not_participate: p.did_not_participate(),
+                participation_only: p.participation_only(),
+                dropped_as_part_of_worst_placings: p
+                    .dropped_as_part_of_worst_placings(),
+                points: p.points(),
+                isolated_points: p.isolated_points(),
+                considered_for_team_points: p.considered_for_team_points(),
+                points_affected_by_exhibition: p
+                    .points_affected_by_exhibition(),
+                points_limited_by_maximum_place: p
+                    .points_limited_by_maximum_place(),
             })
             .collect()
     }
@@ -125,5 +143,17 @@ struct Team {
 
 #[derive(Serialize)]
 struct Placing {
+    disqualified: bool,
+    exempt: bool,
+    unknown: bool,
+    tie: bool,
+    place: Option<usize>,
+    did_not_participate: bool,
+    participation_only: bool,
+    dropped_as_part_of_worst_placings: bool,
+    points: usize,
     isolated_points: usize,
+    considered_for_team_points: bool,
+    points_affected_by_exhibition: bool,
+    points_limited_by_maximum_place: bool,
 }
