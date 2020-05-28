@@ -160,7 +160,11 @@ impl super::Interpreter {
                     (&**p).isolated_points(),
                     (&**p).team().number(),
                 )
-            })
+            });
+
+            for (i, p) in e.placings().enumerate() {
+                p.order.set(Some(i + 1));
+            }
         }
     }
 }

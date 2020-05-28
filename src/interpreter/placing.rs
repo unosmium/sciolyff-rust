@@ -9,6 +9,7 @@ pub struct Placing {
     pub(super) subdivision_placing: Option<*const Placing>,
     pub(super) raw: Option<Raw>,
     pub(super) rep: rep::Placing,
+    pub(super) order: Cell<Option<usize>>,
     tie: Cell<Option<bool>>,
     place: Cell<Option<Option<usize>>>,
     points: Cell<Option<usize>>,
@@ -25,6 +26,7 @@ impl Placing {
             subdivision_placing: None,
             raw: None,
             rep,
+            order: Cell::new(None), // assigned to in sort_placings_in_events
             tie: Cell::new(None),
             place: Cell::new(None),
             points: Cell::new(None),
@@ -66,6 +68,10 @@ impl Placing {
 
     pub fn unknown(&self) -> bool {
         self.rep.unknown.unwrap_or(false)
+    }
+
+    pub fn order(&self) -> usize {
+        self.order.get().unwrap()
     }
 
     pub fn tie(&self) -> bool {
