@@ -23,7 +23,7 @@ html, body, div#subway {
 }
 
 div#bruce {
-  height: 14.75em;
+  height: 14.25em;
   margin-bottom: 0.25em;
   width: 100%;
   background: dimgray;
@@ -43,7 +43,7 @@ main {
 }
 
 header {
-  height: 15em;
+  height: 14.5em;
   width: 28em;
   color: white;
   padding-top: 1.5em;
@@ -82,7 +82,7 @@ div#butterfly {
 select {
   flex-grow: 1;
   width: 25%;
-  height: 2.5em;
+  height: 2em;
   text-overflow: ellipsis;
   overflow: hidden;
   color: inherit;
@@ -116,7 +116,7 @@ option {
 table {
   table-layout: fixed;
   width: 1em;
-  margin-top: -2em;
+  margin-top: -1.5em;
   border-collapse: collapse;
 }
 
@@ -125,7 +125,7 @@ th {
   color: white;
   height: 2em;
   position: sticky;
-  top: 13em;
+  top: 12.5em;
   z-index: 1;
 }
 
@@ -159,7 +159,7 @@ th:nth-child(4) { width: 4em; }
 th:nth-child(5) { width: 4em; }
 
 th:nth-child(n+6) {
-  transform: rotate(-90deg);
+  transform: rotate(-60deg);
   width: 2em;
   padding-left: 0.7em;
 }
@@ -203,7 +203,7 @@ td:nth-child(2) {
   }
 
   th {
-    top: 4em;
+    top: 3.5em;
   }
 }
 
