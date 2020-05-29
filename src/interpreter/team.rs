@@ -89,6 +89,14 @@ impl Team {
         self.rep.subdivision.as_deref()
     }
 
+    pub fn trophy(&self) -> Option<usize> {
+        if self.rank() <= self.tournament().trophies() as usize {
+            Some(self.rank())
+        } else {
+            None
+        }
+    }
+
     pub fn exhibition(&self) -> bool {
         self.rep.exhibition.unwrap_or(false)
     }

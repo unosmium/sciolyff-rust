@@ -75,6 +75,14 @@ impl Placing {
         self.order.get().unwrap()
     }
 
+    pub fn medal(&self) -> Option<usize> {
+        if self.isolated_points() <= self.tournament().medals() as usize {
+            Some(self.isolated_points())
+        } else {
+            None
+        }
+    }
+
     pub fn tie(&self) -> bool {
         cache!(self.tie, {
             if self.raw().is_some() {
