@@ -2,6 +2,7 @@ use super::raw::Raw;
 use super::*;
 
 #[derive(Debug)]
+#[allow(clippy::option_option)]
 pub struct Placing {
     pub(super) tournament: *const Tournament,
     pub(super) team: *const Team,
