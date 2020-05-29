@@ -84,14 +84,15 @@ function focusOnEvent(eventIndex) {
     return;
   }
 
-  focusHeader.style.cssText = 'width:4em;direction:rtl;padding-right:0.5em;';
+  focusHeader.style.cssText =
+    'width:4em; text-indent:-23em; text-align:right; padding-right:0.5em;';
 
   let col = eventIndex + 5;
   let eventHeader = document.querySelector(`th:nth-child(${col})`);
 
   focusHeader.innerHTML = eventHeader.innerHTML;
   focusColumn.forEach((td) => {
-    tdEvent = td.parentElement.querySelector(`:scope td:nth-child(${col})`);
+    tdEvent = td.parentElement.querySelector(`td:nth-child(${col})`);
     td.innerHTML = tdEvent.innerHTML;
   });
 
