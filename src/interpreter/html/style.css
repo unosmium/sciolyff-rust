@@ -32,6 +32,7 @@ div#bruce {
   top: 0;
   left: 0;
   box-shadow: 0 0.125em 0.125em 0 rgba(0,0,0,0.3);
+  z-index: 1;
 }
 
 main {
@@ -48,6 +49,7 @@ header {
   padding-top: 1.5em;
   position: sticky;
   top: 0;
+  z-index: 1;
 }
 
 div#xi {
@@ -111,6 +113,7 @@ th {
   height: 2em;
   position: sticky;
   top: 13em;
+  z-index: 1;
 }
 
 tbody tr:hover {
