@@ -57,6 +57,8 @@ impl super::Interpreter {
             .iter()
             .map(|e| Event {
                 name: e.name().to_string(),
+                trial: e.trial(),
+                trialed: e.trialed(),
             })
             .collect()
     }
@@ -134,6 +136,8 @@ struct Subdivision {
 #[derive(Serialize)]
 struct Event {
     name: String,
+    trial: bool,
+    trialed: bool,
 }
 
 #[derive(Serialize)]

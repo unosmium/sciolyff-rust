@@ -26,7 +26,13 @@
 <select id="focus" autocomplete="off">
   <option value="0">All Events</option>
   {% for event in events -%}
-  <option value="{{ loop.index }}">{{ event.name }}</option>
+  <option value="{{ loop.index }}">{{ event.name }}
+  {%- if event.trial -%}
+    {{ ' ' }}(Trial)
+  {%- elif event.trialed -%}
+    {{ ' ' }}(Trialed)
+  {%- endif -%}
+  </option>
   {% endfor -%}
   <option value="{{ events | length + 1 }}">Team Penalties</option>
 </select><select id="sort" autocomplete="off">
@@ -54,7 +60,13 @@
   <th>Overall</th>
   <th>Total</th>
   {% for event in events -%}
-  <th>{{ event.name }}</th>
+  <th>{{ event.name }}
+  {%- if event.trial -%}
+    {{ ' ' }}(Trial)
+  {%- elif event.trialed -%}
+    {{ ' ' }}(Trialed)
+  {%- endif -%}
+  </th>
   {% endfor -%}
   <th>Team Penalties</th>
 </tr>
