@@ -63,8 +63,9 @@ function sortTable(option) {
     } else {
       sortTableBy(compareRankInEvent(eventIndex));
     }
+  } else {
+    sortTableBy(optionToFunctionMap[option]);
   }
-  sortTableBy(optionToFunctionMap[option]);
 }
 
 sortSelect.addEventListener('change', (e) => sortTable(e.target.value));
