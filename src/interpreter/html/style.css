@@ -75,12 +75,10 @@ p {
 div#butterfly {
   padding: 1em;
   display: flex;
-  gap: 0.25em;
   width: 100%;
 }
 
 select {
-  flex-grow: 1;
   width: 25%;
   height: 2em;
   text-overflow: ellipsis;
@@ -101,6 +99,11 @@ select {
 
 select:nth-child(1) {
   flex-grow: 2;
+}
+
+select:nth-child(n+2) {
+  flex-grow: 1;
+  margin-left: 0.25em;
 }
 
 select:hover {
