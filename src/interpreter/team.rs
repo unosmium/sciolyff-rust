@@ -45,25 +45,32 @@ impl Team {
         }
     }
 
-    pub fn name(&self) -> String {
-        match self.suffix() {
-            Some(suffix) => format!("{} {}", self.school(), suffix),
-            None => self.school().to_string(),
+    fn name_base(base: &str, suffix: Option<&str>) -> String {
+        match suffix {
+            Some(suffix) => format!("{} {}", base, suffix),
+            None => base.to_string(),
         }
     }
 
+    pub fn name(&self) -> String {
+        Self::name_base(self.school(), self.suffix())
+    }
+
     pub fn short_name(&self) -> String {
-        self.name()
-            .replace("Elementary School", "Elementary")
-            .replace("Elementary/Middle School", "E.M.S.")
-            .replace("Middle School", "M.S.")
-            .replace("Junior High School", "J.H.S.")
-            .replace("Middle High School", "M.H.S.")
-            .replace("Middle/High School", "M.H.S.")
-            .replace("Middle-High School", "M.H.S.")
-            .replace("Junior/Senior High School", "Jr./Sr. H.S.")
-            .replace("High School", "H.S.")
-            .replace("Secondary School", "Secondary")
+        match self.school_abbreviation() {
+            Some(name) => Self::name_base(name, self.suffix()),
+            None => self.name(),
+        }
+        .replace("Elementary School", "Elementary")
+        .replace("Elementary/Middle School", "E.M.S.")
+        .replace("Middle School", "M.S.")
+        .replace("Junior High School", "J.H.S.")
+        .replace("Middle High School", "M.H.S.")
+        .replace("Middle/High School", "M.H.S.")
+        .replace("Middle-High School", "M.H.S.")
+        .replace("Junior/Senior High School", "Jr./Sr. H.S.")
+        .replace("High School", "H.S.")
+        .replace("Secondary School", "Secondary")
     }
 
     pub fn location(&self) -> String {
