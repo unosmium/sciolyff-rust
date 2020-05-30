@@ -77,7 +77,11 @@
   <td><a href="#">{{ team.number }}</a></td>
   <td>{{ team.short_name }} <small>{{ team.location }}</small></td>
   <td></td>
-  <td>
+  <td
+    {%- if team.trophy -%}
+      {{ ' ' }}class="y-{{ team.trophy }}"
+    {%- endif -%}
+    >
   {%- if team.exhibition -%}
     EX
   {%- elif team.disqualified -%}
@@ -88,7 +92,11 @@
   </td>
   <td>{{ team.points }}</td>
   {% for placing in team.placings -%}
-  <td class="e{{ loop.index }}">{{ placing.isolated_points }}</td>
+  <td
+    {%- if placing.medal -%}
+      {{ ' ' }}class="m-{{ placing.medal }}"
+    {%- endif -%}
+    >{{ placing.isolated_points }}</td>
   {% endfor -%}
   <td>{{ team.penalties }}</td>
 </tr>

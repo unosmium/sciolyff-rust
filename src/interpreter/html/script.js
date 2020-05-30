@@ -76,7 +76,10 @@ function focusOnEvent(eventIndex) {
   if (eventIndex === 0) {
     focusHeader.removeAttribute('id');
     focusHeader.innerHTML = '';
-    focusColumn.forEach((td, index) => td.innerHTML = '');
+    focusColumn.forEach((td, index) => {
+      td.innerHTML = '';
+      td.className = '';
+    });
   } else {
     let col = eventIndex + 5;
     let eventHeader = document.querySelector(`th:nth-child(${col})`);
@@ -84,8 +87,9 @@ function focusOnEvent(eventIndex) {
     focusHeader.id = 'focused';
     focusHeader.innerHTML = eventHeader.innerHTML;
     focusColumn.forEach((td) => {
-      tdEvent = td.parentElement.querySelector(`td:nth-child(${col})`);
+      let tdEvent = td.parentElement.querySelector(`td:nth-child(${col})`);
       td.innerHTML = tdEvent.innerHTML;
+      td.className = tdEvent.className;
     });
   }
 

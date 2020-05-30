@@ -179,6 +179,25 @@ th#focused {
   padding-right: 0.5em;
 }
 
+td.y-1, td.m-1 { background-color: #ffee58; }
+td.y-2, td.m-2 { background-color: #cfd8dc; }
+td.y-3, td.m-3 { background-color: #d8bf99; }
+td.y-4, td.m-4 { background-color: #ffefc0; }
+td.y-5, td.m-5 { background-color: #dcedc8; }
+td.y-6, td.m-6 { background-color: #f8bbd0; }
+td.y-7, td.m-7 { background-color: #eeccff; }
+td.y-8, td.m-8 { background-color: #fdd5b4; }
+td.y-9, td.m-9 { background-color: #ebedd8; }
+td.y-10, td.m-10 { background-color: #d4f0f1; }
+
+td[class|="m"] {
+  clip-path: circle(1em);
+}
+
+td[class|="y"] {
+  clip-path: ellipse(1.75em 1em);
+}
+
 @media (max-width: 28em) {
   html {
     font-size: calc(100vw / 28);
@@ -230,5 +249,9 @@ th#focused {
 
   tbody tr:hover {
     background: #222222;
+  }
+
+  td[class|="m"], td[class|="y"] {
+    color: var(--table-bg-color);
   }
 }
