@@ -100,7 +100,12 @@
 <script>
 const teamInfo = {
 {% for team in teams -%}
-"t{{ team.number}}":["{{ team.school }}", "{{ team.state }}", {{team.rank }}],
+"t{{ team.number}}":{
+  "school":"{{ team.school }}",
+  "state":"{{ team.state }}",
+  "rank":{{ team.rank }},
+  "trophy":{{ team.trophy | default(value="null")}},
+},
 {% endfor -%}
 }
 const placingInfo = {
