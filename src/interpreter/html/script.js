@@ -85,7 +85,7 @@ function focusOnEvent(eventIndex) {
   }
 
   focusHeader.style.cssText =
-    'width:4em; text-indent:-23em; text-align:right; padding-right:0.5em;';
+    'width:4em; text-indent:-16em; text-align:right; padding-right:0.5em;';
 
   let col = eventIndex + 5;
   let eventHeader = document.querySelector(`th:nth-child(${col})`);
