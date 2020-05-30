@@ -10,8 +10,8 @@ const focusColumn = [...document.querySelectorAll('td:nth-child(3)')];
 ////////////////////////////////////////////////////////////////////////////////
 
 function compareTeamRank(rowA, rowB) {
-  let rankA = parseInt(rowA.querySelector('td:nth-child(4)').textContent);
-  let rankB = parseInt(rowB.querySelector('td:nth-child(4)').textContent);
+  let rankA = teamInfo[rowA.id][2];
+  let rankB = teamInfo[rowB.id][2];
   return rankA - rankB;
 }
 
@@ -30,14 +30,14 @@ function compareTeamNumber(rowA, rowB) {
 }
 
 function compareTeamSchool(rowA, rowB) {
-  let schoolA = teamSchoolsAndStates[rowA.id][0];
-  let schoolB = teamSchoolsAndStates[rowB.id][0];
+  let schoolA = teamInfo[rowA.id][0];
+  let schoolB = teamInfo[rowB.id][0];
   return enCollator.compare(schoolA, schoolB);
 }
 
 function compareTeamState(rowA, rowB) {
-  let stateA = teamSchoolsAndStates[rowA.id][1];
-  let stateB = teamSchoolsAndStates[rowB.id][1];
+  let stateA = teamInfo[rowA.id][1];
+  let stateB = teamInfo[rowB.id][1];
   return enCollator.compare(stateA, stateB);
 }
 

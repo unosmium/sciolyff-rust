@@ -77,7 +77,15 @@
   <td><a href="#">{{ team.number }}</a></td>
   <td>{{ team.short_name }} <small>{{ team.location }}</small></td>
   <td></td>
-  <td>{{ team.rank }}</td>
+  <td>
+  {%- if team.exhibition -%}
+    EX
+  {%- elif team.disqualified -%}
+    DQ
+  {%- else -%}
+    {{ team.rank }}
+  {%- endif -%}
+  </td>
   <td>{{ team.points }}</td>
   {% for placing in team.placings -%}
   <td class="e{{ loop.index }}">{{ placing.isolated_points }}</td>
@@ -90,9 +98,9 @@
 </main>
 </div>
 <script>
-const teamSchoolsAndStates = {
+const teamInfo = {
 {% for team in teams -%}
-"t{{ team.number}}":["{{ team.school }}", "{{ team.state }}"],
+"t{{ team.number}}":["{{ team.school }}", "{{ team.state }}", {{team.rank }}],
 {% endfor -%}
 }
 const placingInfo = {
