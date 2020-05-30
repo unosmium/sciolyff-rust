@@ -73,28 +73,20 @@ sortSelect.addEventListener('change', (e) => sortTable(e.target.value));
 
 function focusOnEvent(eventIndex) {
   if (eventIndex === 0) {
-    focusHeader.style.cssText = '';
-    focusHeader.style.width = '';
+    focusHeader.removeAttribute('id');
     focusHeader.innerHTML = '';
     focusColumn.forEach((td, index) => td.innerHTML = '');
+  } else {
+    let col = eventIndex + 5;
+    let eventHeader = document.querySelector(`th:nth-child(${col})`);
 
-    if (sortSelect.value === 'by Rank') {
-      sortTable('by Rank');
-    }
-    return;
+    focusHeader.id = 'focused';
+    focusHeader.innerHTML = eventHeader.innerHTML;
+    focusColumn.forEach((td) => {
+      tdEvent = td.parentElement.querySelector(`td:nth-child(${col})`);
+      td.innerHTML = tdEvent.innerHTML;
+    });
   }
-
-  focusHeader.style.cssText =
-    'width:4em; text-indent:-16em; text-align:right; padding-right:0.5em;';
-
-  let col = eventIndex + 5;
-  let eventHeader = document.querySelector(`th:nth-child(${col})`);
-
-  focusHeader.innerHTML = eventHeader.innerHTML;
-  focusColumn.forEach((td) => {
-    tdEvent = td.parentElement.querySelector(`td:nth-child(${col})`);
-    td.innerHTML = tdEvent.innerHTML;
-  });
 
   if (sortSelect.value === 'by Rank') {
     sortTable('by Rank');
