@@ -239,6 +239,11 @@ td[class|="y"] {
   td {
     height: 2.5em;
   }
+
+  th:nth-child(n+6),
+  td:nth-child(n+6) {
+    display: none;
+  }
 }
 
 @media (prefers-color-scheme: dark) {
