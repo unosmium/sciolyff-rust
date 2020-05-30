@@ -6,6 +6,8 @@ const enCollator = new Intl.Collator('en');
 const focusSelect = document.querySelector('#focus');
 const focusHeader = document.querySelector('th:nth-child(3)');
 const focusColumn = [...document.querySelectorAll('td:nth-child(3)')];
+const teamPenaltiesIndex =
+  parseInt(focusSelect.querySelector('option:last-child').value);
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -58,7 +60,7 @@ function sortTable(option) {
   if (option === 'by Rank') {
     let eventIndex = parseInt(focusSelect.value);
 
-    if (eventIndex === 0) {
+    if (eventIndex === 0 || eventIndex === teamPenaltiesIndex) {
       sortTableBy(compareTeamRank);
     } else {
       sortTableBy(compareRankInEvent(eventIndex));
