@@ -192,11 +192,11 @@ td.y-9, td.m-9 { background-color: #ebedd8; }
 td.y-10, td.m-10 { background-color: #d4f0f1; }
 
 td[class|="m"] {
-  clip-path: circle();
+  clip-path: circle(0.9rem);
 }
 
 td[class|="y"] {
-  clip-path: ellipse(43.75% 50%);
+  clip-path: ellipse(43.75% 45%);
 }
 
 @media (max-width: 28em) {
@@ -242,6 +242,10 @@ td[class|="y"] {
 
   td:nth-child(n+2) {
     font-size: 15px;
+  }
+
+  td:nth-child(3)[class|="m"] {
+    clip-path: circle(1.125rem);
   }
 
   th:nth-child(n+6),
