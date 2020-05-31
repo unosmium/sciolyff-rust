@@ -259,7 +259,7 @@ td[class|="y"] {
     --banner-bg-color: #272727;
     --table-bg-color: #121212;
   }
-  table { color: white; }
+  option, table { color: white; }
 
   :link { color: #9494FF; }
   :visited { color: #BC8BEA; }
