@@ -237,7 +237,11 @@ td[class|="y"] {
   }
 
   td {
-    height: 2.5em;
+    height: 2.5rem;
+  }
+
+  td:nth-child(n+2) {
+    font-size: 15px;
   }
 
   th:nth-child(n+6),
