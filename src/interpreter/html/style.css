@@ -107,8 +107,9 @@ select:nth-child(n+2) {
   margin-left: 0.25em;
 }
 
-select:hover {
-  background-color: rgba(0,0,0,0.1);
+select:hover, select:focus {
+  background-color: rgba(0,0,0,0.25);
+  cursor: pointer;
 }
 
 option {
@@ -131,6 +132,11 @@ th {
   position: sticky;
   top: 12.5em;
   z-index: 1;
+}
+
+th:hover {
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 tbody tr:hover {
