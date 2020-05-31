@@ -23,7 +23,7 @@
   <p>{{ tournament.date }} @ {{ tournament.location }}</p>
 </div>
 <div id="butterfly">
-<select id="focus" autocomplete="off">
+<select id="focus" aria-label="Focus table" autocomplete="off">
   <option value="0">All Events</option>
   {% for event in events -%}
   <option value="{{ loop.index }}">{{ event.name }}
@@ -35,14 +35,14 @@
   </option>
   {% endfor -%}
   <option value="{{ events | length + 1 }}">Team Penalties</option>
-</select><select id="sort" autocomplete="off">
+</select><select id="sort" aria-label="Sort table" autocomplete="off">
   <option>by Rank</option>
   <option>by Number</option>
   <option>by School</option>
   <option>by State</option>
 </select>
 {%- if tournament.subdivisions -%}
-<select id="sub" autocomplete="off">
+<select id="sub" aria-label="Filter table by subdivision" autocomplete="off">
   <option>Combined</option>
   {% for subdivision in subdivisions -%}
   <option>{{ subdivision.name }}</option>
