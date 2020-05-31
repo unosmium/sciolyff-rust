@@ -11,11 +11,11 @@ html {
 }
 
 body {
+  background: var(--table-bg-color);
   margin: 0;
 }
 
 div#subway {
-  background: var(--table-bg-color);
   overflow: auto;
 }
 
