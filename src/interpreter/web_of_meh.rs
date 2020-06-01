@@ -21,8 +21,9 @@ impl super::Interpreter {
         let tournament = self.tournament.as_ref() as *const _;
 
         // must be done in this exact order because reasons
+        self.events.sort();
         self.link_penalties_and_placings(tournament);
-        self.sort_models();
+        self.sort_penalties_and_placings();
         self.link_teams(tournament);
         self.link_events(tournament);
         self.link_tournament();
@@ -84,9 +85,7 @@ impl super::Interpreter {
         }
     }
 
-    fn sort_models(&mut self) {
-        self.events.sort();
-        // teams will be sorted by rank later
+    fn sort_penalties_and_placings(&mut self) {
         self.placings.sort_by(|p1, p2| {
             p1.event()
                 .cmp(&p2.event())
