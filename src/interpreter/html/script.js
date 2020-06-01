@@ -9,6 +9,8 @@ const focusColumn = [...document.querySelectorAll('td:nth-child(3)')];
 const teamPenaltiesIndex =
   parseInt(focusSelect.querySelector('option:last-child').value);
 
+const thead = document.querySelector('thead');
+
 ////////////////////////////////////////////////////////////////////////////////
 
 function compareTeamRank(rowA, rowB) {
@@ -102,4 +104,24 @@ function focusOnEvent(eventIndex) {
 
 focusSelect.addEventListener('change', (e) => {
   focusOnEvent(parseInt(e.target.value));
+});
+
+///////////////////////////////////////////////////////////////////////////////
+
+thead.addEventListener('click', (e) => {
+  let col = e.target.cellIndex;
+  if (col === 0) {
+    sortSelect.value = 'by Number';
+  } else if (col === 1) {
+    sortSelect.value = 'by School';
+  } else if (col === 2) {
+    sortSelect.value = 'by Rank';
+  } else if (col === 3 | col === 4) {
+    focusSelect.value = 0;
+    sortSelect.value = 'by Rank';
+  } else if (col > 4) {
+    focusSelect.value = (col - 4).toString();
+  }
+  focusSelect.dispatchEvent(new Event('change'));
+  sortSelect.dispatchEvent(new Event('change'));
 });
