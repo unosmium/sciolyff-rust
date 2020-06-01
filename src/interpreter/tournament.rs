@@ -142,7 +142,7 @@ impl Tournament {
 
     pub fn ties_outside_of_maximum_places(&self) -> bool {
         self.placings()
-            .any(|p| p.tie() && p.points_limited_by_maximum_place())
+            .any(|p| p.tie() && !p.points_limited_by_maximum_place())
     }
 
     pub fn subdivisions(&self) -> bool {

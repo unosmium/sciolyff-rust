@@ -151,6 +151,11 @@ td {
   height: 2em;
 }
 
+td sup {
+  display: inline-block;
+  width: 0;
+}
+
 th:nth-child(1),
 td:nth-child(1) {
   text-align: right;
@@ -205,6 +210,25 @@ td[class|="y"] {
   clip-path: ellipse(43.75% 45%);
 }
 
+footer:before {
+  content: '';
+  display: block;
+  width: 10em;
+  height: 1px;
+  background: black;
+}
+
+footer {
+  padding: 0.5em;
+  width: 28rem;
+}
+
+footer sup {
+  display: inline-block;
+  width: 1em;
+  text-align: center;
+}
+
 @media (max-width: 28em) {
   html {
     font-size: calc(100vw / 28);
@@ -246,7 +270,7 @@ td[class|="y"] {
     height: 2.5rem;
   }
 
-  td:nth-child(n+2) {
+  td:nth-child(n+2), footer {
     font-size: 15px;
   }
 
@@ -265,7 +289,8 @@ td[class|="y"] {
     --banner-bg-color: #272727;
     --table-bg-color: #121212;
   }
-  option, table { color: white; }
+  option, table, footer { color: white; }
+  footer:before { background: white; }
 
   :link { color: #9494FF; }
   :visited { color: #BC8BEA; }

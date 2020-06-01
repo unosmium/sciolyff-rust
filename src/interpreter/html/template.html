@@ -88,6 +88,9 @@
     DQ
   {%- else -%}
     {{ team.rank }}
+    {%- if team.earned_bid -%}
+      <sup>✧</sup>
+    {%- endif -%}
   {%- endif -%}
   </td>
   <td>{{ team.points }}</td>
@@ -96,13 +99,38 @@
     {%- if placing.medal -%}
       {{ ' ' }}class="m-{{ placing.medal }}"
     {%- endif -%}
-    >{{ placing.isolated_points }}</td>
+    >{{ placing.isolated_points }}
+    {%- set ex = placing.exempt or placing.dropped_as_part_of_worst_placings -%}
+    {%- set ti = placing.tie and not placing.points_limited_by_maximum_place -%}
+    {%- if ex and tie -%}
+      <sup>◊*</sup>
+    {%- elif ex -%}
+      <sup>◊</sup>
+    {%- elif ti -%}
+      <sup>*</sup>
+    {%- endif -%}
+  </td>
   {% endfor -%}
   <td>{{ team.penalties }}</td>
 </tr>
 {% endfor -%}
 </tbody>
 </table>
+{% if tournament.bids or
+      tournament.exempt_or_dropped_placings or
+      tournament.ties -%}
+<footer>
+{% if tournament.bids -%}
+<p><sup>✧</sup>{{ tournament.qualification_message }}</p>
+{% endif -%}
+{% if tournament.exempt_or_dropped_placings -%}
+<p><sup>◊</sup>Result was not counted as part of total score</p>
+{% endif -%}
+{% if tournament.ties -%}
+<p><sup>*</sup>Tied with another team</p>
+{% endif -%}
+</footer>
+{% endif -%}
 </main>
 </div>
 <script>

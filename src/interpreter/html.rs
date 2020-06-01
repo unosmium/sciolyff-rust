@@ -37,6 +37,25 @@ impl super::Interpreter {
             location: t.location().to_string(),
             division: format!("(Div. {})", t.division()),
             subdivisions: t.subdivisions(),
+            bids: t.bids() > 0,
+            exempt_or_dropped_placings: t.exempt_placings() > 0
+                || t.worst_placings_dropped() > 0,
+            ties: t.ties_outside_of_maximum_places(),
+            qualification_message: if t.bids() > 0 {
+                let qualifiee = if t.bids_per_school() > 1 {
+                    "team"
+                } else {
+                    "school"
+                };
+                let next = if t.level() == "Regionals" {
+                    format!("{} State Tournament", t.state().unwrap())
+                } else {
+                    "National Tournament".to_string()
+                };
+                format!("Qualified {} for the {} {}", qualifiee, t.year(), next)
+            } else {
+                "".to_string()
+            },
         }
     }
 
@@ -78,6 +97,7 @@ impl super::Interpreter {
                 state: t.state().to_string(),
                 rank: t.rank(),
                 points: t.points(),
+                earned_bid: t.earned_bid(),
                 placings: Self::placings_info(&t),
                 penalties: t.penalties().map(|p| p.points()).sum::<u8>(),
             })
@@ -126,6 +146,10 @@ struct Tournament {
     location: String,
     division: String,
     subdivisions: bool,
+    bids: bool,
+    exempt_or_dropped_placings: bool,
+    ties: bool,
+    qualification_message: String,
 }
 
 #[derive(Serialize)]
@@ -153,6 +177,7 @@ struct Team {
     state: String,
     rank: usize,
     points: usize,
+    earned_bid: bool,
     placings: Vec<Placing>,
     penalties: u8,
 }
