@@ -270,6 +270,10 @@ tbody tr:nth-child(6n-3) {
     font-size: 16px;
   }
 
+  colgroup col:nth-child(3n+1) {
+    border: none;
+  }
+
   th {
     top: 3.5em;
   }
