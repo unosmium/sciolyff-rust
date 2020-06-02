@@ -2,7 +2,7 @@ use sciolyff::interpreter::Interpreter;
 use std::fs;
 
 fn main() {
-    let file = "data/2019-04-27_OH_states_b.yaml";
+    let file = "data/2020-01-25_mit_invitational_c.yaml";
     let contents = fs::read_to_string(file).unwrap();
     let i = Interpreter::from_yaml(&contents);
     fs::write("output.html", i.to_html()).unwrap();

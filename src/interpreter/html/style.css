@@ -229,7 +229,7 @@ footer sup {
   text-align: center;
 }
 
-@media (max-width: 28em) {
+@media only screen and (max-width: 28em) {
   html {
     font-size: calc(100vw / 28);
   }
@@ -284,7 +284,7 @@ footer sup {
   }
 }
 
-@media (prefers-color-scheme: dark) {
+@media only screen and (prefers-color-scheme: dark) {
   html {
     --banner-bg-color: #272727;
     --table-bg-color: #121212;
@@ -302,5 +302,107 @@ footer sup {
 
   td[class|="m"], td[class|="y"] {
     color: var(--table-bg-color);
+  }
+}
+
+@media print {
+  html {
+    -webkit-print-color-adjust: exact;
+    color-adjust: exact;
+  }
+
+  html, body, div#subway {
+    height: auto;
+  }
+
+  body {
+    padding-top: 2em;
+  }
+
+  div#subway {
+    overflow: visible;
+  }
+
+  div#bruce, header, th {
+    position: static;
+  }
+
+  div#bruce {
+    background: none;
+    box-shadow: none;
+  }
+
+  header, th, a {
+    color: inherit;
+  }
+
+  div#xi {
+    border-top: 0.125em solid #000;
+    border-bottom: 0.0625em solid #000;
+  }
+
+  select:hover, select:focus {
+    background-color: rgba(0,0,0,0.05);
+    cursor: auto;
+  }
+
+  thead {
+    display: table-row-group;
+  }
+
+  th:nth-child(n+6) {
+    transform: rotate(-90deg);
+  }
+
+  th:hover, a {
+    text-decoration: none;
+    cursor: auto;
+  }
+
+  tbody tr:hover {
+    box-shadow: none;
+    background: none;
+    cursor: auto;
+  }
+
+  td[class|="m"], td[class|="y"] {
+    background-color: inherit;
+    clip-path: none;
+  }
+
+  tbody tr:nth-child(6n-5),
+  tbody tr:nth-child(6n-4),
+  tbody tr:nth-child(6n-3) {
+    background-color: #e0e0e0;
+  }
+
+  tbody tr:nth-child(6n-5) td:nth-child(4),
+  tbody tr:nth-child(6n-4) td:nth-child(4),
+  tbody tr:nth-child(6n-3) td:nth-child(4) {
+    background-color: #aaaaaa;
+  }
+
+  tbody tr:nth-child(6n-5) td:last-child,
+  tbody tr:nth-child(6n-4) td:last-child,
+  tbody tr:nth-child(6n-3) td:last-child {
+    background-color: #ffff00;
+  }
+
+  tbody tr:nth-child(6n-2) td:last-child,
+  tbody tr:nth-child(6n-1) td:last-child,
+  tbody tr:nth-child(6n) td:last-child {
+    background-color: #ffff8d;
+  }
+
+  td:nth-child(n+3):nth-child(-n+5) {
+    border-left: 1px solid black;
+  }
+
+  td:nth-child(4), td:nth-child(5) {
+    font-weight: 450;
+  }
+
+  colgroup col:nth-child(3n+1) {
+    border-left: 1px solid black;
   }
 }
