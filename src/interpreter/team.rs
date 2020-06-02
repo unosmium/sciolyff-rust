@@ -159,6 +159,7 @@ impl Team {
                 .filter(|p| p.initially_considered_for_team_points())
                 .collect::<Vec<&Placing>>();
             considered_placings.sort_by_key(|p| p.isolated_points());
+            considered_placings.reverse();
             considered_placings
                 .into_iter()
                 .take(self.tournament().worst_placings_dropped() as usize)
