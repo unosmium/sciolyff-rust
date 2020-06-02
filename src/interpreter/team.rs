@@ -7,7 +7,7 @@ pub struct Team {
     pub(super) penalties: Vec<*const Penalty>,
     pub(super) subdivision_team: Option<*const Team>,
     pub(super) rep: rep::Team,
-    rank: Cell<Option<usize>>,
+    pub(super) rank: Option<usize>,
     points: Cell<Option<usize>>,
     trial_event_points: Cell<Option<usize>>,
 }
@@ -20,7 +20,7 @@ impl Team {
             penalties: Vec::new(),
             subdivision_team: None,
             rep,
-            rank: Cell::new(None),
+            rank: None,
             points: Cell::new(None),
             trial_event_points: Cell::new(None),
         }
@@ -129,13 +129,7 @@ impl Team {
     }
 
     pub fn rank(&self) -> usize {
-        cache!(self.rank, {
-            self.tournament()
-                .teams()
-                .position(|t| ptr::eq(self, t))
-                .unwrap()
-                + 1
-        })
+        self.rank.unwrap()
     }
 
     pub fn points(&self) -> usize {

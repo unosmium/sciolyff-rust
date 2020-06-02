@@ -43,7 +43,7 @@ impl Interpreter {
         let mut i = Self::create_models(rep);
         i.link_models();
         i.create_subdivisions();
-        i.sort_teams_by_rank();
+        i.assign_team_ranks();
         i
     }
 
@@ -59,8 +59,10 @@ impl Interpreter {
         &self.events
     }
 
-    pub fn teams(&self) -> &Vec<Team> {
-        &self.teams
+    pub fn teams(&self) -> Vec<&Team> {
+        let mut teams: Vec<&Team> = self.teams.iter().collect();
+        teams.sort_by_key(|t| t.rank());
+        teams
     }
 
     pub fn placings(&self) -> &Vec<Placing> {
@@ -92,8 +94,9 @@ impl Interpreter {
         }
     }
 
-    fn sort_teams_by_rank(&mut self) {
-        self.teams.sort_unstable_by(|t1, t2| {
+    fn assign_team_ranks(&mut self) {
+        let mut teams: Vec<&mut Team> = self.teams.iter_mut().collect();
+        teams.sort_unstable_by(|t1, t2| {
             t1.disqualified()
                 .cmp(&t2.disqualified())
                 .then(t1.exhibition().cmp(&t2.exhibition()))
@@ -107,5 +110,8 @@ impl Interpreter {
                 )
                 .then(t1.number().cmp(&t2.number()))
         });
+        for (i, t) in teams.iter_mut().enumerate() {
+            t.rank = Some(i + 1);
+        }
     }
 }
