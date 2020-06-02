@@ -185,6 +185,10 @@ th#focused {
   padding-right: 0.5em;
 }
 
+td[class|="m"], td[class|="y"] {
+  background-color: #e0e0e0;
+}
+
 td.y-1, td.m-1 { background-color: #ffee58; }
 td.y-2, td.m-2 { background-color: #cfd8dc; }
 td.y-3, td.m-3 { background-color: #d8bf99; }
