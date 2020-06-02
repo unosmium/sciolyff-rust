@@ -139,12 +139,6 @@ th:hover {
   cursor: pointer;
 }
 
-tbody tr:hover {
-  box-shadow: 0 0 0.125em rgba(0,0,0,0.3);
-  background: #f5f5f5;
-  cursor: pointer;
-}
-
 td {
   text-align: center;
   white-space: nowrap;
@@ -229,6 +223,16 @@ footer sup {
   text-align: center;
 }
 
+colgroup col:nth-child(3n+1) {
+  border-left: 1px solid black;
+}
+
+tbody tr:nth-child(6n-5),
+tbody tr:nth-child(6n-4),
+tbody tr:nth-child(6n-3) {
+  background-color: #f5f5f5;
+}
+
 @media only screen and (max-width: 28em) {
   html {
     font-size: calc(100vw / 28);
@@ -296,12 +300,18 @@ footer sup {
   :visited { color: #BC8BEA; }
   :link:active, :visited:active { color: #FF7575; }
 
-  tbody tr:hover {
-    background: #222222;
-  }
-
   td[class|="m"], td[class|="y"] {
     color: var(--table-bg-color);
+  }
+
+  colgroup col:nth-child(3n+1) {
+    border-left: 1px solid white;
+  }
+
+  tbody tr:nth-child(6n-5),
+  tbody tr:nth-child(6n-4),
+  tbody tr:nth-child(6n-3) {
+    background-color: #222222;
   }
 }
 
@@ -359,12 +369,6 @@ footer sup {
     cursor: auto;
   }
 
-  tbody tr:hover {
-    box-shadow: none;
-    background: none;
-    cursor: auto;
-  }
-
   td[class|="m"], td[class|="y"] {
     background-color: inherit;
     clip-path: none;
@@ -400,9 +404,5 @@ footer sup {
 
   td:nth-child(4), td:nth-child(5) {
     font-weight: 450;
-  }
-
-  colgroup col:nth-child(3n+1) {
-    border-left: 1px solid black;
   }
 }
