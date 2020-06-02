@@ -224,7 +224,7 @@ footer sup {
 }
 
 colgroup col:nth-child(3n+1) {
-  border-left: 1px solid black;
+  border-left: 1px solid grey;
 }
 
 tbody tr:nth-child(6n-5),
@@ -305,7 +305,7 @@ tbody tr:nth-child(6n-3) {
   }
 
   colgroup col:nth-child(3n+1) {
-    border-left: 1px solid white;
+    border-left: 1px solid grey;
   }
 
   tbody tr:nth-child(6n-5),
@@ -396,6 +396,10 @@ tbody tr:nth-child(6n-3) {
   tbody tr:nth-child(6n-1) td:last-child,
   tbody tr:nth-child(6n) td:last-child {
     background-color: #ffff8d;
+  }
+
+  colgroup col:nth-child(3n+1) {
+    border-left: 1px solid black;
   }
 
   td:nth-child(n+3):nth-child(-n+5) {
