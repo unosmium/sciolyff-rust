@@ -48,7 +48,7 @@ function compareTeamState(rowA, rowB) {
 function sortTableBy(comparisonFunction) {
   rows.sort(comparisonFunction);
   for (let row of rows) {
-    tbody.insertAdjacentElement('beforeend', row);
+    tbody.appendChild(row);
   }
 }
 
