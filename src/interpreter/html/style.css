@@ -296,6 +296,15 @@ section table {
   width: 26rem;
 }
 
+section tr:first-child {
+  border-top: 1em solid var(--table-bg-color);
+}
+
+section tr:first-child,
+section tr:last-child {
+  border-bottom: 1em solid var(--table-bg-color);
+}
+
 section td {
   overflow: hidden;
 }
