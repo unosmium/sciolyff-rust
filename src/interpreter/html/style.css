@@ -257,9 +257,10 @@ section {
   width: max-content;
   margin: auto;
   position: relative;
-  top: 5%;
-  height: 90%;
+  top: 1%;
+  height: 98%;
   overflow-y: scroll;
+  overscroll-behavior: contain;
   background: var(--table-bg-color);
 }
 
