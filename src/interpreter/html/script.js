@@ -138,6 +138,13 @@ tbody.addEventListener('click', (e) => {
   }
 });
 
+window.addEventListener('click', (e) => {
+  if (e.target.className === 'smith') {
+    location.hash = '';
+    history.replaceState(null, '', location.href.slice(0, -1));
+  }
+});
+
 ///////////////////////////////////////////////////////////////////////////////
 
 function populateModal() {
