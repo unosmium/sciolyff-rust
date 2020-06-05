@@ -402,7 +402,7 @@ section td:nth-child(1) {
     box-shadow: none;
   }
 
-  header, th, a {
+  main header, th, a {
     color: inherit;
   }
 
@@ -468,5 +468,9 @@ section td:nth-child(1) {
 
   td:nth-child(4), td:nth-child(5) {
     font-weight: 450;
+  }
+
+  div.smith {
+    display: none !important;
   }
 }
