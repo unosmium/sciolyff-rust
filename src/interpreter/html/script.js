@@ -10,7 +10,12 @@ const teamPenaltiesIndex =
   parseInt(focusSelect.querySelector('option:last-child').value);
 
 const thead = document.querySelector('thead');
+
 const modal = document.querySelector('div.smith section');
+const modalTeamNumber = modal.querySelector('h1');
+const modalTeamName = modal.querySelector('p');
+const modalOverall = modal.querySelector('td:last-child');
+const modalColumn = [...modal.querySelectorAll('td:last-child')].slice(1);
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -137,9 +142,25 @@ tbody.addEventListener('click', (e) => {
 
 function populateModal() {
   let teamNumber = parseInt(location.hash.substring(1));
-  if (isNaN(teamNumber)) { return; }
+  let smith = document.getElementById(teamNumber);
+  if (isNaN(teamNumber) || smith === null) { return; }
 
-  document.getElementById(teamNumber).appendChild(modal);
+  let row = document.getElementById(`t${teamNumber}`);
+  let rowOverall = row.querySelector('td:nth-child(4)');
+  let info = teamInfo[`t${teamNumber}`];
+
+  modalTeamNumber.innerHTML = `Team ${teamNumber}`;
+  modalTeamName.innerHTML = `${info.name} <small>${info.location}</small>`;
+  modalOverall.innerHTML = rowOverall.innerHTML;
+  modalOverall.className = rowOverall.className;
+
+  modalColumn.forEach((td, i) => {
+    let tdEvent = row.querySelector(`td:nth-child(${i + 6})`);
+    td.innerHTML = tdEvent.innerHTML;
+    td.className = tdEvent.className;
+  });
+
+  smith.appendChild(modal);
 }
 
 window.addEventListener('hashchange', () => populateModal());

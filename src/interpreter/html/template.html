@@ -180,6 +180,8 @@ const teamInfo = {
 {% for team in teams -%}
 "t{{ team.number}}":{
   "school":"{{ team.school }}",
+  "name":"{{ team.name }}",
+  "location":"{{ team.location }}",
   "state":"{{ team.state }}",
   "rank":{{ team.rank }},
   "trophy":{{ team.trophy | default(value="null")}},

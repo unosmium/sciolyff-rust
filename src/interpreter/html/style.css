@@ -257,11 +257,11 @@ div.smith:target {
 }
 
 section {
-  width: max-content;
+  width: min-content;
   margin: auto;
   position: relative;
-  top: 1%;
-  height: 98%;
+  top: 6%;
+  height: 93%;
   overflow-y: scroll;
   overscroll-behavior: contain;
   background: var(--table-bg-color);
@@ -269,11 +269,22 @@ section {
 
 section header {
   padding: 1em;
+  width: 100%;
+  background: var(--banner-bg-color);
+  color: white;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  box-shadow: 0 0.125em 0.125em 0 rgba(0,0,0,0.3);
+}
+
+section p {
+  font-size: 16px;
 }
 
 section table {
   border-collapse: collapse;
-  margin-bottom: 1em;
+  margin-top: 1em;
   font-size: 16px;
   table-layout: fixed;
   width: 26rem;
