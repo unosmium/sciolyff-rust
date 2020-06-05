@@ -133,13 +133,9 @@ function populateModal() {
   let teamNumber = parseInt(location.hash.substring(1));
   if (isNaN(teamNumber)) { return; }
 
-  modal.removeAttribute('id');
   document.getElementById(teamNumber).appendChild(modal);
-  // ensure CSS transition
-  window.setTimeout(() => modal.id = 'loaded', 10);
 }
 
 window.addEventListener('hashchange', () => populateModal());
-window.addEventListener('beforeunload', () => modal.removeAttribute('id'));
 
 populateModal();

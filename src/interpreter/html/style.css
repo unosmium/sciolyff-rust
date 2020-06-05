@@ -252,8 +252,6 @@ div.smith:target {
 }
 
 section {
-  opacity: 0;
-  transition: opacity 0.2s;
   width: max-content;
   margin: auto;
   position: relative;
@@ -262,10 +260,6 @@ section {
   overflow-y: scroll;
   overscroll-behavior: contain;
   background: var(--table-bg-color);
-}
-
-section#loaded {
-  opacity: 1;
 }
 
 section header {
