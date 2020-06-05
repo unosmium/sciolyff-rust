@@ -127,6 +127,12 @@ thead.addEventListener('click', (e) => {
   sortSelect.dispatchEvent(new Event('change'));
 });
 
+tbody.addEventListener('click', (e) => {
+  if (e.target.tagName !== 'A') {
+    e.target.closest('tr').querySelector('a').click();
+  }
+});
+
 ///////////////////////////////////////////////////////////////////////////////
 
 function populateModal() {

@@ -173,16 +173,21 @@ th:nth-child(n+6) {
   padding-left: 0.7em;
 }
 
-main td:nth-child(2), section td:nth-child(1) {
-  text-overflow: ellipsis;
-  overflow: hidden;
-}
-
 th#focused {
   width: 4em;
   text-indent: -16em;
   text-align: right;
   padding-right: 0.5em;
+}
+
+main td:nth-child(2), section td:nth-child(1) {
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+td:nth-child(1):hover,
+td:nth-child(2):hover {
+  cursor: pointer;
 }
 
 td[class|="m"], td[class|="y"] {
