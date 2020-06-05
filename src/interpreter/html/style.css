@@ -16,6 +16,7 @@ body {
 }
 
 div#subway {
+  -webkit-overflow-scrolling: touch;
   overflow: auto;
 }
 
@@ -29,6 +30,7 @@ div#bruce {
   width: 100%;
   background: dimgray;
   background: var(--banner-bg-color);
+  position: -webkit-sticky;
   position: sticky;
   top: 0;
   left: 0;
@@ -48,6 +50,7 @@ main header {
   width: 28em;
   color: white;
   padding-top: 1.5em;
+  position: -webkit-sticky;
   position: sticky;
   top: 0;
   z-index: 1;
@@ -129,6 +132,7 @@ th {
   white-space: nowrap;
   color: white;
   height: 2em;
+  position: -webkit-sticky;
   position: sticky;
   top: 12.5em;
   z-index: 1;
@@ -257,12 +261,14 @@ div.smith:target {
 }
 
 section {
+  width: -webkit-min-content;
   width: min-content;
   margin: auto;
   position: relative;
   top: 6%;
   height: 93%;
   overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
 }
 
@@ -271,6 +277,7 @@ section header {
   width: 100%;
   background: var(--banner-bg-color);
   color: white;
+  position: -webkit-sticky;
   position: sticky;
   top: 0;
   z-index: 1;
@@ -323,6 +330,7 @@ section td:nth-child(1) {
   }
 
   div#butterfly {
+    position: -webkit-sticky;
     position: sticky;
     top: 0;
     padding: calc((4 * 100vw / 28 - 32px) / 2);
