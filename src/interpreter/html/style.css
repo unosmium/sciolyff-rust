@@ -264,7 +264,6 @@ section {
   height: 93%;
   overflow-y: scroll;
   overscroll-behavior: contain;
-  background: var(--table-bg-color);
 }
 
 section header {
@@ -283,8 +282,8 @@ section p {
 }
 
 section table {
+  background: var(--table-bg-color);
   border-collapse: collapse;
-  margin-top: 1em;
   font-size: 16px;
   table-layout: fixed;
   width: 26rem;
