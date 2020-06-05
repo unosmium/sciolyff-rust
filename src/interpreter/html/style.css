@@ -43,7 +43,7 @@ main {
   width: max-content;
 }
 
-header {
+main header {
   height: 14.5em;
   width: 28em;
   color: white;
@@ -118,7 +118,7 @@ option {
   background: var(--table-bg-color);
 }
 
-table {
+main table {
   table-layout: fixed;
   width: 1em;
   margin-top: -2em;
@@ -150,14 +150,14 @@ td sup {
   width: 0;
 }
 
-th:nth-child(1),
-td:nth-child(1) {
+main th:nth-child(1),
+main td:nth-child(1) {
   text-align: right;
   padding-right: 0.5em;
 }
 
-th:nth-child(2),
-td:nth-child(2) {
+main th:nth-child(2),
+main td:nth-child(2) {
   text-align: left;
 }
 
@@ -173,7 +173,7 @@ th:nth-child(n+6) {
   padding-left: 0.7em;
 }
 
-td:nth-child(2) {
+main td:nth-child(2), section td:nth-child(1) {
   text-overflow: ellipsis;
   overflow: hidden;
 }
@@ -237,6 +237,58 @@ tbody tr:nth-child(6n-3) {
   background-color: #f5f5f5;
 }
 
+div.smith {
+  display: none;
+  position: fixed;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 1;
+  background: rgba(0, 0, 0, 0.38);
+}
+
+div.smith:target {
+  display: block;
+}
+
+section {
+  opacity: 0;
+  transition: opacity 0.2s;
+  width: max-content;
+  margin: auto;
+  position: relative;
+  top: 5%;
+  height: 90%;
+  overflow-y: scroll;
+  background: var(--table-bg-color);
+}
+
+section#loaded {
+  opacity: 1;
+}
+
+section header {
+  padding: 1em;
+}
+
+section table {
+  border-collapse: collapse;
+  margin-bottom: 1em;
+  font-size: 16px;
+  table-layout: fixed;
+  width: 26rem;
+}
+
+section td {
+  overflow: hidden;
+}
+
+section td:nth-child(1) {
+  padding: 1em;
+  text-align: left;
+  width: 20rem;
+}
+
 @media only screen and (max-width: 28em) {
   html {
     font-size: calc(100vw / 28);
@@ -256,7 +308,7 @@ tbody tr:nth-child(6n-3) {
     top: -9em;
   }
 
-  header {
+  main header {
     top: -9em;
   }
 

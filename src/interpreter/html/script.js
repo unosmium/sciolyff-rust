@@ -10,6 +10,7 @@ const teamPenaltiesIndex =
   parseInt(focusSelect.querySelector('option:last-child').value);
 
 const thead = document.querySelector('thead');
+const modal = document.querySelector('div.smith section');
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -125,3 +126,26 @@ thead.addEventListener('click', (e) => {
   focusSelect.dispatchEvent(new Event('change'));
   sortSelect.dispatchEvent(new Event('change'));
 });
+
+///////////////////////////////////////////////////////////////////////////////
+
+function populateModal() {
+  let teamNumber = location.hash.substring(1);
+  if (teamNumber === NaN) { return; }
+
+  modal.removeAttribute('id');
+  document.getElementById(teamNumber).appendChild(modal);
+  // ensure CSS transition
+  window.setTimeout(() => modal.id = 'loaded', 10);
+}
+
+window.addEventListener('hashchange', () => {
+  console.log(location.hash);
+  populateModal();
+});
+
+window.addEventListener('beforeunload', () => {
+  modal.removeAttribute('id');
+});
+
+populateModal();
