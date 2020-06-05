@@ -130,8 +130,8 @@ thead.addEventListener('click', (e) => {
 ///////////////////////////////////////////////////////////////////////////////
 
 function populateModal() {
-  let teamNumber = location.hash.substring(1);
-  if (teamNumber === NaN) { return; }
+  let teamNumber = parseInt(location.hash.substring(1));
+  if (isNaN(teamNumber)) { return; }
 
   modal.removeAttribute('id');
   document.getElementById(teamNumber).appendChild(modal);
@@ -139,13 +139,7 @@ function populateModal() {
   window.setTimeout(() => modal.id = 'loaded', 10);
 }
 
-window.addEventListener('hashchange', () => {
-  console.log(location.hash);
-  populateModal();
-});
-
-window.addEventListener('beforeunload', () => {
-  modal.removeAttribute('id');
-});
+window.addEventListener('hashchange', () => populateModal());
+window.addEventListener('beforeunload', () => modal.removeAttribute('id'));
 
 populateModal();
