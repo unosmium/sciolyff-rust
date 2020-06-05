@@ -1,6 +1,6 @@
 const sortSelect = document.querySelector('#sort');
 const tbody = document.querySelector('tbody');
-const rows = [...document.querySelectorAll('tbody tr')];
+const rows = [...document.querySelectorAll('main tbody tr')];
 const enCollator = new Intl.Collator('en');
 
 const focusSelect = document.querySelector('#focus');
