@@ -210,7 +210,7 @@ td[class|="m"] {
 }
 
 td[class|="y"] {
-  clip-path: ellipse(43.75% 45%);
+  clip-path: ellipse(1.75rem 0.9rem);
 }
 
 footer:before {
@@ -349,7 +349,15 @@ section td:nth-child(1) {
     font-size: 15px;
   }
 
-  td:nth-child(3)[class|="m"] {
+  td[class|="y"] {
+    clip-path: ellipse(1.75rem 45%);
+  }
+
+  td:nth-child(2)[class|="y"] {
+    clip-path: ellipse(1.75rem 1.125rem);
+  }
+
+  td[class|="m"] {
     clip-path: circle(1.125rem);
   }
 
