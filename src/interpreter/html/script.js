@@ -10,6 +10,7 @@ const teamPenaltiesIndex =
   parseInt(focusSelect.querySelector('option:last-child').value);
 
 const thead = document.querySelector('thead');
+const close = document.getElementById('close');
 
 const modal = document.querySelector('div.smith section');
 const modalTeamNumber = modal.querySelector('h1');
@@ -138,12 +139,18 @@ tbody.addEventListener('click', (e) => {
   }
 });
 
+function closeModal() {
+  location.hash = '';
+  history.replaceState(null, '', location.href.slice(0, -1));
+}
+
 window.addEventListener('click', (e) => {
   if (e.target.className === 'smith') {
-    location.hash = '';
-    history.replaceState(null, '', location.href.slice(0, -1));
+    closeModal()
   }
 });
+
+close.addEventListener('click', (e) => closeModal());
 
 ///////////////////////////////////////////////////////////////////////////////
 
