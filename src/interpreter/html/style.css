@@ -300,6 +300,10 @@ section tr:first-child {
   border-top: 1em solid var(--table-bg-color);
 }
 
+section tr:nth-child(2) td[class|="m"] {
+  clip-path: circle(0.9rem at 50% calc(50% + 0.25em));
+}
+
 section tr:first-child,
 section tr:last-child {
   border-bottom: 1em solid var(--table-bg-color);
@@ -375,6 +379,10 @@ section td:nth-child(1) {
 
   td[class|="m"] {
     clip-path: circle(1.125rem);
+  }
+
+  section tr:nth-child(2) td[class|="m"] {
+    clip-path: circle(1.125rem at 50% calc(50% + 0.25em));
   }
 
   th:nth-child(n+6),
