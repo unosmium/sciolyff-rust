@@ -148,10 +148,13 @@ window.addEventListener('click', (e) => {
 ///////////////////////////////////////////////////////////////////////////////
 
 function populateModal() {
-  let teamNumber = parseInt(location.hash.substring(1));
-  let smith = document.getElementById(teamNumber);
-  if (isNaN(teamNumber) || smith === null) { return; }
+  let hashString = location.hash.substring(1);
+  if (hashString === '') { return; }
 
+  let smith = document.getElementById(hashString);
+  if (smith === null || smith.className !== 'smith') { return; }
+
+  let teamNumber = parseInt(hashString);
   let row = document.getElementById(`t${teamNumber}`);
   let rowOverall = row.querySelector('td:nth-child(4)');
   let info = teamInfo[`t${teamNumber}`];
