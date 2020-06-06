@@ -15,8 +15,8 @@ const close = document.getElementById('close');
 const modal = document.querySelector('div.smith section');
 const modalTeamNumber = modal.querySelector('h1');
 const modalTeamName = modal.querySelector('p');
-const modalOverall = modal.querySelector('td:last-child');
-const modalColumn = [...modal.querySelectorAll('td:last-child')].slice(1);
+const modalOverall = modal.querySelector('td:nth-child(2)');
+const modalColumn = [...modal.querySelectorAll('td:nth-child(2)')].slice(1);
 
 ////////////////////////////////////////////////////////////////////////////////
 
