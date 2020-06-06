@@ -134,7 +134,7 @@ thead.addEventListener('click', (e) => {
 });
 
 tbody.addEventListener('click', (e) => {
-  if (e.target.tagName !== 'A') {
+  if (e.target.tagName !== 'A' && e.target.closest('td').cellIndex <= 2) {
     e.target.closest('tr').querySelector('a').click();
   }
 });
