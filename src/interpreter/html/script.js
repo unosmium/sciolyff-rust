@@ -4,8 +4,8 @@ const rows = [...document.querySelectorAll('main tbody tr')];
 const enCollator = new Intl.Collator('en');
 
 const focusSelect = document.querySelector('#focus');
-const focusHeader = document.querySelector('th:nth-child(3)');
-const focusColumn = [...document.querySelectorAll('td:nth-child(3)')];
+const focusHeader = document.querySelector('main th:nth-child(3)');
+const focusColumn = [...document.querySelectorAll('main td:nth-child(3)')];
 const teamPenaltiesIndex =
   parseInt(focusSelect.querySelector('option:last-child').value);
 
