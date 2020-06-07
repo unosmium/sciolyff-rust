@@ -275,28 +275,25 @@ div#liver {
   display: flex;
   background: var(--table-bg-color);
   width: max(26em, 50vw);
-  overflow-y: auto;
-  overflow-x: hidden;
-  -webkit-overflow-scrolling: touch;
-  overscroll-behavior: contain;
+  flex-grow: 1;
+  overflow: hidden;
 }
 
 nav {
-  height: 100%;
   overflow-y: scroll;
-  overscroll-behavior-y: contain;
+  -webkit-overflow-scrolling: touch;
   min-width: -webkit-min-content;
   min-width: min-content;
-  position: sticky;
-  top: 0;
   padding: 1em 0;
 }
 
 article {
   background: linear-gradient(#e66465, #9198e5);
-  height: 200%;
   flex-grow: 1;
   min-width: 26em;
+  padding: 1em;
+  -webkit-overflow-scrolling: touch;
+  overflow-y: auto;
 }
 
 section header {
@@ -342,6 +339,10 @@ section table {
   table-layout: fixed;
   width: 26rem;
   margin-bottom: 1em;
+}
+
+section tr:hover {
+  background-color: #ddd;
 }
 
 section td:nth-child(1) {

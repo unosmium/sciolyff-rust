@@ -210,7 +210,7 @@ function animateHorizontalScroll() {
     if (elapsed < msDuration) {
       window.requestAnimationFrame(zoop);
     } else {
-      modalBody.scrollLeft = scrollLeftMax;
+      modalBody.scrollLeft = scrollLeftMax + 100;
     }
   }
 
@@ -218,5 +218,7 @@ function animateHorizontalScroll() {
 }
 
 modalNav.addEventListener('click', (e) => {
+  modalArticle.scrollTop = 0;
+  modalArticle.innerHTML = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas ut odio lectus. Cras eu risus at diam feugiat mattis at eget mi. Mauris id dignissim libero. Integer interdum nisi et fermentum sollicitudin. Vestibulum sed urna pharetra metus fermentum feugiat. Fusce vitae tincidunt augue. Duis ultrices viverra mi, et gravida tellus hendrerit ac. Donec rhoncus ornare porttitor. Mauris viverra posuere tellus, vitae rutrum nunc sagittis nec. Sed vehicula posuere eros vel semper. Fusce turpis arcu, fermentum a neque at, bibendum lobortis diam. Suspendisse potenti. Fusce iaculis viverra turpis sed iaculis. Aliquam erat volutpat. Vivamus rhoncus, tellus at rhoncus faucibus, mauris velit tincidunt lorem, sit amet vehicula risus felis vitae urna. Duis vulputate risus at lacus scelerisque, vitae porttitor purus sodales. Curabitur faucibus hendrerit consequat. Vestibulum non massa ante. In suscipit faucibus sapien eget rutrum. Vestibulum vel nulla urna. Ut nec turpis purus. Cras congue diam eu urna malesuada mattis. Cras vitae commodo velit. Maecenas ac imperdiet dui. Proin malesuada facilisis nibh, ac efficitur nulla feugiat a. Aenean euismod vitae lorem eu ullamcorper. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nam posuere vestibulum neque, id condimentum ex gravida sed. Donec tellus urna, pretium vel iaculis in, suscipit sit amet velit. Aenean sed sagittis augue, placerat blandit odio. Nunc tincidunt vitae lacus ut ornare. Quisque viverra ex eget dui volutpat sodales. Curabitur varius tempus facilisis. Nunc vulputate arcu felis, at feugiat nulla convallis in. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nam blandit ac diam eget lacinia. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. In dignissim dignissim euismod. Integer sem neque, tempus venenatis laoreet sed, iaculis aliquam orci. Suspendisse potenti. Quisque tortor nisi, pellentesque ut commodo a, pulvinar vitae nisi. Donec tristique tempus est, a imperdiet libero consectetur ac. Vivamus ac bibendum enim, sit amet volutpat lacus. Quisque id egestas ex. Curabitur sit amet ultricies felis, at finibus justo. In blandit commodo erat nec ornare. Vivamus in ante in dui posuere venenatis venenatis et felis. Sed et orci at lacus eleifend ornare. Fusce quis nibh et nunc auctor dapibus vitae vel elit.'
   animateHorizontalScroll();
 });
