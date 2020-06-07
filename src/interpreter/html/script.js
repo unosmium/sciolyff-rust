@@ -18,6 +18,10 @@ const modalTeamName = modal.querySelector('p');
 const modalOverall = modal.querySelector('td:nth-child(2)');
 const modalColumn = [...modal.querySelectorAll('td:nth-child(2)')].slice(1);
 
+const modalBody = modal.querySelector('#liver');
+const modalNav = modal.querySelector('nav');
+const modalArticle = modal.querySelector('article');
+
 ////////////////////////////////////////////////////////////////////////////////
 
 function compareTeamRank(rowA, rowB) {
@@ -178,8 +182,40 @@ function populateModal() {
   });
 
   smith.appendChild(modal);
+  modalBody.scrollLeft = 0;
 }
 
 window.addEventListener('hashchange', () => populateModal());
 
 populateModal();
+
+///////////////////////////////////////////////////////////////////////////////
+
+
+function animateHorizontalScroll() {
+  let scrollLeftMax = modalBody.scrollWidth - modalBody.clientWidth;
+  let msDuration = 150;
+  let start;
+
+  function zoop(timestep) {
+    if (start === undefined) { start = timestep; }
+    let elapsed = timestep - start;
+
+    let t = (elapsed / msDuration);
+    let y = t<0.5 ? 2*t*t : -1+(4-2*t)*t;
+
+    modalBody.scrollLeft = y * scrollLeftMax;
+
+    if (elapsed < msDuration) {
+      window.requestAnimationFrame(zoop);
+    } else {
+      modalBody.scrollLeft = scrollLeftMax;
+    }
+  }
+
+  window.requestAnimationFrame(zoop);
+}
+
+modalNav.addEventListener('click', (e) => {
+  animateHorizontalScroll();
+});

@@ -276,6 +276,7 @@ div#liver {
   background: var(--table-bg-color);
   width: max(26em, 50vw);
   overflow-y: auto;
+  overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
 }
