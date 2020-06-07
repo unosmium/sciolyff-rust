@@ -183,6 +183,7 @@ function populateModal() {
 
   smith.appendChild(modal);
   modalBody.scrollLeft = 0;
+  modalBody.scrollTop = 0;
 }
 
 window.addEventListener('hashchange', () => populateModal());

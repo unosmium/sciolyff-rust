@@ -284,6 +284,7 @@ div#liver {
 nav {
   height: 100%;
   overflow-y: scroll;
+  overscroll-behavior-y: contain;
   min-width: -webkit-min-content;
   min-width: min-content;
   position: sticky;
