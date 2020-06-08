@@ -110,10 +110,6 @@ select:nth-child(n+2) {
   margin-left: 0.25em;
 }
 
-select:hover, select:focus {
-  background-color: rgba(0,0,0,0.25);
-  cursor: pointer;
-}
 
 option {
   color: black;
@@ -128,9 +124,6 @@ main table {
   border-collapse: collapse;
 }
 
-table tbody tr:hover {
-  background-color: rgba(69, 161, 255, 0.2);
-}
 
 th {
   white-space: nowrap;
@@ -142,10 +135,6 @@ th {
   z-index: 1;
 }
 
-th:hover {
-  text-decoration: underline;
-  cursor: pointer;
-}
 
 td {
   text-align: center;
@@ -193,9 +182,6 @@ main td:nth-child(2), section td:nth-child(1) {
   overflow: hidden;
 }
 
-td:nth-child(n+1):nth-child(-n+5):hover {
-  cursor: pointer;
-}
 
 td[class|="m"], td[class|="y"] {
   background-color: #e0e0e0;
@@ -370,6 +356,26 @@ article button {
   display: none;
 }
 
+@media screen {
+  select:hover, select:focus {
+    background-color: rgba(0,0,0,0.25);
+    cursor: pointer;
+  }
+
+  table tbody tr:hover {
+    background-color: rgba(69, 161, 255, 0.2);
+  }
+
+  th:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  td:nth-child(n+1):nth-child(-n+5):hover {
+    cursor: pointer;
+  }
+}
+
 @media only screen and (max-width: 56em) {
 
   div#liver {
@@ -528,11 +534,6 @@ article button {
     border-bottom: 0.0625em solid #000;
   }
 
-  select:hover, select:focus {
-    background-color: rgba(0,0,0,0.05);
-    cursor: auto;
-  }
-
   thead {
     display: table-row-group;
   }
@@ -541,7 +542,7 @@ article button {
     transform: rotate(-90deg);
   }
 
-  th:hover, a {
+  a {
     text-decoration: none;
     cursor: auto;
   }
