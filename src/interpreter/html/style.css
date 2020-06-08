@@ -332,8 +332,8 @@ nav table {
   margin-bottom: 1em;
 }
 
-nav tr:hover {
-  background-color: #ddd;
+nav tbody tr:hover {
+  background-color: rgba(69, 161, 255, 0.2);
 }
 
 nav td:nth-child(1) {
