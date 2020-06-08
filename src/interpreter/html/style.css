@@ -317,7 +317,7 @@ nav {
   -webkit-overflow-scrolling: touch;
   min-width: -webkit-min-content;
   min-width: min-content;
-  padding: 1em 0;
+  padding: 1rem 0 0;
 }
 
 nav table {
@@ -325,7 +325,7 @@ nav table {
   font-size: 16px;
   table-layout: fixed;
   width: 26rem;
-  margin-bottom: 1em;
+  margin-bottom: 1rem;
 }
 
 nav tbody tr:hover {
