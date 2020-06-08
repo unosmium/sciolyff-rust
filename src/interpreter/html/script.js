@@ -188,6 +188,7 @@ function populateModal() {
   smith.className = 'visible';
 }
 
+window.addEventListener("beforeunload", () => smith.className = '');
 window.addEventListener('hashchange', () => populateModal());
 
 populateModal();
