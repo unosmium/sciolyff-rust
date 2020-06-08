@@ -140,7 +140,7 @@
 {% endif -%}
 </main>
 </div>
-<div class="smith">
+<div id="smith">
 <section>
 <header>
 <button id="close" aria-label="Close team details modal"></button>
@@ -184,9 +184,6 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas ut odio lectus
 </div>
 </section>
 </div>
-{% for team in teams -%}
-<div id="{{ team.number }}" class="smith"></div>
-{% endfor -%}
 <script>
 const teamInfo = {
 {% for team in teams -%}

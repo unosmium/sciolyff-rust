@@ -12,7 +12,8 @@ const teamPenaltiesIndex =
 const thead = document.querySelector('thead');
 const close = document.getElementById('close');
 
-const modal = document.querySelector('div.smith section');
+const modalBg = document.getElementById('smith');
+const modal = document.querySelector('div#smith section');
 const modalTeamNumber = modal.querySelector('h2');
 const modalTeamName = modal.querySelector('p');
 const modalOverall = modal.querySelector('td:nth-child(2)');
@@ -150,7 +151,7 @@ function closeModal() {
 }
 
 window.addEventListener('click', (e) => {
-  if (e.target.className === 'smith') {
+  if (e.target.id === 'smith') {
     closeModal()
   }
 });
@@ -161,10 +162,10 @@ close.addEventListener('click', (e) => closeModal());
 
 function populateModal() {
   let hashString = location.hash.substring(1);
-  if (hashString === '') { return; }
-
-  let smith = document.getElementById(hashString);
-  if (smith === null || smith.className !== 'smith') { return; }
+  if (hashString === '' || document.getElementById(`t${hashString}`) == null) {
+    smith.className = '';
+    return;
+  }
 
   let teamNumber = parseInt(hashString);
   let row = document.getElementById(`t${teamNumber}`);
@@ -184,7 +185,7 @@ function populateModal() {
 
   modalBody.scrollLeft = 0;
   modalNav.scrollTop = 0;
-  smith.appendChild(modal);
+  smith.className = 'visible';
 }
 
 window.addEventListener('hashchange', () => populateModal());

@@ -250,18 +250,18 @@ article button {
   background-color: #f5f5f5;
 }
 
-div.smith {
+div#smith {
   display: none;
   position: fixed;
   top: 0;
   height: 100%;
   width: 100%;
-  z-index: 1;
-  background: rgba(0, 0, 0, 0.38);
 }
 
-div.smith:target {
+div#smith.visible {
   display: block;
+  background: rgba(0, 0, 0, 0.38);
+  z-index: 1;
 }
 
 section {
