@@ -182,9 +182,9 @@ function populateModal() {
     td.className = tdEvent.className;
   });
 
-  smith.appendChild(modal);
   modalBody.scrollLeft = 0;
-  modalBody.scrollTop = 0;
+  modalNav.scrollTop = 0;
+  smith.appendChild(modal);
 }
 
 window.addEventListener('hashchange', () => populateModal());
