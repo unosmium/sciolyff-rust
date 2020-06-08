@@ -272,16 +272,10 @@ section {
 }
 
 section header {
-  padding: 1em;
-  width: 100%;
   background: var(--banner-bg-color);
   color: white;
-  position: -webkit-sticky;
-  position: sticky;
-  top: 0;
-  left: 0;
-  z-index: 1;
   box-shadow: 0 0.125em 0.125em 0 rgba(0,0,0,0.3);
+  padding: 1em;
 }
 
 section header p {
