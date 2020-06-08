@@ -13,7 +13,7 @@ const thead = document.querySelector('thead');
 const close = document.getElementById('close');
 
 const modal = document.querySelector('div.smith section');
-const modalTeamNumber = modal.querySelector('h1');
+const modalTeamNumber = modal.querySelector('h2');
 const modalTeamName = modal.querySelector('p');
 const modalOverall = modal.querySelector('td:nth-child(2)');
 const modalColumn = [...modal.querySelectorAll('td:nth-child(2)')].slice(1);
