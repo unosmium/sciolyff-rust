@@ -128,6 +128,10 @@ main table {
   border-collapse: collapse;
 }
 
+table tbody tr:hover {
+  background-color: rgba(69, 161, 255, 0.2);
+}
+
 th {
   white-space: nowrap;
   color: white;
@@ -328,10 +332,6 @@ nav table {
   margin-bottom: 1rem;
 }
 
-nav tbody tr:hover {
-  background-color: rgba(69, 161, 255, 0.2);
-}
-
 nav td:nth-child(1) {
   padding-left: 1em;
   text-align: left;
@@ -459,7 +459,7 @@ article button {
     --banner-bg-color: #272727;
     --table-bg-color: #121212;
   }
-  option, table, footer { color: white; }
+  option, table, footer, article { color: white; }
   footer:before { background: white; }
 
   :link { color: #9494FF; }
