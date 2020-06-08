@@ -197,7 +197,7 @@ populateModal();
 
 function animateHorizontalScroll(reverse) {
   let scrollLeftMax = modalBody.scrollWidth - modalBody.clientWidth;
-  let msDuration = 150;
+  let msDuration = 200;
   let start;
 
   function zoop(timestep) {
