@@ -197,6 +197,20 @@ populateModal();
 
 function animateHorizontalScroll(reverse) {
   let scrollLeftMax = modalBody.scrollWidth - modalBody.clientWidth;
+
+  function donzo() {
+    if (reverse) {
+      modalBody.scrollLeft = 0;
+    } else {
+      modalBody.scrollLeft = scrollLeftMax + 100;
+    }
+  }
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    donzo();
+    return;
+  }
+
   let msDuration = 200;
   let start;
 
@@ -216,11 +230,7 @@ function animateHorizontalScroll(reverse) {
     if (elapsed < msDuration) {
       window.requestAnimationFrame(zoop);
     } else {
-      if (reverse) {
-        modalBody.scrollLeft = 0;
-      } else {
-        modalBody.scrollLeft = scrollLeftMax + 100;
-      }
+      donzo();
     }
   }
 
