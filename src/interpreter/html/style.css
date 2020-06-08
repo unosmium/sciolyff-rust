@@ -193,8 +193,7 @@ main td:nth-child(2), section td:nth-child(1) {
   overflow: hidden;
 }
 
-td:nth-child(1):hover,
-td:nth-child(2):hover {
+td:nth-child(n+1):nth-child(-n+5):hover {
   cursor: pointer;
 }
 
