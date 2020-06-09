@@ -137,7 +137,9 @@ impl super::Interpreter {
                 .filter(|p| p.raw().is_some())
                 .map(|p| p.raw().as_ref().unwrap() as *const _)
                 .collect();
-            e.raws.sort()
+            unsafe {
+                e.raws.sort_by_key(|r| &**r);
+            }
         }
     }
 
