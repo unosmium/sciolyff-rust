@@ -491,7 +491,7 @@ article button {
   }
 }
 
-@media (prefers-reduced-motion) {
+@media only screen and (prefers-reduced-motion: reduce) {
   div#smith {
     transition: none;
   }
