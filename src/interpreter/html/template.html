@@ -70,15 +70,15 @@
   <th>Overall</th>
   <th>Total</th>
   {% for event in events -%}
-  <th>{{ event.name }}
+  <th><span>{{ event.name }}
   {%- if event.trial -%}
     {{ ' ' }}(Trial)
   {%- elif event.trialed -%}
     {{ ' ' }}(Trialed)
   {%- endif -%}
-  </th>
+  </span></th>
   {% endfor -%}
-  <th>Team Penalties</th>
+  <th><span>Team Penalties</span></th>
 </tr>
 </thead>
 <tbody>

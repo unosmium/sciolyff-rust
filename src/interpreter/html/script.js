@@ -127,7 +127,7 @@ focusSelect.addEventListener('change', (e) => {
 ///////////////////////////////////////////////////////////////////////////////
 
 thead.addEventListener('click', (e) => {
-  let col = e.target.cellIndex;
+  let col = e.target.closest('th').cellIndex;
   if (col === 0) {
     sortSelect.value = 'by Number';
   } else if (col === 1) {

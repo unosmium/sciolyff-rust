@@ -163,11 +163,12 @@ th:nth-child(2) { width: 18em; }
 th:nth-child(3) { width: 0; padding: 0; }
 th:nth-child(4) { width: 4em; }
 th:nth-child(5) { width: 4em; }
+th:nth-child(n+6) { width: 2em; }
 
-th:nth-child(n+6) {
+th:nth-child(n+6) span {
+  padding-left: 0.6em;
+  display: block;
   transform: rotate(-60deg);
-  width: 2em;
-  padding-left: 0.7em;
 }
 
 th#focused {
