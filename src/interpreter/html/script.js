@@ -85,7 +85,10 @@ function sortTable(option) {
   }
 }
 
-sortSelect.addEventListener('change', (e) => sortTable(e.target.value));
+sortSelect.addEventListener('change', (e) => {
+  sortTable(e.target.value);
+  pushQueryState(null, e.target.value);
+});
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -116,7 +119,9 @@ function focusOnEvent(eventIndex) {
 }
 
 focusSelect.addEventListener('change', (e) => {
-  focusOnEvent(parseInt(e.target.value));
+  let eventIndex = parseInt(e.target.value);
+  focusOnEvent(eventIndex);
+  pushQueryState(eventIndex, null);
 });
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -244,3 +249,51 @@ modalNav.addEventListener('click', (e) => {
 });
 
 modalBack.addEventListener('click', () => animateHorizontalScroll(true));
+
+///////////////////////////////////////////////////////////////////////////////
+
+function updateBasedOnQueryString() {
+  let search = new URLSearchParams(location.search);
+
+  let oldFocusVal = focusSelect.value;
+  if (search.has('focus')) {
+    focusSelect.value = search.get('focus');
+  } else {
+    focusSelect.value = 0;
+  }
+  if(oldFocusVal !== focusSelect.value) {
+    focusOnEvent(parseInt(focusSelect.value));
+  }
+
+  let oldSortVal = sortSelect.value;
+  if (search.has('sort')) {
+    sortSelect.value = search.get('sort');
+  } else {
+    sortSelect.value = 'by Rank';
+  }
+  if(oldSortVal !== sortSelect.value) {
+    sortTable(sortSelect.value);
+  }
+}
+
+function pushQueryState(eventIndex, sortOption) {
+  let newSearch = new URLSearchParams(location.search);
+  if (eventIndex === 0) {
+    newSearch.delete('focus');
+  } else if (eventIndex !== null) {
+    newSearch.set('focus', eventIndex);
+  }
+
+  if (sortOption === 'by Rank') {
+    newSearch.delete('sort');
+  } else if (sortOption !== null) {
+    newSearch.set('sort', sortOption);
+  }
+
+  let newURL = new URL(location);
+  newURL.search = newSearch;
+  history.pushState({}, '', newURL);
+}
+
+window.onpopstate = updateBasedOnQueryString;
+updateBasedOnQueryString();
