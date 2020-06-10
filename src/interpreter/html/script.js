@@ -12,6 +12,7 @@ const teamPenaltiesIndex =
 const thead = document.querySelector('thead');
 const close = document.getElementById('close');
 
+let modalOpenedByUser = false;
 const modalBg = document.getElementById('smith');
 const modal = document.querySelector('div#smith section');
 const modalTeamNumber = modal.querySelector('h2');
@@ -145,18 +146,25 @@ thead.addEventListener('click', (e) => {
 });
 
 tbody.addEventListener('click', (e) => {
-  if (e.target.tagName !== 'A' && e.target.closest('td').cellIndex < 5) {
-    e.target.closest('tr').querySelector('a').click();
+  if (e.target.closest('td').cellIndex < 5) {
+    if (e.target.tagName !== 'A') {
+      e.target.closest('tr').querySelector('a').click();
+    }
+    modalOpenedByUser = true;
   }
 });
 
 function closeModal() {
-  location.hash = '';
-  history.replaceState(null, '', location.href.slice(0, -1));
+  if (modalOpenedByUser) {
+    history.back();
+  } else {
+    location.hash = '';
+    history.replaceState(null, '', location.href.slice(0, -1));
+  }
 }
 
 window.addEventListener('click', (e) => {
-  if (e.target.id === 'smith') {
+  if (e.target === modalBg) {
     closeModal()
   }
 });
@@ -168,6 +176,7 @@ close.addEventListener('click', (e) => closeModal());
 function populateModal() {
   let hashString = location.hash.substring(1);
   if (hashString === '' || document.getElementById(`t${hashString}`) == null) {
+    modalOpenedByUser = false;
     smith.className = '';
     return;
   }
@@ -199,7 +208,6 @@ window.addEventListener('hashchange', () => populateModal());
 populateModal();
 
 ///////////////////////////////////////////////////////////////////////////////
-
 
 function animateHorizontalScroll(reverse) {
   let scrollLeftMax = modalBody.scrollWidth - modalBody.clientWidth;
