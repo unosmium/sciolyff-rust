@@ -173,15 +173,7 @@ close.addEventListener('click', (e) => closeModal());
 
 ///////////////////////////////////////////////////////////////////////////////
 
-function populateModal() {
-  let hashString = location.hash.substring(1);
-  if (hashString === '' || document.getElementById(`t${hashString}`) == null) {
-    modalOpenedByUser = false;
-    smith.className = '';
-    return;
-  }
-
-  let teamNumber = parseInt(hashString);
+function populateModal(teamNumber) {
   let row = document.getElementById(`t${teamNumber}`);
   let rowOverall = row.querySelector('td:nth-child(4)');
   let info = teamInfo[`t${teamNumber}`];
@@ -196,16 +188,26 @@ function populateModal() {
     td.innerHTML = tdEvent.innerHTML;
     td.className = tdEvent.className;
   });
+}
 
-  modalBody.scrollLeft = 0;
-  modalNav.scrollTop = 0;
-  smith.className = 'visible';
+function updateModalState() {
+  let hashString = location.hash.substring(1);
+
+  if (hashString === '' || document.getElementById(`t${hashString}`) === null) {
+    modalOpenedByUser = false;
+    smith.className = '';
+  } else {
+    populateModal(parseInt(hashString));
+    modalBody.scrollLeft = 0;
+    modalNav.scrollTop = 0;
+    smith.className = 'visible';
+  }
 }
 
 window.addEventListener("beforeunload", () => smith.className = '');
-window.addEventListener('hashchange', () => populateModal());
+window.addEventListener('hashchange', () => updateModalState());
 
-populateModal();
+updateModalState();
 
 ///////////////////////////////////////////////////////////////////////////////
 
