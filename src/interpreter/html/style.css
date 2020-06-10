@@ -537,7 +537,7 @@ article button {
     display: table-row-group;
   }
 
-  th:nth-child(n+6) {
+  th:nth-child(n+6) span {
     transform: rotate(-90deg);
   }
 
