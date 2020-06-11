@@ -15,7 +15,7 @@ const close = document.getElementById('close');
 let modalOpenedByUser = false;
 const modalBg = document.getElementById('smith');
 const modal = document.querySelector('div#smith section');
-const modalTeamNumber = modal.querySelector('h2');
+const modalTeamNumber = modal.querySelector('h2 span');
 const modalTeamName = modal.querySelector('p');
 const modalOverall = modal.querySelector('td:nth-child(2)');
 const modalColumn = [...modal.querySelectorAll('td:nth-child(2)')].slice(1);
@@ -23,7 +23,9 @@ const modalColumn = [...modal.querySelectorAll('td:nth-child(2)')].slice(1);
 const modalBody = modal.querySelector('#liver');
 const modalNav = modal.querySelector('nav');
 const modalArticle = modal.querySelector('article');
-const modalBack = modal.querySelector('article button');
+const modalBack = modalArticle.querySelector('button');
+const modalH3 = modalArticle.querySelector('h3');
+const modalP = modalArticle.querySelector('p');
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -178,7 +180,7 @@ function populateModal(teamNumber) {
   let rowOverall = row.querySelector('td:nth-child(4)');
   let info = teamInfo[`t${teamNumber}`];
 
-  modalTeamNumber.innerHTML = `Team ${teamNumber}`;
+  modalTeamNumber.innerHTML = teamNumber;
   modalTeamName.innerHTML = `${info.name} <small>${info.location}</small>`;
   modalOverall.innerHTML = rowOverall.innerHTML;
   modalOverall.className = rowOverall.className;
@@ -253,9 +255,57 @@ function animateHorizontalScroll(reverse) {
   window.requestAnimationFrame(zoop);
 }
 
+function getOrdinal(n) {
+  let s = ["th", "st", "nd", "rd"],
+  v = n%100;
+  return n+(s[(v-20)%10]||s[v]||s[0]);
+}
+
+function populateArticle(eventName, eventIndex, teamNumber) {
+  let placing = placingInfo[`t${teamNumber}e${eventIndex}`];
+
+  modalH3.innerHTML = eventName;
+  if (placing.disqualified) {
+    modalP.innerHTML = `
+    Students from Team ${teamNumber} were disqualified from the event
+    ${eventName}, adding ${placing.points} points toward their team's point
+    total.
+    `;
+  } else if (placing.did_not_participate) {
+    modalP.innerHTML = `
+    Students from Team ${teamNumber} did not participate in the event
+    ${eventName}, adding ${placing.points} points toward their team's point
+    total.
+    `;
+  } else if (placing.participation_only) {
+    modalP.innerHTML = `
+    Students from Team ${teamNumber} earned participation-only points in the
+    event ${eventName}, adding ${placing.points} points toward their team's
+    point total.
+    `;
+  } else {
+    modalP.innerHTML = `
+    Students from Team ${teamNumber} placed ${getOrdinal(placing.place)} out of
+    ${eventParticipationCounts[eventIndex-1]} participating teams in the event
+    ${eventName}, earning ${placing.points} point${placing.points === 1 ? '' :
+        's'} toward their team's point total.
+    `;
+  }
+}
+
+
 modalNav.addEventListener('click', (e) => {
-  modalArticle.scrollTop = 0;
-  animateHorizontalScroll(false);
+  let row = e.target.closest('tr');
+
+  if (row) {
+    let eventName = row.querySelector('td').innerHTML;
+    let eventIndex = [...modalNav.querySelectorAll('tr')].indexOf(row);
+    let teamNumber = parseInt(modalTeamNumber.innerHTML);
+
+    populateArticle(eventName, eventIndex, teamNumber);
+    modalArticle.scrollTop = 0;
+    animateHorizontalScroll(false);
+  }
 });
 
 modalBack.addEventListener('click', () => animateHorizontalScroll(true));

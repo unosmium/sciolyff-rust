@@ -78,6 +78,10 @@ impl super::Interpreter {
                 name: e.name().to_string(),
                 trial: e.trial(),
                 trialed: e.trialed(),
+                participation_count: e
+                    .placings()
+                    .filter(|p| p.participated())
+                    .count(),
             })
             .collect()
     }
@@ -162,6 +166,7 @@ struct Event {
     name: String,
     trial: bool,
     trialed: bool,
+    participation_count: usize,
 }
 
 #[derive(Serialize)]
