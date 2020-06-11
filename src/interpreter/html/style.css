@@ -330,7 +330,7 @@ nav td:nth-child(1) {
 
 nav td:nth-child(2) {
   width: 4rem;
-  font-size: 1.2em;
+  font-size: inherit;
 }
 
 nav td:nth-child(3) {
