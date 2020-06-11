@@ -267,28 +267,28 @@ function populateArticle(eventName, eventIndex, teamNumber) {
   modalH3.innerHTML = eventName;
   if (placing.disqualified) {
     modalP.innerHTML = `
-    Students from Team ${teamNumber} were disqualified from the event
-    ${eventName}, adding ${placing.points} points toward their team's point
-    total.
+    Students from Team ${teamNumber} were <b>disqualified</b> from the event
+    ${eventName}, adding <b>${placing.points} points</b> toward their team's
+    point total.
     `;
   } else if (placing.did_not_participate) {
     modalP.innerHTML = `
-    Students from Team ${teamNumber} did not participate in the event
-    ${eventName}, adding ${placing.points} points toward their team's point
-    total.
+    Students from Team ${teamNumber} <b>did not participate</b> in the event
+    ${eventName}, adding <b>${placing.points} points</b> toward their team's
+    point total.
     `;
   } else if (placing.participation_only) {
     modalP.innerHTML = `
-    Students from Team ${teamNumber} earned participation-only points in the
-    event ${eventName}, adding ${placing.points} points toward their team's
-    point total.
+    Students from Team ${teamNumber} earned <b>participation-only</b> points in
+    the event ${eventName}, adding <b>${placing.points} points</b> toward their
+    team's point total.
     `;
   } else {
     modalP.innerHTML = `
-    Students from Team ${teamNumber} placed ${getOrdinal(placing.place)} out of
-    ${eventParticipationCounts[eventIndex-1]} participating teams in the event
-    ${eventName}, earning ${placing.points} point${placing.points === 1 ? '' :
-        's'} toward their team's point total.
+    Students from Team ${teamNumber} placed <b>${getOrdinal(placing.place)} out
+    of ${eventParticipationCounts[eventIndex-1]}</b> participating teams in the
+    event ${eventName}, earning <b>${placing.points} point${placing.points === 1
+        ? '' : 's'}</b> toward their team's point total.
     `;
   }
 }
