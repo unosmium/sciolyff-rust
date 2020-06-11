@@ -200,7 +200,7 @@ td.y-9, td.m-9 { background-color: #ebedd8; }
 td.y-10, td.m-10 { background-color: #d4f0f1; }
 
 td[class|="m"] {
-  clip-path: circle(0.9rem);
+  clip-path: circle(0.9em);
 }
 
 td[class|="y"] {
@@ -330,6 +330,7 @@ nav td:nth-child(1) {
 
 nav td:nth-child(2) {
   width: 4rem;
+  font-size: 1.2em;
 }
 
 nav td:nth-child(3) {
@@ -459,15 +460,15 @@ dd {
     font-size: 15px;
   }
 
-  td[class|="y"] {
+  main td[class|="y"] {
     clip-path: ellipse(1.75rem 45%);
   }
 
-  td:nth-child(2)[class|="y"] {
+  nav td[class|="y"] {
     clip-path: ellipse(1.75rem 1.125rem);
   }
 
-  td[class|="m"] {
+  main td[class|="m"] {
     clip-path: circle(1.125rem);
   }
 
