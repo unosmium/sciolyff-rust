@@ -26,6 +26,7 @@ const modalArticle = modal.querySelector('article');
 const modalBack = modalArticle.querySelector('button');
 const modalH3 = modalArticle.querySelector('h3');
 const modalP = modalArticle.querySelector('p');
+const mdDeetz = [...modalArticle.querySelectorAll('dd')];
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -284,13 +285,27 @@ function populateArticle(eventName, eventIndex, teamNumber) {
     team's point total.
     `;
   } else {
+    let placeText;
+    if (placing.tie) {
+      placeText = `tied for ${getOrdinal(placing.place)}`;
+    } else if (placing.unknown) {
+      placeText = 'unknown';
+    } else {
+      placeText = getOrdinal(placing.place);
+    }
     modalP.innerHTML = `
-    Students from Team ${teamNumber} placed <b>${getOrdinal(placing.place)} out
-    of ${eventParticipationCounts[eventIndex-1]}</b> participating teams in the
+    Students from Team ${teamNumber} placed <b>${placeText} out of
+    ${eventParticipationCounts[eventIndex-1]}</b> participating teams in the
     event ${eventName}, earning <b>${placing.points} point${placing.points === 1
-        ? '' : 's'}</b> toward their team's point total.
-    `;
+        ? '' : 's'}</b> toward their team's point total.  `;
   }
+
+  mdDeetz[0].innerHTML = placing.medal ? 'Yes':'No';
+  mdDeetz[1].innerHTML = placing.exempt ? 'Yes':'No';
+  mdDeetz[2].innerHTML = placing.dropped_as_part_of_worst_placings ? 'Yes':'No';
+  mdDeetz[3].innerHTML = placing.points_limited_by_maximum_place ? 'Yes':'No';
+  mdDeetz[4].innerHTML = placing.points_affected_by_exhibition ? 'Yes':'No';
+  mdDeetz[5].innerHTML = placing.isolated_points;
 }
 
 

@@ -365,6 +365,11 @@ article p {
   font-size: inherit;
 }
 
+dd {
+  font-weight: bold;
+  margin-bottom: 0.25em;
+}
+
 @media screen {
   select:hover, select:focus {
     background-color: rgba(0,0,0,0.25);
