@@ -193,6 +193,9 @@ function populateModal(teamNumber) {
     td.innerHTML = tdEvent.innerHTML;
     td.className = tdEvent.className;
   });
+
+  populateArticle('Overall Rank', 0, teamNumber);
+  modalArticle.scrollTop = 0;
 }
 
 function updateModalState() {
@@ -383,7 +386,9 @@ modalNav.addEventListener('click', (e) => {
 
     populateArticle(eventName, eventIndex, teamNumber);
     modalArticle.scrollTop = 0;
-    animateHorizontalScroll(false);
+    if (window.matchMedia('(max-width: 56em)').matches) {
+      animateHorizontalScroll(false);
+    }
   }
 });
 
