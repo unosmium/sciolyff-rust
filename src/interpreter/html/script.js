@@ -291,6 +291,18 @@ function populateOverall(teamNumber) {
 }
 
 function populatePenalties(teamNumber) {
+  let team = teamInfo[`t${teamNumber}`];
+
+  if (team.penalties === 0) {
+    modalP.innerHTML = `
+    Team ${teamNumber} did not recieve any team penalties at this competition.
+    `;
+  } else {
+    modalP.innerHTML = `
+    Team ${teamNumber}'s team penalties at this competition added
+    <b>${team.penalties} points</b> to their total score.
+    `;
+  }
 }
 
 function populatePlacing(eventName, eventIndex, teamNumber) {
