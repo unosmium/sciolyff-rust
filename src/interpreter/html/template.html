@@ -183,6 +183,8 @@
 <article>
 <h3></h3>
 <p></p>
+<div id="overallInfo"></div>
+<div id="placingInfo">
 <h4>Details</h4>
 <dl>
   <dt>Awarded medal/ribbon?</dt><dd></dd>
@@ -192,12 +194,14 @@
   <dt>Points affected by exhibition teams?</dt><dd></dd>
   <dt>Isolated points:</dt><dd></dd>
 </dl>
+</div>
 <button aria-label="Go back to team details nav"></button>
 </article>
 </div>
 </section>
 </div>
 <script>
+const nonexhibitionTeamCount = {{ tournament.nonexhibition_team_count }}
 const eventParticipationCounts = [
 {%- for event in events -%}
 {{ event.participation_count }},
@@ -211,7 +215,11 @@ const teamInfo = {
   "location":"{{ team.location }}",
   "state":"{{ team.state }}",
   "rank":{{ team.rank }},
+  "points":{{ team.points }},
   "trophy":{{ team.trophy | default(value="null")}},
+  "exhibition":{{ team.exhibition }},
+  "disqualified":{{ team.disqualified }},
+  "events_participated":{{ team.events_participated }},
 },
 {% endfor -%}
 };

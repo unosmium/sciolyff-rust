@@ -366,6 +366,10 @@ article p {
   font-size: inherit;
 }
 
+div#overallInfo, div#placingInfo {
+  display: none;
+}
+
 dd {
   font-weight: bold;
   margin-bottom: 0.25em;

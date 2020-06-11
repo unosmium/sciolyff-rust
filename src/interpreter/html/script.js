@@ -26,6 +26,8 @@ const modalArticle = modal.querySelector('article');
 const modalBack = modalArticle.querySelector('button');
 const modalH3 = modalArticle.querySelector('h3');
 const modalP = modalArticle.querySelector('p');
+const modalOverallInfo = modalArticle.querySelector('#overallInfo');
+const modalPlacingInfo = modalArticle.querySelector('#placingInfo');
 const mdDeetz = [...modalArticle.querySelectorAll('dd')];
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -262,10 +264,37 @@ function getOrdinal(n) {
   return n+(s[(v-20)%10]||s[v]||s[0]);
 }
 
-function populateArticle(eventName, eventIndex, teamNumber) {
-  let placing = placingInfo[`t${teamNumber}e${eventIndex}`];
+function populateOverall(teamNumber) {
+  let team = teamInfo[`t${teamNumber}`];
+  let tournamentName = document.querySelector('h1').textContent;
+  if (team.exhibition) {
+    modalP.innerHTML = `
+    At the ${tournamentName}, Team ${teamNumber} participated as in
+    <b>${team.events_participated} events</b> and scored <b>${team.points}
+    points</b>. As an <b>exhibition team</b>, they did not affect the final team
+    rankings.
+    `
+  } else if (team.disqualified) {
+    modalP.innerHTML = `
+    At the ${tournamentName}, Team ${teamNumber} participated in
+    <b>${team.events_participated} events</b> and scored <b>${team.points}
+    points</b>, but were <b>disqualified</b> from the final team rankings.
+    `
+  } else {
+    modalP.innerHTML = `
+    At the ${tournamentName}, Team ${teamNumber} participated in
+    <b>${team.events_participated} events</b> and scored <b>${team.points}
+    points</b>, ranking them <b>${getOrdinal(team.rank)} out of
+    ${nonexhibitionTeamCount}</b> competing teams.
+    `
+  }
+}
 
-  modalH3.innerHTML = eventName;
+function populatePenalties(teamNumber) {
+}
+
+function populatePlacing(eventName, eventIndex, teamNumber) {
+  let placing = placingInfo[`t${teamNumber}e${eventIndex}`];
   if (placing.disqualified) {
     modalP.innerHTML = `
     Students from Team ${teamNumber} were <b>disqualified</b> from the event
@@ -306,6 +335,29 @@ function populateArticle(eventName, eventIndex, teamNumber) {
   mdDeetz[3].innerHTML = placing.points_limited_by_maximum_place ? 'Yes':'No';
   mdDeetz[4].innerHTML = placing.points_affected_by_exhibition ? 'Yes':'No';
   mdDeetz[5].innerHTML = placing.isolated_points;
+}
+
+function populateArticle(eventName, eventIndex, teamNumber) {
+  modalH3.innerHTML = eventName;
+
+  if (eventIndex === 0) {
+    modalOverallInfo.style.display = 'block';
+    modalPlacingInfo.style.display = 'none';
+
+    populateOverall(teamNumber);
+
+  } else if (eventIndex === teamPenaltiesIndex) {
+    modalOverallInfo.style.display = 'none';
+    modalPlacingInfo.style.display = 'none';
+
+    populatePenalties(teamNumber);
+
+  } else {
+    modalOverallInfo.style.display = 'none';
+    modalPlacingInfo.style.display = 'block';
+
+    populatePlacing(eventName, eventIndex, teamNumber);
+  }
 }
 
 

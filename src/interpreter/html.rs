@@ -36,6 +36,7 @@ impl super::Interpreter {
             date: t.date().format("%A, %B %-d, %Y"),
             location: t.location().to_string(),
             division: format!("(Div. {})", t.division()),
+            nonexhibition_team_count: t.nonexhibition_team_count(),
             subdivisions: t.subdivisions(),
             bids: t.bids() > 0,
             exempt_or_dropped_placings: t.exempt_placings() > 0
@@ -104,6 +105,10 @@ impl super::Interpreter {
                 earned_bid: t.earned_bid(),
                 placings: Self::placings_info(&t),
                 penalties: t.penalties().map(|p| p.points()).sum::<u8>(),
+                events_participated: t
+                    .placings()
+                    .filter(|p| p.participated())
+                    .count(),
             })
             .collect()
     }
@@ -149,6 +154,7 @@ struct Tournament {
     date: String,
     location: String,
     division: String,
+    nonexhibition_team_count: usize,
     subdivisions: bool,
     bids: bool,
     exempt_or_dropped_placings: bool,
@@ -185,6 +191,7 @@ struct Team {
     earned_bid: bool,
     placings: Vec<Placing>,
     penalties: u8,
+    events_participated: usize,
 }
 
 #[derive(Serialize)]
