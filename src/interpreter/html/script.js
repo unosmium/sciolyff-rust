@@ -194,7 +194,7 @@ function populateModal(teamNumber) {
     td.className = tdEvent.className;
   });
 
-  populateArticle('Overall Rank', 0, teamNumber);
+  populateArticle(0, teamNumber);
   modalArticle.scrollTop = 0;
 }
 
@@ -270,6 +270,11 @@ function getOrdinal(n) {
 function populateOverall(teamNumber) {
   let team = teamInfo[`t${teamNumber}`];
   let tournamentName = document.querySelector('h1').textContent;
+
+  modalOverallInfo.style.display = 'block';
+  modalPlacingInfo.style.display = 'none';
+  modalH3.innerHTML = 'Overall Rank';
+
   if (team.exhibition) {
     modalP.innerHTML = `
     At the ${tournamentName}, Team ${teamNumber} participated as in
@@ -296,6 +301,10 @@ function populateOverall(teamNumber) {
 function populatePenalties(teamNumber) {
   let team = teamInfo[`t${teamNumber}`];
 
+  modalOverallInfo.style.display = 'none';
+  modalPlacingInfo.style.display = 'none';
+  modalH3.innerHTML = 'Team Penlties';
+
   if (team.penalties === 0) {
     modalP.innerHTML = `
     Team ${teamNumber} did not recieve any team penalties at this competition.
@@ -308,24 +317,30 @@ function populatePenalties(teamNumber) {
   }
 }
 
-function populatePlacing(eventName, eventIndex, teamNumber) {
+function populatePlacing(eventIndex, teamNumber) {
   let placing = placingInfo[`t${teamNumber}e${eventIndex}`];
+  let _event = eventInfo[`e${eventIndex}`];
+
+  modalOverallInfo.style.display = 'none';
+  modalPlacingInfo.style.display = 'block';
+  modalH3.innerHTML = _event.name;
+
   if (placing.disqualified) {
     modalP.innerHTML = `
     Students from Team ${teamNumber} were <b>disqualified</b> from the event
-    ${eventName}, adding <b>${placing.points} points</b> toward their team's
+    ${_event.name}, adding <b>${placing.points} points</b> toward their team's
     point total.
     `;
   } else if (placing.did_not_participate) {
     modalP.innerHTML = `
     Students from Team ${teamNumber} <b>did not participate</b> in the event
-    ${eventName}, adding <b>${placing.points} points</b> toward their team's
+    ${_event.name}, adding <b>${placing.points} points</b> toward their team's
     point total.
     `;
   } else if (placing.participation_only) {
     modalP.innerHTML = `
     Students from Team ${teamNumber} earned <b>participation-only</b> points in
-    the event ${eventName}, adding <b>${placing.points} points</b> toward their
+    the event ${_event.name}, adding <b>${placing.points} points</b> toward their
     team's point total.
     `;
   } else {
@@ -339,9 +354,9 @@ function populatePlacing(eventName, eventIndex, teamNumber) {
     }
     modalP.innerHTML = `
     Students from Team ${teamNumber} placed <b>${placeText} out of
-    ${eventParticipationCounts[eventIndex-1]}</b> participating teams in the
-    event ${eventName}, earning <b>${placing.points} point${placing.points === 1
-        ? '' : 's'}</b> toward their team's point total.  `;
+    ${_event.participation_count}</b> participating teams in the event
+    ${_event.name}, earning <b>${placing.points} point${placing.points === 1 ?
+        '' : 's'}</b> toward their team's point total.  `;
   }
 
   mdDeetz[0].innerHTML = placing.medal ? 'Yes':'No';
@@ -352,26 +367,13 @@ function populatePlacing(eventName, eventIndex, teamNumber) {
   mdDeetz[5].innerHTML = placing.isolated_points;
 }
 
-function populateArticle(eventName, eventIndex, teamNumber) {
-  modalH3.innerHTML = eventName;
-
+function populateArticle(eventIndex, teamNumber) {
   if (eventIndex === 0) {
-    modalOverallInfo.style.display = 'block';
-    modalPlacingInfo.style.display = 'none';
-
     populateOverall(teamNumber);
-
   } else if (eventIndex === teamPenaltiesIndex) {
-    modalOverallInfo.style.display = 'none';
-    modalPlacingInfo.style.display = 'none';
-
     populatePenalties(teamNumber);
-
   } else {
-    modalOverallInfo.style.display = 'none';
-    modalPlacingInfo.style.display = 'block';
-
-    populatePlacing(eventName, eventIndex, teamNumber);
+    populatePlacing(eventIndex, teamNumber);
   }
 }
 
@@ -380,11 +382,10 @@ modalNav.addEventListener('click', (e) => {
   let row = e.target.closest('tr');
 
   if (row) {
-    let eventName = row.querySelector('td').innerHTML;
     let eventIndex = [...modalNav.querySelectorAll('tr')].indexOf(row);
     let teamNumber = parseInt(modalTeamNumber.innerHTML);
 
-    populateArticle(eventName, eventIndex, teamNumber);
+    populateArticle(eventIndex, teamNumber);
     modalArticle.scrollTop = 0;
     if (window.matchMedia('(max-width: 56em)').matches) {
       animateHorizontalScroll(false);

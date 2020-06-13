@@ -201,12 +201,12 @@
 </section>
 </div>
 <script>
-const nonexhibitionTeamCount = {{ tournament.nonexhibition_team_count }}
-const eventParticipationCounts = [
+const nonexhibitionTeamCount = {{ tournament.nonexhibition_team_count }};
+const eventInfo = {
 {%- for event in events -%}
-{{ event.participation_count }},
+"e{{ loop.index }}":{{ event | json_encode() | safe }},
 {%- endfor -%}
-];
+};
 const teamInfo = {
 {% for team in teams -%}
 "t{{ team.number}}":{
@@ -227,7 +227,7 @@ const teamInfo = {
 const placingInfo = {
 {% for team in teams -%}
 {% for placing in team.placings -%}
-"t{{ team.number}}e{{ loop.index }}":{{ placing | json_encode() | safe }},
+"t{{ team.number }}e{{ loop.index }}":{{ placing | json_encode() | safe }},
 {% endfor -%}
 {% endfor -%}
 };
