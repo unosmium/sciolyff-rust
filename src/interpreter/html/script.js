@@ -330,26 +330,33 @@ function populatePlacing(eventIndex, teamNumber) {
 
   modalOverallInfo.style.display = 'none';
   modalPlacingInfo.style.display = 'block';
-  modalH3.innerHTML = _event.name;
+
+  if (_event.trial) {
+    modalH3.innerHTML = _event.name + ' (Trial)';
+  } else if (_event.trialed) {
+    modalH3.innerHTML = _event.name + ' (Trialed)';
+  } else {
+    modalH3.innerHTML = _event.name;
+  }
 
   if (placing.disqualified) {
     modalP.innerHTML = `
     Students from Team ${teamNumber} were <b>disqualified</b> from the event
     ${_event.name}, adding <b>${placing.points} points</b> toward their team's
-    point total.
-    `;
+    point total.`;
+
   } else if (placing.did_not_participate) {
     modalP.innerHTML = `
     Students from Team ${teamNumber} <b>did not participate</b> in the event
     ${_event.name}, adding <b>${placing.points} points</b> toward their team's
-    point total.
-    `;
+    point total.`;
+
   } else if (placing.participation_only) {
     modalP.innerHTML = `
     Students from Team ${teamNumber} earned <b>participation-only</b> points in
     the event ${_event.name}, adding <b>${placing.points} points</b> toward their
-    team's point total.
-    `;
+    team's point total.`;
+
   } else {
     let placeText;
     if (placing.tie) {
@@ -363,7 +370,17 @@ function populatePlacing(eventIndex, teamNumber) {
     Students from Team ${teamNumber} placed <b>${placeText} out of
     ${_event.participation_count}</b> participating teams in the event
     ${_event.name}, earning <b>${placing.points} point${placing.points === 1 ?
-        '' : 's'}</b> toward their team's point total.  `;
+    '' : 's'}</b> toward their team's point total.`;
+  }
+
+  if (_event.trial) {
+    modalP.innerHTML = modalP.innerHTML + `
+    (As a Trial event, ${_event.name} did not add points to any team's total.)`;
+
+  } else if (_event.trialed) {
+    modalP.innerHTML = modalP.innerHTML + `
+    (As a Trialed event, ${_event.name} did not add points to any team's total,
+    due to unforseen circumstances during the competition.)`;
   }
 
   mdDeetz[0].innerHTML = placing.medal ? 'Yes':'No';
