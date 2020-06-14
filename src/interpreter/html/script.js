@@ -194,8 +194,9 @@ function populateModal(teamNumber) {
     td.className = tdEvent.className;
   });
 
-  populateArticle(0, teamNumber);
-  modalArticle.scrollTop = 0;
+  if (!window.matchMedia('(max-width: 56em)').matches) {
+    focusArticleOnEvent(0);
+  }
 }
 
 function updateModalState() {
@@ -391,7 +392,10 @@ function populatePlacing(eventIndex, teamNumber) {
   mdDeetz[5].innerHTML = placing.isolated_points;
 }
 
-function populateArticle(eventIndex, teamNumber) {
+function focusArticleOnEvent(eventIndex) {
+  let teamNumber = parseInt(modalTeamNumber.innerHTML);
+  modalArticle.scrollTop = 0;
+
   if (eventIndex === 0) {
     populateOverall(teamNumber);
   } else if (eventIndex === teamPenaltiesIndex) {
@@ -399,21 +403,18 @@ function populateArticle(eventIndex, teamNumber) {
   } else {
     populatePlacing(eventIndex, teamNumber);
   }
+
+  if (window.matchMedia('(max-width: 56em)').matches) {
+    animateHorizontalScroll(false);
+  }
 }
 
 
 modalNav.addEventListener('click', (e) => {
   let row = e.target.closest('tr');
-
   if (row) {
     let eventIndex = [...modalNav.querySelectorAll('tr')].indexOf(row);
-    let teamNumber = parseInt(modalTeamNumber.innerHTML);
-
-    populateArticle(eventIndex, teamNumber);
-    modalArticle.scrollTop = 0;
-    if (window.matchMedia('(max-width: 56em)').matches) {
-      animateHorizontalScroll(false);
-    }
+    focusArticleOnEvent(eventIndex);
   }
 });
 
