@@ -261,6 +261,13 @@ function animateHorizontalScroll(reverse) {
   window.requestAnimationFrame(zoop);
 }
 
+window.addEventListener('resize', () => {
+  if (modalBody.scrollLeft !== 0) {
+    let scrollLeftMax = modalBody.scrollWidth - modalBody.clientWidth;
+    modalBody.scrollLeft = scrollLeftMax + 100;
+  }
+});
+
 function getOrdinal(n) {
   let s = ["th", "st", "nd", "rd"],
   v = n%100;
