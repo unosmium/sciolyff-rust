@@ -13,7 +13,7 @@ const thead = document.querySelector('thead');
 const close = document.getElementById('close');
 
 let modalOpenedByUser = false;
-let modalFocusedByUser = false;
+let modalFocusedByUser = false; // only used when width <= 56em
 let modalPushCount = 0;
 let currentModalTeamNumber = null;
 const modalBg = document.getElementById('smith');
@@ -444,7 +444,7 @@ modalNav.addEventListener('click', (e) => {
       row.querySelector('a').click();
     }
   }
-  modalFocusedByUser = true;
+  modalFocusedByUser = window.matchMedia('(max-width: 56em)').matches
 });
 
 modalBack.addEventListener('click', () => {
