@@ -338,7 +338,8 @@ nav td:nth-child(3) {
   cursor: pointer;
 }
 
-nav button {
+nav a {
+  display: block;
   height: 3rem;
   margin: 0.5rem 0;
   width: 2rem;

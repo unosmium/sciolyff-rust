@@ -13,12 +13,16 @@ const thead = document.querySelector('thead');
 const close = document.getElementById('close');
 
 let modalOpenedByUser = false;
+let modalFocusedByUser = false;
+let modalPushCount = 0;
+let currentModalTeamNumber = null;
 const modalBg = document.getElementById('smith');
 const modal = document.querySelector('div#smith section');
 const modalTeamNumber = modal.querySelector('h2 span');
 const modalTeamName = modal.querySelector('p');
 const modalOverall = modal.querySelector('td:nth-child(2)');
 const modalColumn = [...modal.querySelectorAll('td:nth-child(2)')].slice(1);
+const modalLinks = [...modal.querySelectorAll('td:nth-child(3) a')];
 
 const modalBody = modal.querySelector('#liver');
 const modalNav = modal.querySelector('nav');
@@ -161,11 +165,13 @@ tbody.addEventListener('click', (e) => {
 
 function closeModal() {
   if (modalOpenedByUser) {
-    history.back();
+    history.go(-modalPushCount - 1);
   } else {
     location.hash = '';
     history.replaceState(null, '', location.href.slice(0, -1));
   }
+  modalPushCount = 0;
+  currentModalTeamNumber = null;
 }
 
 window.addEventListener('click', (e) => {
@@ -194,22 +200,33 @@ function populateModal(teamNumber) {
     td.className = tdEvent.className;
   });
 
-  if (!window.matchMedia('(max-width: 56em)').matches) {
-    focusArticleOnEvent(0);
-  }
+  modalLinks.forEach((a, i) => a.href = `#${teamNumber}-${i}`);
+  currentModalTeamNumber = teamNumber;
 }
 
 function updateModalState() {
-  let hashString = location.hash.substring(1);
+  let hashString = location.hash.substring(1).split('-');
+  let teamNumber = parseInt(hashString[0]);
+  let eventIndex = parseInt(hashString[1]);
 
-  if (hashString === '' || document.getElementById(`t${hashString}`) === null) {
+  if (teamNumber === NaN || document.getElementById(`t${teamNumber}`) === null) {
     modalOpenedByUser = false;
     smith.className = '';
+  } else if (currentModalTeamNumber === teamNumber) {
+    modalPushCount++;
   } else {
-    populateModal(parseInt(hashString));
+    populateModal(teamNumber);
     modalBody.scrollLeft = 0;
-    modalNav.scrollTop = 0;
     smith.className = 'visible';
+  }
+
+  if (eventIndex !== NaN &&
+      eventIndex >= 0 &&
+      eventIndex <= teamPenaltiesIndex) {
+    focusArticleOnEvent(eventIndex);
+  } else if (!window.matchMedia('(max-width: 56em)').matches) {
+    focusArticleOnEvent(0);
+    history.replaceState(null, '', location.href + '-0');
   }
 }
 
@@ -263,7 +280,11 @@ function animateHorizontalScroll(reverse) {
 }
 
 window.addEventListener('resize', () => {
-  if (modalBody.scrollLeft !== 0) {
+  let eventIndex = location.hash.substring(1).split('-')[1];
+
+  if (eventIndex !== NaN &&
+      eventIndex >= 0 &&
+      eventIndex <= teamPenaltiesIndex) {
     let scrollLeftMax = modalBody.scrollWidth - modalBody.clientWidth;
     modalBody.scrollLeft = scrollLeftMax + 100;
   }
@@ -411,14 +432,25 @@ function focusArticleOnEvent(eventIndex) {
 
 
 modalNav.addEventListener('click', (e) => {
-  let row = e.target.closest('tr');
-  if (row) {
-    let eventIndex = [...modalNav.querySelectorAll('tr')].indexOf(row);
-    focusArticleOnEvent(eventIndex);
+  if (e.target.tagName !== 'A') {
+    let row = e.target.closest('tr');
+    if (row) {
+      row.querySelector('a').click();
+    }
   }
+  modalFocusedByUser = true;
 });
 
-modalBack.addEventListener('click', () => animateHorizontalScroll(true));
+modalBack.addEventListener('click', () => {
+  animateHorizontalScroll(true);
+  if (modalFocusedByUser) {
+    history.back();
+    modalPushCount -= 2;
+  } else {
+    location.hash = location.hash.split('-')[0];
+  }
+  modalFocusedByUser = false;
+});
 
 ///////////////////////////////////////////////////////////////////////////////
 
