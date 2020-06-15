@@ -171,7 +171,6 @@ function closeModal() {
     history.replaceState(null, '', location.href.slice(0, -1));
   }
   modalPushCount = 0;
-  currentModalTeamNumber = null;
 }
 
 window.addEventListener('click', (e) => {
@@ -201,7 +200,6 @@ function populateModal(teamNumber) {
   });
 
   modalLinks.forEach((a, i) => a.href = `#${teamNumber}-${i}`);
-  currentModalTeamNumber = teamNumber;
 }
 
 function updateModalState() {
@@ -209,10 +207,14 @@ function updateModalState() {
   let teamNumber = parseInt(hashString[0]);
   let eventIndex = parseInt(hashString[1]);
 
+  let oldModalTeamNumber = currentModalTeamNumber;
+  currentModalTeamNumber = teamNumber;
+
   if (teamNumber === NaN || document.getElementById(`t${teamNumber}`) === null) {
     modalOpenedByUser = false;
     smith.className = '';
-  } else if (currentModalTeamNumber === teamNumber) {
+    return;
+  } else if (oldModalTeamNumber === currentModalTeamNumber) {
     modalPushCount++;
   } else {
     populateModal(teamNumber);
