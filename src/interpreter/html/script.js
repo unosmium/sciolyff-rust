@@ -290,6 +290,9 @@ window.addEventListener('resize', () => {
       eventIndex <= teamPenaltiesIndex) {
     let scrollLeftMax = modalBody.scrollWidth - modalBody.clientWidth;
     modalBody.scrollLeft = scrollLeftMax + 100;
+  } else if (!window.matchMedia('(max-width: 56em)').matches) {
+    focusArticleOnEvent(0);
+    history.replaceState(null, '', location.href + '-0');
   }
 });
 
