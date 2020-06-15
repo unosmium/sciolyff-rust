@@ -200,6 +200,9 @@ function populateModal(teamNumber) {
   });
 
   modalLinks.forEach((a, i) => a.href = `#${teamNumber}-${i}`);
+  modalBody.scrollLeft = 0;
+  modalNav.scrollTop = 0;
+  smith.className = 'visible';
 }
 
 function updateModalState() {
@@ -218,8 +221,6 @@ function updateModalState() {
     modalPushCount++;
   } else {
     populateModal(teamNumber);
-    modalBody.scrollLeft = 0;
-    smith.className = 'visible';
   }
 
   if (eventIndex !== NaN &&
