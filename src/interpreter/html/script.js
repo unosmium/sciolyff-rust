@@ -304,7 +304,7 @@ window.addEventListener('resize', () => {
 
   if (!window.matchMedia('(max-width: 28em)').matches) {
     focusOverflow.forEach((tag) => tag.style.display = '');
-  } else if (eventIndex !== NaN) {
+  } else if (parseInt(focusSelect.value) !== 0) {
     focusOverflow.forEach((tag) => tag.style.display = 'none');
   }
 });
