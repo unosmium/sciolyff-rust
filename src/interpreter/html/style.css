@@ -423,7 +423,6 @@ dd {
   div#subway {
     background: var(--banner-bg-color);
     width: 100%;
-    overflow-x: hidden;
   }
 
   main {

@@ -6,6 +6,7 @@ const enCollator = new Intl.Collator('en');
 const focusSelect = document.querySelector('#focus');
 const focusHeader = document.querySelector('main th:nth-child(3)');
 const focusColumn = [...document.querySelectorAll('main td:nth-child(3)')];
+const focusOverflow = [...document.querySelectorAll('main tr :nth-child(5)')];
 const teamPenaltiesIndex =
   parseInt(focusSelect.querySelector('option:last-child').value);
 
@@ -110,6 +111,9 @@ function focusOnEvent(eventIndex) {
       td.innerHTML = '';
       td.className = '';
     });
+    if (window.matchMedia('(max-width: 28em)').matches) {
+      focusOverflow.forEach((tag) => tag.style.display = '');
+    }
   } else {
     let col = eventIndex + 5;
     let eventHeader = document.querySelector(`th:nth-child(${col})`);
@@ -121,6 +125,9 @@ function focusOnEvent(eventIndex) {
       td.innerHTML = tdEvent.innerHTML;
       td.className = tdEvent.className;
     });
+    if (window.matchMedia('(max-width: 28em)').matches) {
+      focusOverflow.forEach((tag) => tag.style.display = 'none');
+    }
   }
 
   if (sortSelect.value === 'by Rank') {
@@ -283,7 +290,7 @@ function animateHorizontalScroll(reverse) {
 }
 
 window.addEventListener('resize', () => {
-  let eventIndex = location.hash.substring(1).split('-')[1];
+  let eventIndex = parseInt(location.hash.substring(1).split('-')[1]);
 
   if (eventIndex !== NaN &&
       eventIndex >= 0 &&
@@ -293,6 +300,12 @@ window.addEventListener('resize', () => {
   } else if (!window.matchMedia('(max-width: 56em)').matches) {
     focusArticleOnEvent(0);
     history.replaceState(null, '', location.href + '-0');
+  }
+
+  if (!window.matchMedia('(max-width: 28em)').matches) {
+    focusOverflow.forEach((tag) => tag.style.display = '');
+  } else if (eventIndex !== NaN) {
+    focusOverflow.forEach((tag) => tag.style.display = 'none');
   }
 });
 
