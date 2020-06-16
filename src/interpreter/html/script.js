@@ -16,9 +16,6 @@ const wrapper = document.getElementById('subway');
 const nonModalFocusables =
   document.querySelectorAll('#subway, #subway select, #subway a');
 
-let modalOpenedByUser = false;
-let modalFocusedByUser = false; // only used when width <= 56em
-let modalPushCount = 0;
 let currentModalTeamNumber = null;
 let currentModalEventIndex = null;
 
@@ -174,17 +171,12 @@ tbody.addEventListener('click', (e) => {
     if (e.target.tagName !== 'A') {
       e.target.closest('tr').querySelector('a').click();
     }
-    modalOpenedByUser = true;
   }
 });
 
 function closeModal() {
-  if (modalOpenedByUser) {
-    history.go(-modalPushCount - 1);
-  } else {
-    location.hash = '';
-    history.replaceState(null, '', location.href.slice(0, -1));
-  }
+  location.hash = '';
+  history.replaceState(null, '', location.href.slice(0, -1));
 }
 
 window.addEventListener('click', (e) => {
@@ -202,7 +194,6 @@ function populateModal(teamNumber) {
   let rowOverall = row.querySelector('td:nth-child(4)');
   let info = teamInfo[`t${teamNumber}`];
 
-  modalPushCount = 0;
   modalNav.style.visibility = 'visible';
   modalTeamNumber.innerHTML = teamNumber;
   modalTeamName.innerHTML = `${info.name} <small>${info.location}</small>`;
@@ -234,7 +225,6 @@ function updateModalState() {
   currentModalTeamNumber = teamNumber;
 
   if (isNaN(teamNumber) || document.getElementById(`t${teamNumber}`) === null) {
-    modalOpenedByUser = false;
     smith.className = '';
     modalNav.style.visibility = 'hidden';
     modalBack.style.display = 'none';
@@ -250,14 +240,6 @@ function updateModalState() {
     if (isNaN(eventIndex)) {
       animateHorizontalScroll(true);
       modalNav.querySelectorAll('a')[currentModalEventIndex].focus();
-
-      if (modalFocusedByUser) {
-        modalPushCount--;
-      }
-      modalFocusedByUser = false;
-
-    } else {
-      modalPushCount++;
     }
 
   } else {
@@ -514,18 +496,13 @@ function focusArticleOnEvent(eventIndex) {
 modalNav.addEventListener('click', (e) => {
   let row = e.target.closest('tr');
   if (row) {
-    modalFocusedByUser = window.matchMedia('(max-width: 56em)').matches
     location.hash = row.querySelector('a').getAttribute('href');
     e.preventDefault();
   }
 });
 
 modalBack.addEventListener('click', () => {
-  if (modalFocusedByUser) {
-    history.back();
-  } else {
-    location.hash = location.hash.split('-')[0];
-  }
+  location.hash = location.hash.split('-')[0];
 });
 
 ///////////////////////////////////////////////////////////////////////////////
