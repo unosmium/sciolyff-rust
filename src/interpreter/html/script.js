@@ -245,7 +245,17 @@ function updateModalState() {
     return;
 
   } else if (oldModalTeamNumber === currentModalTeamNumber) {
-    modalPushCount++;
+    if (isNaN(eventIndex)) {
+      animateHorizontalScroll(true);
+      if (modalFocusedByUser) {
+        modalPushCount--;
+      }
+      modalFocusedByUser = false;
+
+    } else {
+      modalPushCount++;
+    }
+
   } else {
     populateModal(teamNumber);
   }
@@ -272,8 +282,6 @@ function animateHorizontalScroll(reverse) {
 
   if (reverse) {
     modalNav.style.visibility = 'visible';
-    let eventIndex = parseInt(location.hash.substring(1).split('-')[1]);
-    modalNav.querySelectorAll('a')[eventIndex].focus();
   } else {
     modalBack.style.display = 'block';
     modalBack.focus();
@@ -509,14 +517,14 @@ modalNav.addEventListener('click', (e) => {
 });
 
 modalBack.addEventListener('click', () => {
-  animateHorizontalScroll(true);
+  let eventIndex = parseInt(location.hash.substring(1).split('-')[1]);
+  modalNav.querySelectorAll('a')[eventIndex].focus();
+
   if (modalFocusedByUser) {
     history.back();
-    modalPushCount -= 2;
   } else {
     location.hash = location.hash.split('-')[0];
   }
-  modalFocusedByUser = false;
 });
 
 ///////////////////////////////////////////////////////////////////////////////
