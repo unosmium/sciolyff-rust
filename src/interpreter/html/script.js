@@ -235,7 +235,7 @@ function updateModalState() {
   let oldModalTeamNumber = currentModalTeamNumber;
   currentModalTeamNumber = teamNumber;
 
-  if (teamNumber === NaN || document.getElementById(`t${teamNumber}`) === null) {
+  if (isNaN(teamNumber) || document.getElementById(`t${teamNumber}`) === null) {
     modalOpenedByUser = false;
     smith.className = '';
     modalNav.style.visibility = 'hidden';
@@ -260,7 +260,7 @@ function updateModalState() {
     populateModal(teamNumber);
   }
 
-  if (eventIndex !== NaN &&
+  if (!isNaN(eventIndex) &&
       eventIndex >= 0 &&
       eventIndex <= teamPenaltiesIndex) {
     focusArticleOnEvent(eventIndex);
@@ -334,7 +334,7 @@ window.addEventListener('resize', () => {
   let eventIndex = parseInt(hashString[1]);
 
   if (teamNumber && document.getElementById(`t${teamNumber}`) !== null) {
-    if (eventIndex !== NaN &&
+    if (!isNaN(eventIndex) &&
         eventIndex >= 0 &&
         eventIndex <= teamPenaltiesIndex) {
       let scrollLeftMax = modalBody.scrollWidth - modalBody.clientWidth;
@@ -347,7 +347,7 @@ window.addEventListener('resize', () => {
     if (!window.matchMedia('(max-width: 56em)').matches) {
       modalBack.style.display = 'none';
       modalNav.style.visibility = 'visible';
-    } else if (eventIndex !== NaN &&
+    } else if (!isNaN(eventIndex) &&
                eventIndex >= 0 &&
                eventIndex <= teamPenaltiesIndex) {
       modalBack.style.display = 'block';
