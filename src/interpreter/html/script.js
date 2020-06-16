@@ -39,6 +39,9 @@ const modalOverallInfo = modalArticle.querySelector('#overallInfo');
 const modalPlacingInfo = modalArticle.querySelector('#placingInfo');
 const mdDeetz = [...modalArticle.querySelectorAll('dd')];
 
+const firstTableFocusable = document.querySelector('main table a');
+const firstModalNavFocusable = document.querySelector('nav a');
+
 ////////////////////////////////////////////////////////////////////////////////
 
 function compareTeamRank(rowA, rowB) {
@@ -564,3 +567,8 @@ function pushQueryState(eventIndex, sortOption) {
 
 window.onpopstate = updateBasedOnQueryString;
 updateBasedOnQueryString();
+
+////////////////////////////////////////////////////////////////////////////////
+
+firstTableFocusable.onfocus = () => wrapper.scrollTop = 0;
+firstModalNavFocusable.onfocus = () => modalNav.scrollTop = 0;
