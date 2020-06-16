@@ -512,13 +512,12 @@ function focusArticleOnEvent(eventIndex) {
 
 
 modalNav.addEventListener('click', (e) => {
-  if (e.target.tagName !== 'A') {
-    let row = e.target.closest('tr');
-    if (row) {
-      row.querySelector('a').click();
-    }
+  let row = e.target.closest('tr');
+  if (row) {
+    modalFocusedByUser = window.matchMedia('(max-width: 56em)').matches
+    location.hash = row.querySelector('a').getAttribute('href');
+    e.preventDefault();
   }
-  modalFocusedByUser = window.matchMedia('(max-width: 56em)').matches
 });
 
 modalBack.addEventListener('click', () => {
