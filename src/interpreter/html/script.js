@@ -20,6 +20,7 @@ let modalOpenedByUser = false;
 let modalFocusedByUser = false; // only used when width <= 56em
 let modalPushCount = 0;
 let currentModalTeamNumber = null;
+let currentModalEventIndex = null;
 
 const modalBg = document.getElementById('smith');
 const modal = document.querySelector('div#smith section');
@@ -178,9 +179,6 @@ tbody.addEventListener('click', (e) => {
 });
 
 function closeModal() {
-  let teamNumber = parseInt(location.hash.substring(1).split('-')[0]);
-  document.getElementById(`t${teamNumber}`).querySelector('a').focus();
-
   if (modalOpenedByUser) {
     history.go(-modalPushCount - 1);
   } else {
@@ -242,11 +240,17 @@ function updateModalState() {
     modalBack.style.display = 'none';
     wrapper.removeAttribute('aria-hidden');
     nonModalFocusables.forEach((tag) => tag.removeAttribute('tabindex'));
+    if (oldModalTeamNumber) {
+      document.getElementById(`t${oldModalTeamNumber}`)
+              .querySelector('a').focus();
+    }
     return;
 
   } else if (oldModalTeamNumber === currentModalTeamNumber) {
     if (isNaN(eventIndex)) {
       animateHorizontalScroll(true);
+      modalNav.querySelectorAll('a')[currentModalEventIndex].focus();
+
       if (modalFocusedByUser) {
         modalPushCount--;
       }
@@ -263,6 +267,7 @@ function updateModalState() {
   if (!isNaN(eventIndex) &&
       eventIndex >= 0 &&
       eventIndex <= teamPenaltiesIndex) {
+    currentModalEventIndex = eventIndex;
     focusArticleOnEvent(eventIndex);
   } else if (!window.matchMedia('(max-width: 56em)').matches) {
     focusArticleOnEvent(0);
@@ -517,9 +522,6 @@ modalNav.addEventListener('click', (e) => {
 });
 
 modalBack.addEventListener('click', () => {
-  let eventIndex = parseInt(location.hash.substring(1).split('-')[1]);
-  modalNav.querySelectorAll('a')[eventIndex].focus();
-
   if (modalFocusedByUser) {
     history.back();
   } else {
