@@ -482,7 +482,7 @@ function updateBasedOnQueryString() {
   } else {
     focusSelect.value = 0;
   }
-  if(oldFocusVal !== focusSelect.value) {
+  if (oldFocusVal !== focusSelect.value) {
     focusOnEvent(parseInt(focusSelect.value));
   }
 
@@ -492,7 +492,7 @@ function updateBasedOnQueryString() {
   } else {
     sortSelect.value = 'by Rank';
   }
-  if(oldSortVal !== sortSelect.value) {
+  if (oldSortVal !== sortSelect.value) {
     sortTable(sortSelect.value);
   }
 }
