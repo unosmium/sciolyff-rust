@@ -290,16 +290,20 @@ function animateHorizontalScroll(reverse) {
 }
 
 window.addEventListener('resize', () => {
-  let eventIndex = parseInt(location.hash.substring(1).split('-')[1]);
+  let hashString = location.hash.substring(1).split('-');
+  let teamNumber = parseInt(hashString[0]);
+  let eventIndex = parseInt(hashString[1]);
 
-  if (eventIndex !== NaN &&
-      eventIndex >= 0 &&
-      eventIndex <= teamPenaltiesIndex) {
-    let scrollLeftMax = modalBody.scrollWidth - modalBody.clientWidth;
-    modalBody.scrollLeft = scrollLeftMax + 100;
-  } else if (!window.matchMedia('(max-width: 56em)').matches) {
-    focusArticleOnEvent(0);
-    history.replaceState(null, '', location.href + '-0');
+  if (teamNumber && document.getElementById(`t${teamNumber}`) !== null) {
+    if (eventIndex !== NaN &&
+        eventIndex >= 0 &&
+        eventIndex <= teamPenaltiesIndex) {
+      let scrollLeftMax = modalBody.scrollWidth - modalBody.clientWidth;
+      modalBody.scrollLeft = scrollLeftMax + 100;
+    } else if (!window.matchMedia('(max-width: 56em)').matches) {
+      focusArticleOnEvent(0);
+      history.replaceState(null, '', location.href + '-0');
+    }
   }
 
   if (!window.matchMedia('(max-width: 28em)').matches) {
