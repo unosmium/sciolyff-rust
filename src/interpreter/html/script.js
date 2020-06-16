@@ -178,13 +178,7 @@ tbody.addEventListener('click', (e) => {
 });
 
 function closeModal() {
-  let hashString = location.hash.substring(1).split('-');
-  let teamNumber = parseInt(hashString[0]);
-
-  modalNav.style.visibility = 'hidden';
-  modalBack.style.display = 'none';
-  wrapper.removeAttribute('aria-hidden');
-  nonModalFocusables.forEach((tag) => tag.removeAttribute('tabindex'));
+  let teamNumber = parseInt(location.hash.substring(1).split('-')[0]);
   document.getElementById(`t${teamNumber}`).querySelector('a').focus();
 
   if (modalOpenedByUser) {
@@ -244,7 +238,12 @@ function updateModalState() {
   if (teamNumber === NaN || document.getElementById(`t${teamNumber}`) === null) {
     modalOpenedByUser = false;
     smith.className = '';
+    modalNav.style.visibility = 'hidden';
+    modalBack.style.display = 'none';
+    wrapper.removeAttribute('aria-hidden');
+    nonModalFocusables.forEach((tag) => tag.removeAttribute('tabindex'));
     return;
+
   } else if (oldModalTeamNumber === currentModalTeamNumber) {
     modalPushCount++;
   } else {
