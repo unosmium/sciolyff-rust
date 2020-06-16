@@ -178,6 +178,8 @@ function closeModal() {
   let hashString = location.hash.substring(1).split('-');
   let teamNumber = parseInt(hashString[0]);
 
+  modalNav.style.visibility = 'hidden';
+  modalBack.style.display = 'none';
   wrapper.removeAttribute('aria-hidden');
   nonModalFocusables.forEach((tag) => tag.removeAttribute('tabindex'));
   document.getElementById(`t${teamNumber}`).querySelector('a').focus();
@@ -206,6 +208,7 @@ function populateModal(teamNumber) {
   let rowOverall = row.querySelector('td:nth-child(4)');
   let info = teamInfo[`t${teamNumber}`];
 
+  modalNav.style.visibility = 'visible';
   modalTeamNumber.innerHTML = teamNumber;
   modalTeamName.innerHTML = `${info.name} <small>${info.location}</small>`;
   modalOverall.innerHTML = rowOverall.innerHTML;
@@ -265,11 +268,22 @@ updateModalState();
 function animateHorizontalScroll(reverse) {
   let scrollLeftMax = modalBody.scrollWidth - modalBody.clientWidth;
 
+  if (reverse) {
+    modalNav.style.visibility = 'visible';
+    let eventIndex = parseInt(location.hash.substring(1).split('-')[1]);
+    modalNav.querySelectorAll('a')[eventIndex].focus();
+  } else {
+    modalBack.style.display = 'block';
+    modalBack.focus();
+  }
+
   function donzo() {
     if (reverse) {
       modalBody.scrollLeft = 0;
+      modalBack.style.display = 'none';
     } else {
       modalBody.scrollLeft = scrollLeftMax + 100;
+      modalNav.style.visibility = 'hidden';
     }
   }
 
@@ -318,6 +332,19 @@ window.addEventListener('resize', () => {
     } else if (!window.matchMedia('(max-width: 56em)').matches) {
       focusArticleOnEvent(0);
       history.replaceState(null, '', location.href + '-0');
+    }
+
+    if (!window.matchMedia('(max-width: 56em)').matches) {
+      modalBack.style.display = 'none';
+      modalNav.style.visibility = 'visible';
+    } else if (eventIndex !== NaN &&
+               eventIndex >= 0 &&
+               eventIndex <= teamPenaltiesIndex) {
+      modalBack.style.display = 'block';
+      modalNav.style.visibility = 'hidden';
+    } else {
+      modalBack.style.display = 'none';
+      modalNav.style.visibility = 'visible';
     }
   }
 

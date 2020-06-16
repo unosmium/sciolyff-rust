@@ -404,7 +404,6 @@ dd {
   }
 
   article button {
-    display: block;
     height: 4.25rem;
     width: 4.25rem;
     background: var(--banner-bg-color);
