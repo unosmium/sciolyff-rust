@@ -185,7 +185,6 @@ function closeModal() {
     location.hash = '';
     history.replaceState(null, '', location.href.slice(0, -1));
   }
-  modalPushCount = 0;
 }
 
 window.addEventListener('click', (e) => {
@@ -203,6 +202,7 @@ function populateModal(teamNumber) {
   let rowOverall = row.querySelector('td:nth-child(4)');
   let info = teamInfo[`t${teamNumber}`];
 
+  modalPushCount = 0;
   modalNav.style.visibility = 'visible';
   modalTeamNumber.innerHTML = teamNumber;
   modalTeamName.innerHTML = `${info.name} <small>${info.location}</small>`;
