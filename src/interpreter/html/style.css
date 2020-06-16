@@ -146,6 +146,7 @@ td {
 td sup {
   display: inline-block;
   width: 0;
+  line-height: 0;
 }
 
 main th:nth-child(1),
