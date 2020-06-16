@@ -12,11 +12,15 @@ const teamPenaltiesIndex =
 
 const thead = document.querySelector('thead');
 const close = document.getElementById('close');
+const wrapper = document.getElementById('subway');
+const nonModalFocusables =
+  document.querySelectorAll('#subway, #subway select, #subway a');
 
 let modalOpenedByUser = false;
 let modalFocusedByUser = false; // only used when width <= 56em
 let modalPushCount = 0;
 let currentModalTeamNumber = null;
+
 const modalBg = document.getElementById('smith');
 const modal = document.querySelector('div#smith section');
 const modalTeamNumber = modal.querySelector('h2 span');
@@ -171,6 +175,13 @@ tbody.addEventListener('click', (e) => {
 });
 
 function closeModal() {
+  let hashString = location.hash.substring(1).split('-');
+  let teamNumber = parseInt(hashString[0]);
+
+  wrapper.removeAttribute('aria-hidden');
+  nonModalFocusables.forEach((tag) => tag.removeAttribute('tabindex'));
+  document.getElementById(`t${teamNumber}`).querySelector('a').focus();
+
   if (modalOpenedByUser) {
     history.go(-modalPushCount - 1);
   } else {
@@ -210,6 +221,10 @@ function populateModal(teamNumber) {
   modalBody.scrollLeft = 0;
   modalNav.scrollTop = 0;
   smith.className = 'visible';
+
+  nonModalFocusables.forEach((tag) => tag.setAttribute('tabindex', '-1'));
+  wrapper.setAttribute('aria-hidden', 'true');
+  close.focus();
 }
 
 function updateModalState() {
