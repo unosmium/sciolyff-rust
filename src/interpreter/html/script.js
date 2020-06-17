@@ -553,7 +553,7 @@ function pushQueryState(eventIndex, sortOption) {
 window.onpopstate = updateBasedOnQueryString;
 updateBasedOnQueryString();
 
-////////////////////////////////////////////////////////////////////////////////
-
 firstTableFocusable.onfocus = () => wrapper.scrollTop = 0;
 firstModalNavFocusable.onfocus = () => modalNav.scrollTop = 0;
+
+////////////////////////////////////////////////////////////////////////////////

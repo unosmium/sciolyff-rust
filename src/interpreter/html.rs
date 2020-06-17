@@ -8,9 +8,11 @@ lazy_static! {
         // we will include them in the binary using include_str! macro
         let mut tera = Tera::new("asdf/*").unwrap();
         tera.add_raw_templates(vec![
-            ("template.html", include_str!("html/template.html")),
-            ("style.css",     include_str!("html/style.css")),
-            ("script.js",     include_str!("html/script.js")),
+            ("template.html",    include_str!("html/template.html")),
+            ("style.css",        include_str!("html/style.css")),
+            ("script.js",        include_str!("html/script.js")),
+            ("chartist.min.css", include_str!("html/chartist.min.css")),
+            ("chartist.min.js",  include_str!("html/chartist.min.js")),
         ]).unwrap();
         tera
     };
