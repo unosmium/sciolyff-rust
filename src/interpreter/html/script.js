@@ -7,6 +7,7 @@ const focusSelect = document.querySelector('#focus');
 const focusHeader = document.querySelector('main th:nth-child(3)');
 const focusColumn = [...document.querySelectorAll('main td:nth-child(3)')];
 const focusOverflow = [...document.querySelectorAll('main tr :nth-child(5)')];
+const tableLinks = [...document.querySelectorAll('main table a')];
 const teamPenaltiesIndex =
   parseInt(focusSelect.querySelector('option:last-child').value);
 
@@ -16,8 +17,8 @@ const wrapper = document.getElementById('subway');
 const nonModalFocusables =
   document.querySelectorAll('#subway, #subway select, #subway a');
 
-let currentModalTeamNumber = null;
-let currentModalEventIndex = null;
+let currentModalTeamNumber = NaN;
+let currentModalEventIndex = NaN;
 
 const modalBg = document.getElementById('smith');
 const modal = document.querySelector('div#smith section');
@@ -122,6 +123,9 @@ function focusOnEvent(eventIndex) {
     if (window.matchMedia('(max-width: 28em)').matches) {
       focusOverflow.forEach((tag) => tag.style.display = '');
     }
+    tableLinks.forEach((a) => {
+      a.setAttribute('href', a.getAttribute('href').split('-')[0]);
+    });
   } else {
     let col = eventIndex + 5;
     let eventHeader = document.querySelector(`th:nth-child(${col})`);
@@ -136,6 +140,10 @@ function focusOnEvent(eventIndex) {
     if (window.matchMedia('(max-width: 28em)').matches) {
       focusOverflow.forEach((tag) => tag.style.display = 'none');
     }
+    tableLinks.forEach((a) => {
+      let baseHash = a.getAttribute('href').split('-')[0];
+      a.setAttribute('href', `${baseHash}-${eventIndex}`);
+    });
   }
 
   if (sortSelect.value === 'by Rank') {
@@ -252,8 +260,9 @@ function updateModalState() {
   if (!isNaN(eventIndex) &&
       eventIndex >= 0 &&
       eventIndex <= teamPenaltiesIndex) {
+    let noAnimation = isNaN(oldModalTeamNumber);
     currentModalEventIndex = eventIndex;
-    focusArticleOnEvent(eventIndex);
+    focusArticleOnEvent(eventIndex, noAnimation);
   } else if (!window.matchMedia('(max-width: 56em)').matches) {
     focusArticleOnEvent(0);
     history.replaceState(null, '', location.href + '-0');
@@ -267,7 +276,7 @@ updateModalState();
 
 ///////////////////////////////////////////////////////////////////////////////
 
-function animateHorizontalScroll(reverse) {
+function animateHorizontalScroll(reverse, noAnimation) {
   let scrollLeftMax = modalBody.scrollWidth - modalBody.clientWidth;
 
   if (reverse) {
@@ -287,7 +296,8 @@ function animateHorizontalScroll(reverse) {
     }
   }
 
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+      noAnimation) {
     donzo();
     return;
   }
@@ -481,7 +491,7 @@ function populatePlacing(eventIndex, teamNumber) {
   mdDeetz[5].innerHTML = placing.isolated_points;
 }
 
-function focusArticleOnEvent(eventIndex) {
+function focusArticleOnEvent(eventIndex, noAnimation) {
   let teamNumber = parseInt(modalTeamNumber.innerHTML);
   modalArticle.scrollTop = 0;
 
@@ -494,7 +504,7 @@ function focusArticleOnEvent(eventIndex) {
   }
 
   if (window.matchMedia('(max-width: 56em)').matches) {
-    animateHorizontalScroll(false);
+    animateHorizontalScroll(false, noAnimation);
   }
 }
 
