@@ -373,6 +373,15 @@ div#overallInfo, div#placingInfo {
   display: none;
 }
 
+.ct-series-a .ct-point {
+  stroke: lightgrey;
+  stroke-width: 2em;
+}
+
+.ct-series-b .ct-point {
+  stroke: var(--banner-bg-color);
+}
+
 dd {
   font-weight: bold;
   margin-bottom: 0.25em;

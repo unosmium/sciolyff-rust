@@ -40,6 +40,9 @@ const mdDeetz = [...modalArticle.querySelectorAll('dd')];
 const firstTableFocusable = document.querySelector('main table a');
 const firstModalNavFocusable = document.querySelector('nav a');
 
+let overallChart;
+let eventChart;
+
 ////////////////////////////////////////////////////////////////////////////////
 
 function compareTeamRank(rowA, rowB) {
@@ -387,6 +390,7 @@ function populateOverall(teamNumber) {
     ${nonexhibitionTeamCount}</b> competing teams.
     `
   }
+  updateOverallChart(teamNumber);
 }
 
 function populatePenalties(teamNumber) {
@@ -557,3 +561,38 @@ firstTableFocusable.onfocus = () => wrapper.scrollTop = 0;
 firstModalNavFocusable.onfocus = () => modalNav.scrollTop = 0;
 
 ////////////////////////////////////////////////////////////////////////////////
+
+function updateOverallChart(teamNumber) {
+  let team = teamInfo[`t${teamNumber}`];
+  let data = {
+    series: [
+      [{ x: team.rank, y: team.points }],
+      Object.entries(teamInfo).map((t) => {
+        return { x: t[1].rank, y: t[1].points }
+      })
+    ]
+  };
+
+  if (overallChart) {
+    overallChart.update(data);
+  } else {
+    let options = {
+      low: 0,
+      showLine: false,
+      axisX: {
+        type: Chartist.AutoScaleAxis,
+        onlyInteger: true
+      },
+      axisY: {
+        onlyInteger: true
+      }
+    };
+    overallChart = new Chartist.Line('#overallInfo .ct-chart', data, options);
+  }
+}
+
+function updateEventChart(eventIndex, teamNumber) {
+  if (eventChart) {
+  } else {
+  }
+}
