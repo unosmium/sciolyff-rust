@@ -390,7 +390,7 @@ function populateOverall(teamNumber) {
     ${nonexhibitionTeamCount}</b> competing teams.
     `
   }
-  updateOverallChart(teamNumber);
+  updateOverallChart(team);
 }
 
 function populatePenalties(teamNumber) {
@@ -470,6 +470,8 @@ function populatePlacing(eventIndex, teamNumber) {
     (As a Trialed event, ${_event.name} did not add points to any team's total,
     due to unforseen circumstances during the competition.)`;
   }
+
+  updateEventChart(_event, placing);
 
   mdDeetz[0].innerHTML = placing.medal ? 'Yes':'No';
   mdDeetz[1].innerHTML = placing.exempt ? 'Yes':'No';
@@ -562,8 +564,7 @@ firstModalNavFocusable.onfocus = () => modalNav.scrollTop = 0;
 
 ////////////////////////////////////////////////////////////////////////////////
 
-function updateOverallChart(teamNumber) {
-  let team = teamInfo[`t${teamNumber}`];
+function updateOverallChart(team) {
   let data = {
     series: [
       [{ x: team.rank, y: team.points }],
@@ -591,8 +592,39 @@ function updateOverallChart(teamNumber) {
   }
 }
 
-function updateEventChart(eventIndex, teamNumber) {
-  if (eventChart) {
+function updateEventChart(_event, placing) {
+  let scores = _event.raw_scores;
+  if (scores.length === 0) {
+    return;
+  }
+
+  let highlight;
+  if (placing.place) {
+    let raw = scores[placing.place-1];
+    highlight = [{ x: raw[0], y: raw[1] }];
   } else {
+    highlight = [];
+  }
+
+  let data = {
+    series: [
+      highlight,
+      scores.map((r) => {
+        return { x: r[0], y: r[1] }
+      })
+    ]
+  };
+
+  if (eventChart) {
+    eventChart.update(data);
+  } else {
+    let options = {
+      showLine: false,
+      axisX: {
+        type: Chartist.AutoScaleAxis,
+        onlyInteger: true
+      }
+    };
+    eventChart = new Chartist.Line('#placingInfo .ct-chart', data, options);
   }
 }

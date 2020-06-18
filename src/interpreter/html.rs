@@ -85,6 +85,13 @@ impl super::Interpreter {
                     .placings()
                     .filter(|p| p.participated())
                     .count(),
+                raw_scores: e
+                    .placings()
+                    .filter(|p| p.raw().is_some())
+                    .map(|p| {
+                        (p.place().unwrap(), p.raw().as_ref().unwrap().score())
+                    })
+                    .collect(),
             })
             .collect()
     }
@@ -175,6 +182,7 @@ struct Event {
     trial: bool,
     trialed: bool,
     participation_count: usize,
+    raw_scores: Vec<(usize, f64)>,
 }
 
 #[derive(Serialize)]
