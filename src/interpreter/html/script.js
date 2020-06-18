@@ -53,7 +53,7 @@ function compareTeamRank(rowA, rowB) {
 }
 
 function compareRankInEvent(eventIndex) {
-  return function(rowA, rowB) {
+  return (rowA, rowB) => {
     let rankA = placingInfo[`${rowA.id}e${eventIndex}`].order;
     let rankB = placingInfo[`${rowB.id}e${eventIndex}`].order;
     return rankA - rankB;
@@ -105,7 +105,7 @@ function sortTable(option) {
   }
 }
 
-sortSelect.addEventListener('change', (e) => {
+sortSelect.addEventListener('change', e => {
   sortTable(e.target.value);
   pushQueryState(null, e.target.value);
 });
@@ -121,9 +121,9 @@ function focusOnEvent(eventIndex) {
       td.className = '';
     });
     if (window.matchMedia('(max-width: 28em)').matches) {
-      focusOverflow.forEach((tag) => tag.style.display = '');
+      focusOverflow.forEach(tag => { tag.style.display = '' });
     }
-    tableLinks.forEach((a) => {
+    tableLinks.forEach(a => {
       a.setAttribute('href', a.getAttribute('href').split('-')[0]);
     });
   } else {
@@ -132,15 +132,15 @@ function focusOnEvent(eventIndex) {
 
     focusHeader.id = 'focused';
     focusHeader.innerHTML = eventHeader.innerHTML;
-    focusColumn.forEach((td) => {
+    focusColumn.forEach(td => {
       let tdEvent = td.parentElement.querySelector(`td:nth-child(${col})`);
       td.innerHTML = tdEvent.innerHTML;
       td.className = tdEvent.className;
     });
     if (window.matchMedia('(max-width: 28em)').matches) {
-      focusOverflow.forEach((tag) => tag.style.display = 'none');
+      focusOverflow.forEach(tag => { tag.style.display = 'none' });
     }
-    tableLinks.forEach((a) => {
+    tableLinks.forEach(a => {
       let baseHash = a.getAttribute('href').split('-')[0];
       a.setAttribute('href', `${baseHash}-${eventIndex}`);
     });
@@ -151,7 +151,7 @@ function focusOnEvent(eventIndex) {
   }
 }
 
-focusSelect.addEventListener('change', (e) => {
+focusSelect.addEventListener('change', e => {
   let eventIndex = parseInt(e.target.value);
   focusOnEvent(eventIndex);
   pushQueryState(eventIndex, null);
@@ -159,7 +159,7 @@ focusSelect.addEventListener('change', (e) => {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-thead.addEventListener('click', (e) => {
+thead.addEventListener('click', e => {
   let col = e.target.closest('th').cellIndex;
   if (col === 0) {
     sortSelect.value = 'by Number';
@@ -177,7 +177,7 @@ thead.addEventListener('click', (e) => {
   sortSelect.dispatchEvent(new Event('change'));
 });
 
-tbody.addEventListener('click', (e) => {
+tbody.addEventListener('click', e => {
   if (e.target.closest('td').cellIndex < 5) {
     if (e.target.tagName !== 'A') {
       e.target.closest('tr').querySelector('a').click();
@@ -190,13 +190,13 @@ function closeModal() {
   history.replaceState(null, '', location.href.slice(0, -1));
 }
 
-window.addEventListener('click', (e) => {
+window.addEventListener('click', e => {
   if (e.target === modalBg) {
     closeModal()
   }
 });
 
-close.addEventListener('click', (e) => closeModal());
+close.addEventListener('click', e => closeModal());
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -217,12 +217,12 @@ function populateModal(teamNumber) {
     td.className = tdEvent.className;
   });
 
-  modalLinks.forEach((a, i) => a.href = `#${teamNumber}-${i}`);
+  modalLinks.forEach((a, i) => { a.href = `#${teamNumber}-${i}` });
   modalBody.scrollLeft = 0;
   modalNav.scrollTop = 0;
   smith.className = 'visible';
 
-  nonModalFocusables.forEach((tag) => tag.setAttribute('tabindex', '-1'));
+  nonModalFocusables.forEach(tag => tag.setAttribute('tabindex', '-1'));
   wrapper.setAttribute('aria-hidden', 'true');
   close.focus();
 }
@@ -240,7 +240,7 @@ function updateModalState() {
     modalNav.style.visibility = 'hidden';
     modalBack.style.display = 'none';
     wrapper.removeAttribute('aria-hidden');
-    nonModalFocusables.forEach((tag) => tag.removeAttribute('tabindex'));
+    nonModalFocusables.forEach(tag => tag.removeAttribute('tabindex'));
     if (oldModalTeamNumber) {
       document.getElementById(`t${oldModalTeamNumber}`)
               .querySelector('a').focus();
@@ -269,7 +269,7 @@ function updateModalState() {
   }
 }
 
-window.addEventListener("beforeunload", () => smith.className = '');
+window.addEventListener("beforeunload", () => { smith.className = '' });
 window.addEventListener('hashchange', () => updateModalState());
 
 updateModalState();
@@ -359,9 +359,9 @@ window.addEventListener('resize', () => {
   }
 
   if (!window.matchMedia('(max-width: 28em)').matches) {
-    focusOverflow.forEach((tag) => tag.style.display = '');
+    focusOverflow.forEach(tag => { tag.style.display = '' });
   } else if (parseInt(focusSelect.value) !== 0) {
-    focusOverflow.forEach((tag) => tag.style.display = 'none');
+    focusOverflow.forEach(tag => { tag.style.display = 'none' });
   }
 });
 
@@ -509,7 +509,7 @@ function focusArticleOnEvent(eventIndex, noAnimation) {
 }
 
 
-modalNav.addEventListener('click', (e) => {
+modalNav.addEventListener('click', e => {
   let row = e.target.closest('tr');
   if (row) {
     location.hash = row.querySelector('a').getAttribute('href');
@@ -569,8 +569,8 @@ function pushQueryState(eventIndex, sortOption) {
 window.onpopstate = updateBasedOnQueryString;
 updateBasedOnQueryString();
 
-firstTableFocusable.onfocus = () => wrapper.scrollTop = 0;
-firstModalNavFocusable.onfocus = () => modalNav.scrollTop = 0;
+firstTableFocusable.onfocus = () => { wrapper.scrollTop = 0 };
+firstModalNavFocusable.onfocus = () => { modalNav.scrollTop = 0 };
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -578,9 +578,7 @@ function updateOverallChart(team) {
   let data = {
     series: [
       [{ x: team.rank, y: team.points }],
-      Object.entries(teamInfo).map((t) => {
-        return { x: t[1].rank, y: t[1].points }
-      })
+      Object.entries(teamInfo).map(t => ({ x: t[1].rank, y: t[1].points }))
     ]
   };
 
@@ -619,9 +617,7 @@ function updateEventChart(_event, placing) {
   let data = {
     series: [
       highlight,
-      scores.map((r) => {
-        return { x: r[0], y: r[1] }
-      })
+      scores.map(r => ({ x: r[0], y: r[1] }))
     ]
   };
 
