@@ -625,16 +625,18 @@ function updateEventChart(_event, placing) {
     ]
   };
 
+  let options = {
+    low: Math.min(0, ...scores.map(r => r[1])),
+    showLine: false,
+    axisX: {
+      type: Chartist.AutoScaleAxis,
+      onlyInteger: true
+    }
+  };
+
   if (eventChart) {
-    eventChart.update(data);
+    eventChart.update(data, options);
   } else {
-    let options = {
-      showLine: false,
-      axisX: {
-        type: Chartist.AutoScaleAxis,
-        onlyInteger: true
-      }
-    };
     eventChart = new Chartist.Line('#placingInfo .ct-chart', data, options);
   }
 }
