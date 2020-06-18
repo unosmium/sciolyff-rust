@@ -37,12 +37,14 @@ const modalP = modalArticle.querySelector('p');
 const modalOverallInfo = modalArticle.querySelector('#overallInfo');
 const modalPlacingInfo = modalArticle.querySelector('#placingInfo');
 const mdDeetz = [...modalArticle.querySelectorAll('dd')];
+const rawDeetz = document.getElementById('rawDetails');
 
 const firstTableFocusable = document.querySelector('main table a');
 const firstModalNavFocusable = document.querySelector('nav a');
 
 let overallChart;
 let eventChart;
+const eventChartContainer = document.querySelector('#placingInfo .ct-chart');
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -601,28 +603,46 @@ function updateOverallChart(team) {
 }
 
 function updateEventChart(_event, placing) {
-  let scores = _event.raw_scores;
-  if (scores.length === 0) {
+  let raws = _event.raws;
+  if (raws.length === 0) {
+    eventChartContainer.style.display = 'none';
+    rawDeetz.innerHTML = 'Raw scores were not released for this event.';
     return;
+  } else {
+    eventChartContainer.style.display = 'block';
   }
 
   let highlight;
   if (placing.place) {
-    let raw = scores[placing.place-1];
-    highlight = [{ x: raw[0], y: raw[1] }];
+    let raw = raws[placing.place-1];
+
+    if (raw.tiebreaker_rank === 1) {
+      rawDeetz.innerHTML = `
+      They earned a <b>score of ${raw.score}</b> in <b>Tier ${raw.tier}</b> and
+      <b>won the tiebreaker</b> (if any).
+      `;
+    } else {
+      rawDeetz.innerHTML = `
+      They earned a <b>score of ${raw.score}</b> in <b>Tier ${raw.tier}</b> and
+      ranked <b>${getOrdinal(raw.tiebreaker_rank)} in the tiebreaker</b>.
+      `;
+    }
+
+    highlight = [{ x: raw.place, y: raw.score }];
   } else {
+    rawDeetz.innerHTML = '';
     highlight = [];
   }
 
   let data = {
     series: [
       highlight,
-      scores.map(r => ({ x: r[0], y: r[1] }))
+      raws.map(r => ({ x: r.place, y: r.score }))
     ]
   };
 
   let options = {
-    low: Math.min(0, ...scores.map(r => r[1])),
+    low: Math.min(0, ...raws.map(r => r.score)),
     showLine: false,
     axisX: {
       type: Chartist.AutoScaleAxis,

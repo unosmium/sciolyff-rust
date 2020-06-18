@@ -85,11 +85,17 @@ impl super::Interpreter {
                     .placings()
                     .filter(|p| p.participated())
                     .count(),
-                raw_scores: e
+                raws: e
                     .placings()
                     .filter(|p| p.raw().is_some())
                     .map(|p| {
-                        (p.place().unwrap(), p.raw().as_ref().unwrap().score())
+                        let raw = p.raw().as_ref().unwrap();
+                        Raw {
+                            place: p.place().unwrap(),
+                            score: raw.score(),
+                            tier: raw.tier(),
+                            tiebreaker_rank: raw.tiebreaker_rank(),
+                        }
                     })
                     .collect(),
             })
@@ -182,7 +188,15 @@ struct Event {
     trial: bool,
     trialed: bool,
     participation_count: usize,
-    raw_scores: Vec<(usize, f64)>,
+    raws: Vec<Raw>,
+}
+
+#[derive(Serialize)]
+struct Raw {
+    place: usize,
+    score: f64,
+    tier: u8,
+    tiebreaker_rank: u8,
 }
 
 #[derive(Serialize)]
