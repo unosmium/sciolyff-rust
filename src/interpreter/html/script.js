@@ -46,6 +46,9 @@ let overallChart;
 let eventChart;
 const eventChartContainer = document.querySelector('#placingInfo .ct-chart');
 
+let animationsDisabled = false;
+let startX;
+
 ////////////////////////////////////////////////////////////////////////////////
 
 function compareTeamRank(rowA, rowB) {
@@ -299,7 +302,7 @@ function animateHorizontalScroll(reverse, noAnimation) {
   }
 
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
-      noAnimation) {
+      noAnimation || animationsDisabled) {
     donzo();
     return;
   }
@@ -656,3 +659,20 @@ function updateEventChart(_event, placing) {
     eventChart = new Chartist.Line('#placingInfo .ct-chart', data, options);
   }
 }
+
+////////////////////////////////////////////////////////////////////////////////
+
+window.addEventListener('touchstart', e => {
+  startX = e.touches[0].clientX;
+});
+
+window.addEventListener('touchend', e => {
+  if (Math.abs(startX - e.changedTouches[0].clientX) > 50) {
+    modalBg.style.transition = 'none';
+    animationsDisabled = true;
+    window.setTimeout(() => {
+      modalBg.style.transition = '';
+      animationsDisabled = false;
+    }, 150);
+  }
+});
