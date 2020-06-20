@@ -497,7 +497,7 @@ function populatePlacing(eventIndex, teamNumber) {
 
 function focusArticleOnEvent(eventIndex, noAnimation) {
   let teamNumber = parseInt(modalTeamNumber.innerHTML);
-  modalArticle.scrollTop = 0;
+  if (!animationsDisabled) { modalArticle.scrollTop = 0; }
 
   if (eventIndex === 0) {
     populateOverall(teamNumber);
