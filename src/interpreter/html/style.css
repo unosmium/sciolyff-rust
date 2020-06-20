@@ -323,6 +323,7 @@ div#liver {
 nav {
   overflow-y: scroll;
   overscroll-behavior-y: contain;
+  -webkit-tap-highlight-color: transparent;
   -webkit-overflow-scrolling: touch;
   min-width: -webkit-min-content;
   min-width: min-content;
@@ -381,7 +382,7 @@ article p {
   font-size: inherit;
 }
 
-div#overallInfo, div#placingInfo {
+div#overallInfo, div#epInfo {
   display: none;
 }
 

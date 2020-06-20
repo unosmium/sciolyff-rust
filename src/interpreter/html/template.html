@@ -189,7 +189,7 @@
 <h4>Team Points vs. Rank</h4>
 <div class="ct-chart ct-minor-third"></div>
 </div>
-<div id="placingInfo">
+<div id="epInfo">
 <h4>Raw Score vs. Place</h4>
 <div class="ct-chart ct-minor-third"></div>
 <p id="rawDetails"></p>
@@ -241,10 +241,12 @@ const placingInfo = {
 };
 </script>
 <script src="./src/interpreter/html/chartist.min.js"></script>
+<script src="./src/interpreter/html/polyfills.min.js"></script>
 <script src="./src/interpreter/html/script.js"></script>
 {#
 <script>
 {% include "chartist.min.js" %}
+{% include "polyfills.min.js" %}
 {% include "script.js" -%}
 </script>
 #}

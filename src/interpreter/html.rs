@@ -13,6 +13,7 @@ lazy_static! {
             ("script.js",        include_str!("html/script.js")),
             ("chartist.min.css", include_str!("html/chartist.min.css")),
             ("chartist.min.js",  include_str!("html/chartist.min.js")),
+            ("polyfills.min.js",  include_str!("html/polyfills.min.js")),
         ]).unwrap();
         tera
     };

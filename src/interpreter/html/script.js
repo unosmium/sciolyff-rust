@@ -35,7 +35,7 @@ const modalBack = modalArticle.querySelector('button');
 const modalH3 = modalArticle.querySelector('h3');
 const modalP = modalArticle.querySelector('p');
 const modalOverallInfo = modalArticle.querySelector('#overallInfo');
-const modalPlacingInfo = modalArticle.querySelector('#placingInfo');
+const modalPlacingInfo = modalArticle.querySelector('#epInfo');
 const mdDeetz = [...modalArticle.querySelectorAll('dd')];
 const rawDeetz = document.getElementById('rawDetails');
 
@@ -44,7 +44,7 @@ const firstModalNavFocusable = document.querySelector('nav a');
 
 let overallChart;
 let eventChart;
-const eventChartContainer = document.querySelector('#placingInfo .ct-chart');
+const eventChartContainer = document.querySelector('#epInfo .ct-chart');
 
 let animationsDisabled = false;
 let startX;
@@ -582,7 +582,9 @@ function updateOverallChart(team) {
   let data = {
     series: [
       [{ x: team.rank, y: team.points }],
-      Object.entries(teamInfo).map(t => ({ x: t[1].rank, y: t[1].points }))
+      Object.keys(teamInfo)
+      .map(k => teamInfo[k])
+      .map(t => ({ x: t.rank, y: t.points }))
     ]
   };
 
@@ -655,7 +657,7 @@ function updateEventChart(_event, placing) {
   if (eventChart) {
     eventChart.update(data, options);
   } else {
-    eventChart = new Chartist.Line('#placingInfo .ct-chart', data, options);
+    eventChart = new Chartist.Line('#epInfo .ct-chart', data, options);
   }
 }
 
