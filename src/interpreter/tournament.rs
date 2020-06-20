@@ -185,16 +185,22 @@ impl Tournament {
     }
 
     fn calc_medals(&self) -> u8 {
-        cmp::max(
-            (self.nonexhibition_team_count() as f32 / 10.).ceil() as u8,
-            3,
+        cmp::min(
+            cmp::max(
+                (self.nonexhibition_team_count() as f32 / 10.).ceil() as u8,
+                3,
+            ),
+            10,
         )
     }
 
     fn calc_trophies(&self) -> u8 {
-        cmp::max(
-            (self.nonexhibition_team_count() as f32 / 6.).ceil() as u8,
-            3,
+        cmp::min(
+            cmp::max(
+                (self.nonexhibition_team_count() as f32 / 6.).ceil() as u8,
+                3,
+            ),
+            10,
         )
     }
 
