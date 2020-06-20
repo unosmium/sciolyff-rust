@@ -25,7 +25,7 @@ const modal = document.querySelector('div#smith section');
 const modalTeamNumber = modal.querySelector('h2 span');
 const modalTeamName = modal.querySelector('p');
 const modalOverall = modal.querySelector('td:nth-child(2)');
-const modalColumn = [...modal.querySelectorAll('td:nth-child(2)')].slice(1);
+const modalColumn = [...modal.querySelectorAll('td:nth-child(2) div')].slice(1);
 const modalLinks = [...modal.querySelectorAll('td:nth-child(3) a')];
 
 const modalBody = modal.querySelector('#liver');
@@ -214,7 +214,6 @@ function populateModal(teamNumber) {
   modalTeamNumber.innerHTML = teamNumber;
   modalTeamName.innerHTML = `${info.name} <small>${info.location}</small>`;
   modalOverall.innerHTML = rowOverall.innerHTML;
-  modalOverall.className = rowOverall.className;
 
   modalColumn.forEach((td, i) => {
     let tdEvent = row.querySelector(`td:nth-child(${i + 6})`);

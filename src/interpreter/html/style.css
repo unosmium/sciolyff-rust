@@ -185,27 +185,39 @@ main td:nth-child(2), section td:nth-child(1) {
   overflow: hidden;
 }
 
+main td:nth-child(4) {
+  padding: 0;
+  width: 4em;
+}
 
-td[class|="m"], td[class|="y"] {
+main td:nth-child(4) div,
+nav td:nth-child(2) div {
+  display: table-cell;
+  vertical-align: middle;
+  height: inherit;
+  width: inherit;
+}
+
+[class|="m"], [class|="y"] {
   background-color: #e0e0e0;
 }
 
-td.y-1, td.m-1 { background-color: #ffee58; }
-td.y-2, td.m-2 { background-color: #cfd8dc; }
-td.y-3, td.m-3 { background-color: #d8bf99; }
-td.y-4, td.m-4 { background-color: #ffefc0; }
-td.y-5, td.m-5 { background-color: #dcedc8; }
-td.y-6, td.m-6 { background-color: #f8bbd0; }
-td.y-7, td.m-7 { background-color: #eeccff; }
-td.y-8, td.m-8 { background-color: #fdd5b4; }
-td.y-9, td.m-9 { background-color: #ebedd8; }
-td.y-10, td.m-10 { background-color: #d4f0f1; }
+.y-1, .m-1 { background-color: #ffee58; }
+.y-2, .m-2 { background-color: #cfd8dc; }
+.y-3, .m-3 { background-color: #d8bf99; }
+.y-4, .m-4 { background-color: #ffefc0; }
+.y-5, .m-5 { background-color: #dcedc8; }
+.y-6, .m-6 { background-color: #f8bbd0; }
+.y-7, .m-7 { background-color: #eeccff; }
+.y-8, .m-8 { background-color: #fdd5b4; }
+.y-9, .m-9 { background-color: #ebedd8; }
+.y-10, .m-10 { background-color: #d4f0f1; }
 
-td[class|="m"] {
+[class|="m"] {
   clip-path: circle(0.9em);
 }
 
-td[class|="y"] {
+[class|="y"] {
   clip-path: ellipse(1.75rem 0.9rem);
 }
 
@@ -478,15 +490,15 @@ dd {
     font-size: 15px;
   }
 
-  main td[class|="y"] {
+  main [class|="y"] {
     clip-path: ellipse(1.75rem 45%);
   }
 
-  nav td[class|="y"] {
+  nav [class|="y"] {
     clip-path: ellipse(1.75rem 1.125rem);
   }
 
-  main td[class|="m"] {
+  main [class|="m"] {
     clip-path: circle(1.125rem);
   }
 
@@ -508,7 +520,7 @@ dd {
   :visited { color: #BC8BEA; }
   :link:active, :visited:active { color: #FF7575; }
 
-  td[class|="m"], td[class|="y"] {
+  [class|="m"], [class|="y"] {
     color: var(--table-bg-color);
   }
 
@@ -591,7 +603,7 @@ dd {
     cursor: auto;
   }
 
-  td[class|="m"], td[class|="y"] {
+  [class|="m"], [class|="y"] {
     background-color: inherit;
     clip-path: none;
   }

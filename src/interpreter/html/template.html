@@ -89,7 +89,7 @@
   <td><a href="#{{ team.number }}">{{ team.number }}</a></td>
   <td>{{ team.short_name }} <small>{{ team.location }}</small></td>
   <td></td>
-  <td
+  <td><div
     {%- if team.trophy -%}
       {{ ' ' }}class="y-{{ team.trophy }}"
     {%- endif -%}
@@ -104,7 +104,7 @@
       <sup>✧</sup>
     {%- endif -%}
   {%- endif -%}
-  </td>
+  </div></td>
   <td>{{ team.points }}</td>
   {% for placing in team.placings -%}
   <td
@@ -157,7 +157,7 @@
 <table>
 <tr>
   <td>Overall Rank</td>
-  <td></td>
+  <td><div></div></td>
   <td><a aria-label="View details"></a></td>
 </tr>
 </table>
@@ -171,13 +171,13 @@
     {{ ' ' }}(Trialed)
   {%- endif -%}
   </td>
-  <td></td>
+  <td><div></div></td>
   <td><a aria-label="View details"></a></td>
 </tr>
 {% endfor -%}
 <tr>
   <td>Team Penalties</td>
-  <td></td>
+  <td><div></div></td>
   <td><a aria-label="View details"></a></td>
 </tr>
 </table>
