@@ -11,6 +11,8 @@ const tableLinks = [...document.querySelectorAll('main table a')];
 const teamPenaltiesIndex =
   parseInt(focusSelect.querySelector('option:last-child').value);
 
+const subSelect = document.querySelector('#sub');
+
 const thead = document.querySelector('thead');
 const close = document.getElementById('close');
 const wrapper = document.getElementById('subway');
@@ -112,7 +114,7 @@ function sortTable(option) {
 
 sortSelect.addEventListener('change', e => {
   sortTable(e.target.value);
-  pushQueryState(null, e.target.value);
+  pushQueryState(null, e.target.value, null);
 });
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -159,8 +161,33 @@ function focusOnEvent(eventIndex) {
 focusSelect.addEventListener('change', e => {
   let eventIndex = parseInt(e.target.value);
   focusOnEvent(eventIndex);
-  pushQueryState(eventIndex, null);
+  pushQueryState(eventIndex, null, null);
 });
+
+///////////////////////////////////////////////////////////////////////////////
+
+function filterSubdivision(subdivision) {
+  if (subdivision === "Combined") {
+    rows.forEach(row => row.style.display = '');
+
+  } else {
+    rows.forEach(row => {
+      if (teamInfo[row.id].subdivision === subdivision) {
+        row.style.display = '';
+      } else {
+        row.style.display = 'none';
+      }
+    });
+  }
+}
+
+if (subSelect) {
+  subSelect.addEventListener('change', e => {
+    let subdivision = e.target.value;
+    filterSubdivision(subdivision);
+    pushQueryState(null, null, subdivision);
+  });
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -527,31 +554,30 @@ modalBack.addEventListener('click', () => {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-function updateBasedOnQueryString() {
-  let search = new URLSearchParams(location.search);
 
-  let oldFocusVal = focusSelect.value;
-  if (search.has('focus')) {
-    focusSelect.value = search.get('focus');
+function updateSelect(searchParams, tag, key, defaultVal, selectFunction) {
+  let oldSelectVal = tag.value;
+  if (searchParams.has(key)) {
+    tag.value = searchParams.get(key);
   } else {
-    focusSelect.value = 0;
+    tag.value = defaultVal;
   }
-  if (oldFocusVal !== focusSelect.value) {
-    focusOnEvent(parseInt(focusSelect.value));
-  }
-
-  let oldSortVal = sortSelect.value;
-  if (search.has('sort')) {
-    sortSelect.value = search.get('sort');
-  } else {
-    sortSelect.value = 'by Rank';
-  }
-  if (oldSortVal !== sortSelect.value) {
-    sortTable(sortSelect.value);
+  if (oldSelectVal !== tag.value) {
+    selectFunction(tag.value);
   }
 }
 
-function pushQueryState(eventIndex, sortOption) {
+function updateBasedOnQueryString() {
+  let s = new URLSearchParams(location.search);
+
+  updateSelect(s, focusSelect, 'focus', 0, v => focusOnEvent(parseInt(v)));
+  updateSelect(s, sortSelect, 'sort', 'by Rank', sortTable);
+  if (subSelect) {
+    updateSelect(s, subSelect, 'subdivision', 'Combined', filterSubdivision);
+  }
+}
+
+function pushQueryState(eventIndex, sortOption, subdivision) {
   let newSearch = new URLSearchParams(location.search);
   if (eventIndex === 0) {
     newSearch.delete('focus');
@@ -563,6 +589,12 @@ function pushQueryState(eventIndex, sortOption) {
     newSearch.delete('sort');
   } else if (sortOption !== null) {
     newSearch.set('sort', sortOption);
+  }
+
+  if (subdivision === 'Combined') {
+    newSearch.delete('subdivision');
+  } else if (subdivision !== null) {
+    newSearch.set('subdivision', subdivision);
   }
 
   let newURL = new URL(location);
