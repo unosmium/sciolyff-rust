@@ -1,6 +1,8 @@
+use serde::Serialize;
 use serde::Deserialize;
 
-#[derive(Debug, Clone, Deserialize)]
+#[serde_with::skip_serializing_none]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Rep {
     #[serde(rename = "Tournament")]
     pub tournament: Tournament,
@@ -16,7 +18,8 @@ pub struct Rep {
     pub penalties: Option<Vec<Penalty>>,
 }
 
-#[derive(Debug, Clone, Deserialize)]
+#[serde_with::skip_serializing_none]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Tournament {
     pub name: Option<String>,
     #[serde(rename = "short name")]
@@ -44,7 +47,8 @@ pub struct Tournament {
     pub bids_per_school: Option<u8>,
 }
 
-#[derive(Debug, Clone, Deserialize)]
+#[serde_with::skip_serializing_none]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Subdivision {
     pub name: String,
     #[serde(rename = "maximum place")]
@@ -53,7 +57,8 @@ pub struct Subdivision {
     pub medals: Option<u8>,
 }
 
-#[derive(Debug, Clone, Deserialize)]
+#[serde_with::skip_serializing_none]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Event {
     pub name: String,
     pub trial: Option<bool>,
@@ -61,7 +66,8 @@ pub struct Event {
     pub scoring: Option<String>,
 }
 
-#[derive(Debug, Clone, Deserialize)]
+#[serde_with::skip_serializing_none]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Team {
     pub school: String,
     #[serde(rename = "school abbreviation")]
@@ -75,7 +81,8 @@ pub struct Team {
     pub state: String,
 }
 
-#[derive(Debug, Clone, Deserialize)]
+#[serde_with::skip_serializing_none]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Placing {
     pub event: String,
     pub team: usize,
@@ -88,7 +95,8 @@ pub struct Placing {
     pub raw: Option<Raw>,
 }
 
-#[derive(Debug, Clone, Deserialize)]
+#[serde_with::skip_serializing_none]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Raw {
     pub score: f64,
     pub tier: Option<u8>,
@@ -96,7 +104,7 @@ pub struct Raw {
     pub tiebreaker_rank: Option<u8>,
 }
 
-#[derive(Debug, Clone, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Penalty {
     pub team: usize,
     pub points: u8,

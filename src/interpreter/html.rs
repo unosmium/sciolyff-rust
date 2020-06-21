@@ -26,6 +26,7 @@ impl super::Interpreter {
             subdivisions: self.subdivisions_info(),
             events: self.events_info(),
             teams: self.teams_info(),
+            rep_yaml: serde_yaml::to_string(&self.rep).unwrap(),
         };
         let context = Context::from_serialize(rep).unwrap();
         TEMPLATES.render("template.html", &context).unwrap()
@@ -161,6 +162,7 @@ struct Rep {
     subdivisions: Vec<Subdivision>,
     events: Vec<Event>,
     teams: Vec<Team>,
+    rep_yaml: String,
 }
 
 #[derive(Serialize)]
