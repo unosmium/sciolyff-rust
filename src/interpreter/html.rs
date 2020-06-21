@@ -176,7 +176,6 @@ impl super::Interpreter {
                     .dropped_as_part_of_worst_placings(),
                 points: p.points(),
                 isolated_points: p.isolated_points(),
-                considered_for_team_points: p.considered_for_team_points(),
                 points_affected_by_exhibition: p
                     .points_affected_by_exhibition(),
                 points_limited_by_maximum_place: p
@@ -267,7 +266,6 @@ struct Placing {
     dropped_as_part_of_worst_placings: bool,
     points: usize,
     isolated_points: usize,
-    considered_for_team_points: bool,
     points_affected_by_exhibition: bool,
     points_limited_by_maximum_place: bool,
 }
