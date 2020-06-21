@@ -220,10 +220,10 @@ const eventInfo = {
 const teamInfo = {
 {% for team in teams -%}
 "t{{ team.number}}":{
-  "school":"{{ team.school }}",
-  "name":"{{ team.name }}",
-  "location":"{{ team.location }}",
-  "state":"{{ team.state }}",
+  "school":{{ team.school | json_encode() | safe }},
+  "name":{{ team.name | json_encode() | safe }},
+  "location":{{ team.location | json_encode() | safe }},
+  "state":{{ team.state | json_encode() | safe }},
   "rank":{{ team.rank }},
   "points":{{ team.points }},
   "trophy":{{ team.trophy | default(value="null")}},
