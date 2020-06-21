@@ -78,7 +78,7 @@ impl Interpreter {
     }
 
     pub fn raws(&self) -> bool {
-        !self.placings.iter().any(|p| p.place().is_some())
+        self.placings.iter().any(|p| p.raw().is_some())
     }
 
     fn create_subdivisions(&mut self) {

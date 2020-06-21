@@ -1,5 +1,6 @@
 use lazy_static::lazy_static;
 use serde::Serialize;
+use std::collections::HashMap;
 use tera::{Context, Tera};
 
 lazy_static! {
@@ -20,16 +21,41 @@ lazy_static! {
 }
 
 impl super::Interpreter {
-    pub fn to_html(&self) -> String {
+    pub fn to_html(&self, hide_raw: bool, color: &str) -> String {
+        let rep_yaml = if hide_raw && self.raws() {
+            let crate_rep = self.replace_raw_scores_in_rep();
+            serde_yaml::to_string(&crate_rep).unwrap()
+        } else {
+            serde_yaml::to_string(&self.rep).unwrap()
+        };
         let rep = Rep {
             tournament: self.tournament_info(),
             subdivisions: self.subdivisions_info(),
-            events: self.events_info(),
+            events: self.events_info(hide_raw),
             teams: self.teams_info(),
-            rep_yaml: serde_yaml::to_string(&self.rep).unwrap(),
+            rep_yaml,
+            color: color.to_string(),
         };
         let context = Context::from_serialize(rep).unwrap();
         TEMPLATES.render("template.html", &context).unwrap()
+    }
+
+    fn replace_raw_scores_in_rep(&self) -> crate::rep::Rep {
+        let mut replaced_rep = self.rep.clone();
+        let placings = self
+            .placings()
+            .iter()
+            .map(|p| ((p.event().name(), p.team().number()), p))
+            .collect::<HashMap<_, _>>();
+
+        for p_rep in &mut replaced_rep.placings {
+            let placing = placings[&(p_rep.event.as_str(), p_rep.team)];
+
+            p_rep.place = placing.place();
+            p_rep.raw = None;
+            p_rep.tie = if placing.tie() { Some(true) } else { None };
+        }
+        replaced_rep
     }
 
     fn tournament_info(&self) -> Tournament {
@@ -76,7 +102,7 @@ impl super::Interpreter {
         subs
     }
 
-    fn events_info(&self) -> Vec<Event> {
+    fn events_info(&self, hide_raw: bool) -> Vec<Event> {
         self.events()
             .iter()
             .map(|e| Event {
@@ -87,19 +113,22 @@ impl super::Interpreter {
                     .placings()
                     .filter(|p| p.participated())
                     .count(),
-                raws: e
-                    .placings()
-                    .filter(|p| p.raw().is_some())
-                    .map(|p| {
-                        let raw = p.raw().as_ref().unwrap();
-                        Raw {
-                            place: p.place().unwrap(),
-                            score: raw.score(),
-                            tier: raw.tier(),
-                            tiebreaker_rank: raw.tiebreaker_rank(),
-                        }
-                    })
-                    .collect(),
+                raws: if hide_raw {
+                    Vec::new()
+                } else {
+                    e.placings()
+                        .filter(|p| p.raw().is_some())
+                        .map(|p| {
+                            let raw = p.raw().as_ref().unwrap();
+                            Raw {
+                                place: p.place().unwrap(),
+                                score: raw.score(),
+                                tier: raw.tier(),
+                                tiebreaker_rank: raw.tiebreaker_rank(),
+                            }
+                        })
+                        .collect()
+                },
             })
             .collect()
     }
@@ -163,6 +192,7 @@ struct Rep {
     events: Vec<Event>,
     teams: Vec<Team>,
     rep_yaml: String,
+    color: String,
 }
 
 #[derive(Serialize)]
