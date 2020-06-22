@@ -156,6 +156,14 @@ impl super::Interpreter {
                     .filter(|p| p.participated())
                     .count(),
                 subdivision: t.subdivision().unwrap_or("").to_string(),
+                subdivision_team: match t.subdivision_team() {
+                    Some(t) => Some(SubdivisionTeam {
+                        trophy: t.trophy(),
+                        rank: t.rank(),
+                        points: t.points(),
+                    }),
+                    None => None,
+                },
             })
             .collect()
     }
@@ -250,6 +258,14 @@ struct Team {
     penalties: u8,
     events_participated: usize,
     subdivision: String,
+    subdivision_team: Option<SubdivisionTeam>,
+}
+
+#[derive(Serialize)]
+struct SubdivisionTeam {
+    trophy: Option<usize>,
+    rank: usize,
+    points: usize,
 }
 
 #[derive(Serialize)]

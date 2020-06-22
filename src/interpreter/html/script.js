@@ -59,6 +59,12 @@ function compareTeamRank(rowA, rowB) {
   return rankA - rankB;
 }
 
+function compareTeamSubdivisionRank(rowA, rowB) {
+  let rankA = teamInfo[rowA.id].subdivision_team.rank;
+  let rankB = teamInfo[rowB.id].subdivision_team.rank;
+  return rankA - rankB;
+}
+
 function compareRankInEvent(eventIndex) {
   return (rowA, rowB) => {
     let rankA = placingInfo[`${rowA.id}e${eventIndex}`].order;
@@ -103,7 +109,12 @@ function sortTable(option) {
     let eventIndex = parseInt(focusSelect.value);
 
     if (eventIndex === 0 || eventIndex === teamPenaltiesIndex) {
-      sortTableBy(compareTeamRank);
+      if (subSelect && subSelect.value !== 'Combined' ) {
+        sortTableBy(compareTeamSubdivisionRank);
+      } else {
+        sortTableBy(compareTeamRank);
+      }
+
     } else {
       sortTableBy(compareRankInEvent(eventIndex));
     }
@@ -166,18 +177,35 @@ focusSelect.addEventListener('change', e => {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-function filterSubdivision(subdivision) {
-  if (subdivision === "Combined") {
-    rows.forEach(row => row.style.display = '');
+function updateRowForSubdivision(subdivision, team, row) {
+  let combined = subdivision === 'Combined';
+  let subTeam = combined ? team : team.subdivision_team;
+  let overallTag = row.querySelector('td:nth-child(4) div');
+  let totalTag = row.querySelector('td:nth-child(5)');
 
+  if (combined || team.subdivision === subdivision) {
+    row.style.display = '';
   } else {
-    rows.forEach(row => {
-      if (teamInfo[row.id].subdivision === subdivision) {
-        row.style.display = '';
-      } else {
-        row.style.display = 'none';
-      }
-    });
+    row.style.display = 'none';
+  }
+
+  if (combined) {
+    let supTag = subTeam.earned_bid ? '<sup>✧</sup>' : '';
+    overallTag.innerHTML = subTeam.rank + supTag;
+  } else {
+    overallTag.innerHTML = subTeam.rank
+  }
+  overallTag.className = subTeam.trophy ? `y-${subTeam.trophy}` : '';
+  totalTag.innerHTML = subTeam.points;
+}
+
+function filterSubdivision(subdivision) {
+  rows.forEach(row => {
+    updateRowForSubdivision(subdivision, teamInfo[row.id], row);
+  });
+
+  if (sortSelect.value === 'by Rank') {
+    sortTable('by Rank');
   }
 }
 

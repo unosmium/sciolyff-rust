@@ -232,6 +232,9 @@ const teamInfo = {
   "events_participated":{{ team.events_participated }},
   "penalties":{{ team.penalties }},
   "subdivision":{{ team.subdivision | json_encode() | safe }},
+{%- if team.subdivision_team %}
+  "subdivision_team":{{ team.subdivision_team | json_encode() | safe }},
+{%- endif %}
 },
 {% endfor -%}
 };
