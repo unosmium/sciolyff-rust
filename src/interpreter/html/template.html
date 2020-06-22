@@ -44,9 +44,9 @@ html { --banner-bg-color: {{ color }}; }
   <option>by Number</option>
   <option>by School</option>
   {%- set state_count = teams | map(attribute="state") | unique | length -%}
-  {%- if state_count != 1 -%}
+  {%- if state_count != 1 %}
   <option>by State</option>
-  {%- endif -%}
+  {%- endif %}
 </select>
 {%- if tournament.subdivisions -%}
 <select id="sub" aria-label="Filter table by subdivision" autocomplete="off">
