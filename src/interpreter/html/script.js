@@ -218,7 +218,10 @@ function filterSubdivision(subdivision) {
   placingInfo = subPlacingInfos[subdivision];
 
   rows.forEach(row => updateRowForSubdivision(subdivision, row));
-  sortTable(sortSelect.value);
+  if (sortSelect.value !== 'by Rank') { // focusOnEvent will sort by rank
+    sortTable(sortSelect.value);
+  }
+  focusOnEvent(parseInt(focusSelect.value));
 }
 
 if (subSelect) {
@@ -608,11 +611,11 @@ function updateSelect(searchParams, tag, key, defaultVal, selectFunction) {
 function updateBasedOnQueryString() {
   let s = new URLSearchParams(location.search);
 
-  updateSelect(s, focusSelect, 'focus', 0, v => focusOnEvent(parseInt(v)));
   updateSelect(s, sortSelect, 'sort', 'by Rank', sortTable);
   if (subSelect) {
     updateSelect(s, subSelect, 'subdivision', 'Combined', filterSubdivision);
   }
+  updateSelect(s, focusSelect, 'focus', 0, v => focusOnEvent(parseInt(v)));
 }
 
 function pushQueryState(eventIndex, sortOption, subdivision) {
