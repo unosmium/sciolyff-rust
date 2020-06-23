@@ -86,11 +86,9 @@ function compareTeamState(rowA, rowB) {
 }
 
 function sortTableBy(comparisonFunction) {
-  let visibleRows = rows.filter(row => row.style.display !== 'none');
+  let visibleRows = rows.filter(row => row.parentElement === tbody);
   visibleRows.sort(comparisonFunction);
-  for (let row of visibleRows) {
-    tbody.appendChild(row);
-  }
+  visibleRows.forEach(row => tbody.appendChild(row));
 }
 
 const optionToFunctionMap = {
@@ -175,9 +173,9 @@ function updateRowForSubdivision(subdivision, row) {
   let eventTags = [...row.querySelectorAll('td:nth-child(n+6)')].slice(0, -1);
 
   if (combined || team) {
-    row.style.display = '';
+    tbody.appendChild(row);
   } else {
-    row.style.display = 'none';
+    row.remove();
     return;
   }
 
