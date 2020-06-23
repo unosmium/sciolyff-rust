@@ -245,8 +245,7 @@ colgroup col:nth-child(3n+1) {
 
 tbody tr:nth-child(6n-5),
 tbody tr:nth-child(6n-4),
-tbody tr:nth-child(6n-3),
-article button {
+tbody tr:nth-child(6n-3) {
   background-color: #f5f5f5;
 }
 
@@ -530,9 +529,8 @@ dd {
 
   tbody tr:nth-child(6n-5),
   tbody tr:nth-child(6n-4),
-  tbody tr:nth-child(6n-3),
-  article button {
-    background-color: #222222;
+  tbody tr:nth-child(6n-3) {
+    background-color: #1c1c1c;
   }
 
   .ct-series-a .ct-point, .ct-series-b .ct-point {
