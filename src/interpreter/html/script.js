@@ -59,12 +59,6 @@ function compareTeamRank(rowA, rowB) {
   return rankA - rankB;
 }
 
-function compareTeamSubdivisionRank(rowA, rowB) {
-  let rankA = teamInfo[rowA.id].subdivision_team.rank;
-  let rankB = teamInfo[rowB.id].subdivision_team.rank;
-  return rankA - rankB;
-}
-
 function compareRankInEvent(eventIndex) {
   return (rowA, rowB) => {
     let rankA = placingInfo[`${rowA.id}e${eventIndex}`].order;
@@ -92,8 +86,9 @@ function compareTeamState(rowA, rowB) {
 }
 
 function sortTableBy(comparisonFunction) {
-  rows.sort(comparisonFunction);
-  for (let row of rows) {
+  let visibleRows = rows.filter(row => row.style.display !== 'none');
+  visibleRows.sort(comparisonFunction);
+  for (let row of visibleRows) {
     tbody.appendChild(row);
   }
 }
@@ -109,12 +104,7 @@ function sortTable(option) {
     let eventIndex = parseInt(focusSelect.value);
 
     if (eventIndex === 0 || eventIndex === teamPenaltiesIndex) {
-      if (subSelect && subSelect.value !== 'Combined' ) {
-        sortTableBy(compareTeamSubdivisionRank);
-      } else {
-        sortTableBy(compareTeamRank);
-      }
-
+      sortTableBy(compareTeamRank);
     } else {
       sortTableBy(compareRankInEvent(eventIndex));
     }
@@ -177,36 +167,44 @@ focusSelect.addEventListener('change', e => {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-function updateRowForSubdivision(subdivision, team, row) {
+function updateRowForSubdivision(subdivision, row) {
   let combined = subdivision === 'Combined';
-  let subTeam = combined ? team : team.subdivision_team;
+  let team = teamInfo[row.id];
   let overallTag = row.querySelector('td:nth-child(4) div');
   let totalTag = row.querySelector('td:nth-child(5)');
 
-  if (combined || team.subdivision === subdivision) {
+  if (combined || team) {
     row.style.display = '';
   } else {
     row.style.display = 'none';
+    return;
   }
 
-  if (combined) {
-    let supTag = subTeam.earned_bid ? '<sup>✧</sup>' : '';
-    overallTag.innerHTML = subTeam.rank + supTag;
+  if (team.exhibition) {
+    overallTag.innerHTML = 'EX';
+  } else if (team.disqualified) {
+    overallTag.innerHTML = 'DQ';
+  } else if (combined) {
+    let supTag = team.earned_bid ? '<sup>✧</sup>' : '';
+    overallTag.innerHTML = team.rank + supTag;
   } else {
-    overallTag.innerHTML = subTeam.rank
+    overallTag.innerHTML = team.rank
   }
-  overallTag.className = subTeam.trophy ? `y-${subTeam.trophy}` : '';
-  totalTag.innerHTML = subTeam.points;
+  overallTag.className = team.trophy ? `y-${team.trophy}` : '';
+  totalTag.innerHTML = team.points;
 }
 
 function filterSubdivision(subdivision) {
+  nonexhibitionTeamCount = subNonexhibitionTeamCounts[subdivision];
+  eventInfo = subEventInfos[subdivision];
+  teamInfo = subTeamInfos[subdivision];
+  placingInfo = subPlacingInfos[subdivision];
+
   rows.forEach(row => {
-    updateRowForSubdivision(subdivision, teamInfo[row.id], row);
+    updateRowForSubdivision(subdivision, row);
   });
 
-  if (sortSelect.value === 'by Rank') {
-    sortTable('by Rank');
-  }
+  sortTable(sortSelect.value);
 }
 
 if (subSelect) {
@@ -294,7 +292,9 @@ function updateModalState() {
   let oldModalTeamNumber = currentModalTeamNumber;
   currentModalTeamNumber = teamNumber;
 
-  if (isNaN(teamNumber) || document.getElementById(`t${teamNumber}`) === null) {
+  let row = document.getElementById(`t${teamNumber}`);
+
+  if (isNaN(teamNumber) || row === null || row.style.display === 'none') {
     smith.className = '';
     modalNav.style.visibility = 'hidden';
     modalBack.style.display = 'none';
@@ -330,8 +330,6 @@ function updateModalState() {
 
 window.addEventListener("beforeunload", () => { smith.className = '' });
 window.addEventListener('hashchange', () => updateModalState());
-
-updateModalState();
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -392,7 +390,9 @@ window.addEventListener('resize', () => {
   let teamNumber = parseInt(hashString[0]);
   let eventIndex = parseInt(hashString[1]);
 
-  if (teamNumber && document.getElementById(`t${teamNumber}`) !== null) {
+  let row = document.getElementById(`t${teamNumber}`);
+
+  if (teamNumber && row !== null && row.style.display !== 'none') {
     if (!isNaN(eventIndex) &&
         eventIndex >= 0 &&
         eventIndex <= teamPenaltiesIndex) {
@@ -632,6 +632,7 @@ function pushQueryState(eventIndex, sortOption, subdivision) {
 
 window.onpopstate = updateBasedOnQueryString;
 updateBasedOnQueryString();
+updateModalState();
 
 firstTableFocusable.onfocus = () => { wrapper.scrollTop = 0 };
 firstModalNavFocusable.onfocus = () => { modalNav.scrollTop = 0 };

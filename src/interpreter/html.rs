@@ -30,7 +30,7 @@ impl super::Interpreter {
         };
         let rep = Rep {
             tournament: self.tournament_info(),
-            subdivisions: self.subdivisions_info(),
+            subdivisions: self.subdivisions_info(hide_raw),
             events: self.events_info(hide_raw),
             teams: self.teams_info(),
             rep_yaml,
@@ -90,12 +90,15 @@ impl super::Interpreter {
         }
     }
 
-    fn subdivisions_info(&self) -> Vec<Subdivision> {
+    fn subdivisions_info(&self, hide_raw: bool) -> Vec<Subdivision> {
         let mut subs = self
             .subdivisions()
             .iter()
-            .map(|(name, _)| Subdivision {
+            .map(|(name, interpreter)| Subdivision {
                 name: name.to_string(),
+                tournament: interpreter.tournament_info(),
+                events: interpreter.events_info(hide_raw),
+                teams: interpreter.teams_info(),
             })
             .collect::<Vec<_>>();
         subs.sort_by(|s1, s2| s1.name.cmp(&s2.name));
@@ -156,14 +159,6 @@ impl super::Interpreter {
                     .filter(|p| p.participated())
                     .count(),
                 subdivision: t.subdivision().unwrap_or("").to_string(),
-                subdivision_team: match t.subdivision_team() {
-                    Some(t) => Some(SubdivisionTeam {
-                        trophy: t.trophy(),
-                        rank: t.rank(),
-                        points: t.points(),
-                    }),
-                    None => None,
-                },
             })
             .collect()
     }
@@ -221,6 +216,9 @@ struct Tournament {
 #[derive(Serialize)]
 struct Subdivision {
     name: String,
+    tournament: Tournament,
+    events: Vec<Event>,
+    teams: Vec<Team>,
 }
 
 #[derive(Serialize)]
@@ -258,14 +256,6 @@ struct Team {
     penalties: u8,
     events_participated: usize,
     subdivision: String,
-    subdivision_team: Option<SubdivisionTeam>,
-}
-
-#[derive(Serialize)]
-struct SubdivisionTeam {
-    trophy: Option<usize>,
-    rank: usize,
-    points: usize,
 }
 
 #[derive(Serialize)]

@@ -211,13 +211,13 @@ html { --banner-bg-color: {{ color }}; }
 </section>
 </div>
 <script>
-const nonexhibitionTeamCount = {{ tournament.nonexhibition_team_count }};
-const eventInfo = {
-{%- for event in events -%}
+let nonexhibitionTeamCount = {{ tournament.nonexhibition_team_count }};
+let eventInfo = {
+{% for event in events -%}
 "e{{ loop.index }}":{{ event | json_encode() | safe }},
-{%- endfor -%}
+{% endfor -%}
 };
-const teamInfo = {
+let teamInfo = {
 {% for team in teams -%}
 "t{{ team.number}}":{
   "school":{{ team.school | json_encode() | safe }},
@@ -232,19 +232,70 @@ const teamInfo = {
   "events_participated":{{ team.events_participated }},
   "penalties":{{ team.penalties }},
   "subdivision":{{ team.subdivision | json_encode() | safe }},
-{%- if team.subdivision_team %}
-  "subdivision_team":{{ team.subdivision_team | json_encode() | safe }},
-{%- endif %}
 },
 {% endfor -%}
 };
-const placingInfo = {
+let placingInfo = {
 {% for team in teams -%}
 {% for placing in team.placings -%}
 "t{{ team.number }}e{{ loop.index }}":{{ placing | json_encode() | safe }},
 {% endfor -%}
 {% endfor -%}
 };
+{%- if subdivisions %}
+const subNonexhibitionTeamCounts = {
+"Combined":nonexhibitionTeamCount,
+{% for sub in subdivisions -%}
+{%- set count = sub.tournament.nonexhibition_team_count -%}
+{{ sub.name | json_encode() | safe }}:{{ count }},
+{% endfor -%}
+};
+const subEventInfos = {
+"Combined":eventInfo,
+{% for sub in subdivisions -%}
+{{ sub.name | json_encode() | safe }}:{
+{% for event in sub.events -%}
+"e{{ loop.index }}":{{ event | json_encode() | safe }},
+{% endfor -%}
+},
+{% endfor -%}
+};
+const subTeamInfos = {
+"Combined":teamInfo,
+{% for sub in subdivisions -%}
+{{ sub.name | json_encode() | safe }}:{
+{% for team in sub.teams -%}
+"t{{ team.number}}":{
+  "school":{{ team.school | json_encode() | safe }},
+  "name":{{ team.name | json_encode() | safe }},
+  "location":{{ team.location | json_encode() | safe }},
+  "state":{{ team.state | json_encode() | safe }},
+  "rank":{{ team.rank }},
+  "points":{{ team.points }},
+  "trophy":{{ team.trophy | default(value="null")}},
+  "exhibition":{{ team.exhibition }},
+  "disqualified":{{ team.disqualified }},
+  "events_participated":{{ team.events_participated }},
+  "penalties":{{ team.penalties }},
+  "subdivision":{{ sub.name | json_encode() | safe }},
+},
+{% endfor -%}
+},
+{% endfor -%}
+};
+const subPlacingInfos = {
+"Combined":placingInfo,
+{% for sub in subdivisions -%}
+{{ sub.name | json_encode() | safe }}:{
+{% for team in sub.teams -%}
+{% for placing in team.placings -%}
+"t{{ team.number }}e{{ loop.index }}":{{ placing | json_encode() | safe }},
+{% endfor -%}
+{% endfor -%}
+},
+{% endfor -%}
+};
+{%- endif %}
 </script>
 <script src="./src/interpreter/html/chartist.min.js"></script>
 <script src="./src/interpreter/html/polyfills.min.js"></script>
