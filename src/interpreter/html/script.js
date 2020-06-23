@@ -292,9 +292,7 @@ function updateModalState() {
   let oldModalTeamNumber = currentModalTeamNumber;
   currentModalTeamNumber = teamNumber;
 
-  let row = document.getElementById(`t${teamNumber}`);
-
-  if (isNaN(teamNumber) || row === null || row.style.display === 'none') {
+  if (isNaN(teamNumber) || teamInfo[`t${teamNumber}`] === undefined) {
     smith.className = '';
     modalNav.style.visibility = 'hidden';
     modalBack.style.display = 'none';
@@ -390,9 +388,7 @@ window.addEventListener('resize', () => {
   let teamNumber = parseInt(hashString[0]);
   let eventIndex = parseInt(hashString[1]);
 
-  let row = document.getElementById(`t${teamNumber}`);
-
-  if (teamNumber && row !== null && row.style.display !== 'none') {
+  if (teamNumber && teamInfo[`t${teamNumber}`] !== undefined) {
     if (!isNaN(eventIndex) &&
         eventIndex >= 0 &&
         eventIndex <= teamPenaltiesIndex) {
