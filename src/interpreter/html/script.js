@@ -455,14 +455,14 @@ function populateOverall(teamNumber) {
     modalP.innerHTML = `
     At the ${tournamentName}, Team ${teamNumber} participated as in
     <b>${team.events_participated} events</b> and scored <b>${team.points}
-    points</b>. As an <b>exhibition team</b>, they did not affect the final team
-    rankings.
+    points</b>. As an <b>exhibition team (EX)</b>, they did not affect the final
+    team rankings.
     `
   } else if (team.disqualified) {
     modalP.innerHTML = `
     At the ${tournamentName}, Team ${teamNumber} participated in
     <b>${team.events_participated} events</b> and scored <b>${team.points}
-    points</b>, but were <b>disqualified</b> from the final team rankings.
+    points</b>, but were <b>disqualified (DQ)</b> from the final team rankings.
     `
   } else {
     modalP.innerHTML = `
