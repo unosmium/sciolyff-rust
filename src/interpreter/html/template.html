@@ -231,7 +231,6 @@ let teamInfo = {
   "disqualified":{{ team.disqualified }},
   "events_participated":{{ team.events_participated }},
   "penalties":{{ team.penalties }},
-  "subdivision":{{ team.subdivision | json_encode() | safe }},
 },
 {% endfor -%}
 };
@@ -277,7 +276,6 @@ const subTeamInfos = {
   "disqualified":{{ team.disqualified }},
   "events_participated":{{ team.events_participated }},
   "penalties":{{ team.penalties }},
-  "subdivision":{{ sub.name | json_encode() | safe }},
 },
 {% endfor -%}
 },

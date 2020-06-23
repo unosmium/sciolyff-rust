@@ -158,7 +158,6 @@ impl super::Interpreter {
                     .placings()
                     .filter(|p| p.participated())
                     .count(),
-                subdivision: t.subdivision().unwrap_or("").to_string(),
             })
             .collect()
     }
@@ -255,7 +254,6 @@ struct Team {
     placings: Vec<Placing>,
     penalties: u8,
     events_participated: usize,
-    subdivision: String,
 }
 
 #[derive(Serialize)]
