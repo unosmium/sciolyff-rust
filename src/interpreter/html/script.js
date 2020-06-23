@@ -172,6 +172,7 @@ function updateRowForSubdivision(subdivision, row) {
   let team = teamInfo[row.id];
   let overallTag = row.querySelector('td:nth-child(4) div');
   let totalTag = row.querySelector('td:nth-child(5)');
+  let eventTags = [...row.querySelectorAll('td:nth-child(n+6)')].slice(0, -1);
 
   if (combined || team) {
     row.style.display = '';
@@ -192,6 +193,22 @@ function updateRowForSubdivision(subdivision, row) {
   }
   overallTag.className = team.trophy ? `y-${team.trophy}` : '';
   totalTag.innerHTML = team.points;
+
+  eventTags.forEach((td, i) => {
+    let placing = placingInfo[`${row.id}e${i+1}`];
+    let ex = placing.exempt || placing.dropped_as_part_of_worst_placings;
+    let ti = placing.tie && !placing.points_limited_by_maximum_place;
+
+    td.innerHTML = `${placing.isolated_points}`;
+    if (ex && ti) {
+      td.innerHTML += '<sup>◊*</sup>';
+    } else if (ex) {
+      td.innerHTML += '<sup>◊</sup>';
+    } else if (ti) {
+      td.innerHTML += '<sup>*</sup>';
+    }
+    td.className = placing.medal ? `m-${placing.medal}` : '';
+  });
 }
 
 function filterSubdivision(subdivision) {
@@ -200,10 +217,7 @@ function filterSubdivision(subdivision) {
   teamInfo = subTeamInfos[subdivision];
   placingInfo = subPlacingInfos[subdivision];
 
-  rows.forEach(row => {
-    updateRowForSubdivision(subdivision, row);
-  });
-
+  rows.forEach(row => updateRowForSubdivision(subdivision, row));
   sortTable(sortSelect.value);
 }
 
