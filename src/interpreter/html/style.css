@@ -17,7 +17,8 @@ body {
 
 div#subway {
   -webkit-overflow-scrolling: touch;
-  overflow: auto scroll;
+  overflow-x: auto;
+  overflow-y: scroll;
 }
 
 html, body, div#subway {
