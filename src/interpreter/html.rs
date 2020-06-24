@@ -35,6 +35,7 @@ impl super::Interpreter {
             teams: self.teams_info(),
             rep_yaml,
             color: color.to_string(),
+            svg_color: color.replace("#", "%23"),
         };
         let context = Context::from_serialize(rep).unwrap();
         TEMPLATES.render("template.html", &context).unwrap()
@@ -195,6 +196,7 @@ struct Rep {
     teams: Vec<Team>,
     rep_yaml: String,
     color: String,
+    svg_color: String,
 }
 
 #[derive(Serialize)]
