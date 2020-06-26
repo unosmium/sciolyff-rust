@@ -378,7 +378,7 @@ article h4 {
 }
 
 p.chart-toggle {
-  font-size: 0.825rem;
+  font-size: 0.825em;
 }
 
 p.chart-toggle span.selected {
@@ -409,6 +409,7 @@ div#overallInfo, div#epInfo {
 
 .ct-label {
   color: inherit;
+  font-size: 0.75em;
 }
 
 dd {
