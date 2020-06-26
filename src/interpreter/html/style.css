@@ -377,6 +377,19 @@ article h4 {
   margin-bottom: 0;
 }
 
+p.chart-toggle {
+  font-size: 0.825rem;
+}
+
+p.chart-toggle span.selected {
+  font-weight: bold;
+}
+
+p.chart-toggle span:not(.selected) {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 article p {
   font-size: inherit;
 }

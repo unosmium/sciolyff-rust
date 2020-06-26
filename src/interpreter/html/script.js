@@ -48,6 +48,13 @@ let overallChart;
 let eventChart;
 const eventChartContainer = document.querySelector('#epInfo .ct-chart');
 
+let chartClosest = false;
+const toggleForEvents = document.querySelector('#epInfo p.chart-toggle');
+const toggleAlls =
+  [...document.querySelectorAll('p.chart-toggle span:first-child')];
+const toggleClosests =
+  [...document.querySelectorAll('p.chart-toggle span:last-child')];
+
 let animationsDisabled = false;
 let startX;
 
@@ -470,7 +477,7 @@ function populateOverall(teamNumber) {
     ${nonexhibitionTeamCount}</b> competing teams.
     `
   }
-  updateOverallChart(team);
+  updateOverallChart(team, chartClosest);
 }
 
 function populatePenalties(teamNumber) {
@@ -551,7 +558,7 @@ function populatePlacing(eventIndex, teamNumber) {
     due to unforseen circumstances during the competition.)`;
   }
 
-  updateEventChart(_event, placing);
+  updateEventChart(_event, placing, chartClosest);
 
   mdDeetz[0].innerHTML = placing.medal ? 'Yes':'No';
   mdDeetz[1].innerHTML = placing.exempt ? 'Yes':'No';
@@ -650,13 +657,28 @@ firstModalNavFocusable.onfocus = () => { modalNav.scrollTop = 0 };
 
 ////////////////////////////////////////////////////////////////////////////////
 
-function updateOverallChart(team) {
+function filterClosest(data, value, center) {
+  data.sort((d1, d2) => {
+    let diff1 = Math.abs(d1[value] - center);
+    let diff2 = Math.abs(d2[value] - center);
+    return diff1 - diff2;
+  });
+  return data.slice(0, 15);
+}
+
+function updateOverallChart(team, closest, chartClosest) {
+  let teamPoints = Object.keys(teamInfo)
+    .map(k => teamInfo[k])
+    .map(t => ({ x: t.rank, y: t.points }));
+
+  if (closest) {
+    teamPoints = filterClosest(teamPoints, 'x', team.rank);
+  }
+
   let data = {
     series: [
       [{ x: team.rank, y: team.points }],
-      Object.keys(teamInfo)
-      .map(k => teamInfo[k])
-      .map(t => ({ x: t.rank, y: t.points }))
+      teamPoints
     ]
   };
 
@@ -678,14 +700,16 @@ function updateOverallChart(team) {
   }
 }
 
-function updateEventChart(_event, placing) {
+function updateEventChart(_event, placing, closest) {
   let raws = _event.raws;
   if (raws.length === 0) {
     eventChartContainer.style.display = 'none';
+    toggleForEvents.style.display = 'none';
     rawDeetz.innerHTML = 'Raw scores were not released for this event.';
     return;
   } else {
     eventChartContainer.style.display = 'block';
+    toggleForEvents.style.display = 'block';
   }
 
   let highlight;
@@ -710,6 +734,10 @@ function updateEventChart(_event, placing) {
     highlight = [];
   }
 
+  if (closest && highlight.length !== 0) {
+    raws = filterClosest(raws.slice(), 'place', highlight[0].x);
+  }
+
   let data = {
     series: [
       highlight,
@@ -732,6 +760,47 @@ function updateEventChart(_event, placing) {
     eventChart = new Chartist.Line('#epInfo .ct-chart', data, options);
   }
 }
+
+////////////////////////////////////////////////////////////////////////////////
+
+function toggleToggle(closest) {
+  if (chartClosest === closest) { return; }
+
+  chartClosest = closest;
+
+  if (closest) {
+    toggleClosests.forEach(tag => tag.className = 'selected');
+    toggleAlls.forEach(tag => tag.className = '');
+  } else {
+    toggleAlls.forEach(tag => tag.className = 'selected');
+    toggleClosests.forEach(tag => tag.className = '');
+  }
+}
+
+function toggleChart(e) {
+  let hashString = location.hash.substring(1).split('-');
+  let teamNumber = parseInt(hashString[0]);
+  let eventIndex = parseInt(hashString[1]);
+
+  if (e.target.closest('div').id === 'overallInfo') {
+    let team = teamInfo[`t${teamNumber}`];
+    updateOverallChart(team, chartClosest);
+  } else {
+    let _event = eventInfo[`e${eventIndex}`];
+    let placing = placingInfo[`t${teamNumber}e${eventIndex}`];
+    updateEventChart(_event, placing, chartClosest);
+  }
+}
+
+toggleAlls.forEach(tag => tag.onclick = e => {
+  toggleToggle(false);
+  toggleChart(e);
+});
+
+toggleClosests.forEach(tag => tag.onclick = e => {
+  toggleToggle(true);
+  toggleChart(e);
+});
 
 ////////////////////////////////////////////////////////////////////////////////
 
