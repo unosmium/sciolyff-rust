@@ -734,8 +734,15 @@ function updateEventChart(_event, placing, closest) {
     highlight = [];
   }
 
-  if (closest && highlight.length !== 0) {
-    raws = filterClosest(raws.slice(), 'place', highlight[0].x);
+  if (closest) {
+    let center;
+    if (highlight.length !== 0) {
+      center = highlight[0].x;
+    } else {
+      center = raws[raws.length - 1].place;
+    }
+
+    raws = filterClosest(raws.slice(), 'place', center);
   }
 
   let data = {
