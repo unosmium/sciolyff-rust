@@ -48,7 +48,7 @@ impl Interpreter {
     }
 
     pub fn from_yaml(source: &str) -> Interpreter {
-        Self::new(serde_yaml::from_str(&source).unwrap())
+        Self::new(serde_yaml::from_str(source).unwrap())
     }
 
     pub fn tournament(&self) -> &Tournament {
