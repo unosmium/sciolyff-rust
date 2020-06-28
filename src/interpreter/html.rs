@@ -31,7 +31,7 @@ impl Default for HTMLOptions {
         HTMLOptions {
             hide_raw: false,
             except_show_raw_for_events: Vec::new(),
-            color: "black".to_string(),
+            color: "#303030".to_string(),
         }
     }
 }
