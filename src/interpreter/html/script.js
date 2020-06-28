@@ -485,7 +485,7 @@ function populatePenalties(teamNumber) {
 
   modalOverallInfo.style.display = 'none';
   modalPlacingInfo.style.display = 'none';
-  modalH3.innerHTML = 'Team Penlties';
+  modalH3.innerHTML = 'Team Penalties';
 
   if (team.penalties === 0) {
     modalP.innerHTML = `
