@@ -20,28 +20,47 @@ lazy_static! {
     };
 }
 
+pub struct HTMLOptions {
+    pub hide_raw: bool,
+    pub except_show_raw_for_events: Vec<String>,
+    pub color: String,
+}
+
+impl Default for HTMLOptions {
+    fn default() -> HTMLOptions {
+        HTMLOptions {
+            hide_raw: false,
+            except_show_raw_for_events: Vec::new(),
+            color: "black".to_string(),
+        }
+    }
+}
+
 impl super::Interpreter {
-    pub fn to_html(&self, hide_raw: bool, color: &str) -> String {
-        let rep_yaml = if hide_raw && self.raws() {
-            let crate_rep = self.replace_raw_scores_in_rep();
+    pub fn to_html(&self, options: &HTMLOptions) -> String {
+        let rep_yaml = if options.hide_raw && self.raws() {
+            let crate_rep = self.replace_raw_scores_in_rep(options);
             serde_yaml::to_string(&crate_rep).unwrap()
         } else {
             serde_yaml::to_string(&self.rep).unwrap()
         };
         let rep = Rep {
             tournament: self.tournament_info(),
-            subdivisions: self.subdivisions_info(hide_raw),
-            events: self.events_info(hide_raw),
+            subdivisions: self.subdivisions_info(options),
+            events: self.events_info(options),
             teams: self.teams_info(),
             rep_yaml,
-            color: color.to_string(),
-            svg_color: color.replace("#", "%23"),
+            color: options.color.to_string(),
+            svg_color: options.color.replace("#", "%23"),
         };
         let context = Context::from_serialize(rep).unwrap();
         TEMPLATES.render("template.html", &context).unwrap()
     }
 
-    fn replace_raw_scores_in_rep(&self) -> crate::rep::Rep {
+    fn replace_raw_scores_in_rep(
+        &self,
+        options: &HTMLOptions,
+    ) -> crate::rep::Rep {
         let mut replaced_rep = self.rep.clone();
         let placings = self
             .placings()
@@ -52,9 +71,14 @@ impl super::Interpreter {
         for p_rep in &mut replaced_rep.placings {
             let placing = placings[&(p_rep.event.as_str(), p_rep.team)];
 
-            p_rep.place = placing.place();
-            p_rep.raw = None;
-            p_rep.tie = if placing.tie() { Some(true) } else { None };
+            if !options
+                .except_show_raw_for_events
+                .contains(&placing.event().name().to_string())
+            {
+                p_rep.place = placing.place();
+                p_rep.raw = None;
+                p_rep.tie = if placing.tie() { Some(true) } else { None };
+            }
         }
         replaced_rep
     }
@@ -91,14 +115,14 @@ impl super::Interpreter {
         }
     }
 
-    fn subdivisions_info(&self, hide_raw: bool) -> Vec<Subdivision> {
+    fn subdivisions_info(&self, options: &HTMLOptions) -> Vec<Subdivision> {
         let mut subs = self
             .subdivisions()
             .iter()
             .map(|(name, interpreter)| Subdivision {
                 name: name.to_string(),
                 tournament: interpreter.tournament_info(),
-                events: interpreter.events_info(hide_raw),
+                events: interpreter.events_info(options),
                 teams: interpreter.teams_info(),
             })
             .collect::<Vec<_>>();
@@ -106,7 +130,7 @@ impl super::Interpreter {
         subs
     }
 
-    fn events_info(&self, hide_raw: bool) -> Vec<Event> {
+    fn events_info(&self, options: &HTMLOptions) -> Vec<Event> {
         self.events()
             .iter()
             .map(|e| Event {
@@ -117,7 +141,11 @@ impl super::Interpreter {
                     .placings()
                     .filter(|p| p.participated())
                     .count(),
-                raws: if hide_raw {
+                raws: if options.hide_raw
+                    && !options
+                        .except_show_raw_for_events
+                        .contains(&e.name().to_string())
+                {
                     Vec::new()
                 } else {
                     e.placings()
