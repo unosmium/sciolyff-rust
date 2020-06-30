@@ -1,9 +1,10 @@
-use sciolyff::interpreter::{Interpreter, html::HTMLOptions};
+use sciolyff::interpreter::{html::HTMLOptions, Interpreter};
+use std::env;
 use std::fs;
 
 fn main() {
-    let file = "data/2019-11-23_palatine_invitational_c.yaml";
+    let file = &env::args().collect::<Vec<_>>()[1];
     let contents = fs::read_to_string(file).unwrap();
     let i = Interpreter::from_yaml(&contents);
-    fs::write("output.html", i.to_html(&HTMLOptions::default())).unwrap();
+    print!("{}", i.to_html(&HTMLOptions::default()));
 }
