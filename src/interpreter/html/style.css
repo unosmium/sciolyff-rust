@@ -468,6 +468,7 @@ dd {
 
   main {
     background: var(--table-bg-color);
+    min-height: 100%;
   }
 
   div#bruce {
