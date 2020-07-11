@@ -25,7 +25,9 @@ html { --banner-bg-color: {{ color }}; }
   <h1>{{ tournament.title }}&nbsp;{{
     tournament.division | escape | replace(from=" ", to="&nbsp;") | safe
   }}</h1>
-  <p>{{ tournament.date }} @ {{ tournament.location }}</p>
+  <p>{{ tournament.date }} @ <span style="white-space: nowrap;">{{
+    tournament.location
+  }}</span></p>
 </div>
 <div id="butterfly">
 <select id="focus" aria-label="Focus table" autocomplete="off">
