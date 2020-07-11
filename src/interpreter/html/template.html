@@ -22,7 +22,9 @@ html { --banner-bg-color: {{ color }}; }
 <main>
 <header>
 <div id="xi">
-  <h1>{{ tournament.title }}&nbsp;{{ tournament.division }}</h1>
+  <h1>{{ tournament.title }}&nbsp;{{
+    tournament.division | escape | replace(from=" ", to="&nbsp;") | safe
+  }}</h1>
   <p>{{ tournament.date }} @ {{ tournament.location }}</p>
 </div>
 <div id="butterfly">
