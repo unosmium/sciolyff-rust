@@ -456,25 +456,31 @@ function populateOverall(teamNumber) {
   modalPlacingInfo.style.display = 'none';
   modalH3.innerHTML = 'Overall Rank';
 
+  let pstring;
+  if (team.events_participated === 1) {
+    pstring = `${team.events_participated} event`;
+  } else {
+    pstring = `${team.events_participated} events`;
+  }
+
   if (team.exhibition) {
     modalP.innerHTML = `
-    At the ${tournamentName}, Team ${teamNumber} participated as in
-    <b>${team.events_participated} events</b> and scored <b>${team.points}
-    points</b>. As an <b>exhibition team (EX)</b>, they did not affect the final
-    team rankings.
+    At the ${tournamentName}, Team ${teamNumber} participated in
+    <b>${pstring}</b> and scored <b>${team.points} points</b>. As an
+    <b>exhibition team (EX)</b>, they did not affect the final team rankings.
     `
   } else if (team.disqualified) {
     modalP.innerHTML = `
     At the ${tournamentName}, Team ${teamNumber} participated in
-    <b>${team.events_participated} events</b> and scored <b>${team.points}
-    points</b>, but were <b>disqualified (DQ)</b> from the final team rankings.
+    <b>${pstring}</b> and scored <b>${team.points} points</b>, but were
+    <b>disqualified (DQ)</b> from the final team rankings.
     `
   } else {
     modalP.innerHTML = `
     At the ${tournamentName}, Team ${teamNumber} participated in
-    <b>${team.events_participated} events</b> and scored <b>${team.points}
-    points</b>, ranking them <b>${getOrdinal(team.rank)} out of
-    ${nonexhibitionTeamCount}</b> competing teams.
+    <b>${pstring}</b> and scored <b>${team.points} points</b>, ranking them
+    <b>${getOrdinal(team.rank)} out of ${nonexhibitionTeamCount}</b> competing
+    teams.
     `
   }
   updateOverallChart(team, chartClosest);
