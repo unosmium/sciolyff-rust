@@ -11,9 +11,9 @@
 <meta property="og:title" content="{{ tournament.title }}">
 <meta property="og:description" content="{{ desc }}">
 <meta property="og:type" content="website">
-<meta property="og:image" content="{{ image }}">
+<meta property="og:image" content="{{ image | safe }}">
 {% if cannonical_url -%}
-<meta property="og:url" content="{{ cannonical_url }}">
+<meta property="og:url" content="{{ cannonical_url | safe }}">
 {%- endif -%}
 <meta name="twitter:card" content="summary">
 <title>{{ tournament.short_title }} {{ tournament.division }}</title>
