@@ -24,6 +24,8 @@ pub struct HTMLOptions {
     pub hide_raw: bool,
     pub except_show_raw_for_events: Vec<String>,
     pub color: String,
+    pub image: String,
+    pub cannonical_url: Option<String>,
 }
 
 impl Default for HTMLOptions {
@@ -32,6 +34,8 @@ impl Default for HTMLOptions {
             hide_raw: false,
             except_show_raw_for_events: Vec::new(),
             color: "#303030".to_string(),
+            image: "https://unosmium.org/results/logos/default.jpg".to_string(),
+            cannonical_url: None,
         }
     }
 }
@@ -52,6 +56,8 @@ impl super::Interpreter {
             rep_yaml,
             color: options.color.to_string(),
             svg_color: options.color.replace("#", "%23"),
+            image: options.image.to_string(),
+            cannonical_url: options.cannonical_url.clone(),
         };
         let context = Context::from_serialize(rep).unwrap();
         TEMPLATES.render("template.html", &context).unwrap()
@@ -225,6 +231,8 @@ struct Rep {
     rep_yaml: String,
     color: String,
     svg_color: String,
+    image: String,
+    cannonical_url: Option<String>,
 }
 
 #[derive(Serialize)]
