@@ -51,9 +51,9 @@ const eventChartContainer = document.querySelector('#epInfo .ct-chart');
 let chartClosest = false;
 const toggleForEvents = document.querySelector('#epInfo p.chart-toggle');
 const toggleAlls =
-  [...document.querySelectorAll('p.chart-toggle span:first-child')];
+  [...document.querySelectorAll('p.chart-toggle button:first-child')];
 const toggleClosests =
-  [...document.querySelectorAll('p.chart-toggle span:last-child')];
+  [...document.querySelectorAll('p.chart-toggle button:last-child')];
 
 let animationsDisabled = false;
 let startX;

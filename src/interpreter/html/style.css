@@ -363,6 +363,15 @@ article {
   line-height: 1.5;
 }
 
+button {
+  border: none;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+  color: inherit;
+}
+
 a#back {
   display: none;
 }
@@ -375,11 +384,11 @@ p.chart-toggle {
   font-size: 0.825em;
 }
 
-p.chart-toggle span.selected {
+p.chart-toggle button.selected {
   font-weight: bold;
 }
 
-p.chart-toggle span:not(.selected) {
+p.chart-toggle button:not(.selected) {
   text-decoration: underline;
   cursor: pointer;
 }
