@@ -276,6 +276,12 @@ window.addEventListener('click', e => {
   }
 });
 
+window.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && location.hash !== '') {
+    closeModal();
+  }
+});
+
 close.addEventListener('click', e => { e.preventDefault(); closeModal() });
 
 ///////////////////////////////////////////////////////////////////////////////
