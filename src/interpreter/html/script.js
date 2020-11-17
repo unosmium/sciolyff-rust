@@ -33,7 +33,7 @@ const modalLinks = [...modal.querySelectorAll('td:nth-child(3) a')];
 const modalBody = modal.querySelector('#liver');
 const modalNav = modal.querySelector('nav');
 const modalArticle = modal.querySelector('article');
-const modalBack = modalArticle.querySelector('button');
+const modalBack = modalArticle.querySelector('a#back');
 const modalH3 = modalArticle.querySelector('h3');
 const modalP = modalArticle.querySelector('p');
 const modalOverallInfo = modalArticle.querySelector('#overallInfo');
@@ -276,7 +276,7 @@ window.addEventListener('click', e => {
   }
 });
 
-close.addEventListener('click', e => closeModal());
+close.addEventListener('click', e => { e.preventDefault(); closeModal() });
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -297,6 +297,7 @@ function populateModal(teamNumber) {
   });
 
   modalLinks.forEach((a, i) => { a.href = `#${teamNumber}-${i}` });
+  modalBack.href = `#${teamNumber}`;
   modalBody.scrollLeft = 0;
   modalNav.scrollTop = 0;
   smith.className = 'visible';
@@ -598,10 +599,6 @@ modalNav.addEventListener('click', e => {
     location.hash = row.querySelector('a').getAttribute('href');
     e.preventDefault();
   }
-});
-
-modalBack.addEventListener('click', () => {
-  location.hash = location.hash.split('-')[0];
 });
 
 ///////////////////////////////////////////////////////////////////////////////
