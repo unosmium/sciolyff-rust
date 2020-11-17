@@ -330,7 +330,6 @@ function updateModalState() {
   } else if (oldModalTeamNumber === currentModalTeamNumber) {
     if (isNaN(eventIndex)) {
       animateHorizontalScroll(true);
-      modalNav.querySelectorAll('a')[currentModalEventIndex].focus();
     }
 
   } else {
@@ -361,16 +360,17 @@ function animateHorizontalScroll(reverse, noAnimation) {
     modalNav.style.visibility = 'visible';
   } else {
     modalBack.style.display = 'block';
-    modalBack.focus();
   }
 
   function donzo() {
     if (reverse) {
       modalBody.scrollLeft = 0;
       modalBack.style.display = 'none';
+      modalNav.querySelectorAll('a')[currentModalEventIndex].focus();
     } else {
       modalBody.scrollLeft = scrollLeftMax + 100;
       modalNav.style.visibility = 'hidden';
+      modalBack.focus();
     }
   }
 
