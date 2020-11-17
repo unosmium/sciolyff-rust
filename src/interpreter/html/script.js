@@ -353,7 +353,15 @@ window.addEventListener('hashchange', () => updateModalState());
 
 ///////////////////////////////////////////////////////////////////////////////
 
+let donzo;
+let animationRequest;
+
 function animateHorizontalScroll(reverse, noAnimation) {
+  if (animationRequest) {
+    window.cancelAnimationFrame(animationRequest);
+    donzo();
+  }
+
   let scrollLeftMax = modalBody.scrollWidth - modalBody.clientWidth;
 
   if (reverse) {
@@ -362,7 +370,7 @@ function animateHorizontalScroll(reverse, noAnimation) {
     modalBack.style.display = 'block';
   }
 
-  function donzo() {
+  donzo = () => {
     if (reverse) {
       modalBody.scrollLeft = 0;
       modalBack.style.display = 'none';
@@ -372,7 +380,8 @@ function animateHorizontalScroll(reverse, noAnimation) {
       modalNav.style.visibility = 'hidden';
       modalBack.focus();
     }
-  }
+    animationRequest = null;
+  };
 
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
       noAnimation || animationsDisabled) {
@@ -403,7 +412,7 @@ function animateHorizontalScroll(reverse, noAnimation) {
     }
   }
 
-  window.requestAnimationFrame(zoop);
+  animationRequest = window.requestAnimationFrame(zoop);
 }
 
 window.addEventListener('resize', () => {
